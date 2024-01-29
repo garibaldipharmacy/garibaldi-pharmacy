@@ -2,7 +2,9 @@
   <div>
     <NuxtLayout class="flex flex-col min-h-screen">
       <Header />
-      <NuxtPage />
+      <main>
+        <NuxtPage />
+      </main>
       <Footer class="mt-auto" />
     </NuxtLayout>
   </div>

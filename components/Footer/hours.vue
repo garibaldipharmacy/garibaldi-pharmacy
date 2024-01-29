@@ -9,7 +9,12 @@
           'gap-5',
           'mb-2',
           'capitalize',
-          { 'opacity-75': !isCurrentDay(day), 'font-bold': isCurrentDay(day) },
+          {
+            'opacity-75': !isCurrentDay(day),
+            'text-primary-300': !isCurrentDay(day),
+            'font-bold': isCurrentDay(day),
+            'text-white': isCurrentDay(day),
+          },
         ]"
         :key="day"
       >

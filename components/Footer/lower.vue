@@ -2,21 +2,16 @@
   <div
     class="flex items-center gap-5 py-4 pb-1 border-t border-primary-800 mt-5 text-sm"
   >
-    <span>&copy; {{ year }} Goodfella's Pharmacy Ltd.</span>
+    <span class="font-light">&copy; {{ year }} Goodfella's Pharmacy Ltd.</span>
     <ul class="flex gap-3">
       <li
         v-for="social in socials"
         :key="social.name"
         class="hover:opacity-50 transition-opacity"
       >
-        <a
-          :href="links.instagram"
-          :title="social.name"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <NuxtLink :href="links.instagram" :title="social.name">
           <Icon :name="social.icon" />
-        </a>
+        </NuxtLink>
       </li>
     </ul>
 

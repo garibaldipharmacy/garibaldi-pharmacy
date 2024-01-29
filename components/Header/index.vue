@@ -1,10 +1,6 @@
 <template>
-  <header>
-    <HeaderUpper />
-    <HeaderLower />
-  </header>
+  <HeaderUpper class="" />
+  <HeaderLower class="sticky top-0 w-full" />
 </template>
 
-<script lang="ts" setup></script>
-
-<style></style>
+<script setup></script>

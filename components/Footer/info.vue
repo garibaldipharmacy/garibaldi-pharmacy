@@ -1,12 +1,14 @@
 <template>
   <div>
     <div>
-      <img
-        src="@/assets/images/logostyles/logo-wide-dark.svg"
-        alt="Garibaldi Pharmacy and Compounding Lab logo"
-      />
+      <NuxtLink to="/">
+        <img
+          src="@/assets/images/logostyles/logo-wide-dark.svg"
+          alt="Garibaldi Pharmacy and Compounding Lab logo"
+        />
+      </NuxtLink>
       <h3 class="text-xl mt-5">Garibaldi Pharmacy</h3>
-      <p class="text-sm font-extralight w-4/5 mb-5">
+      <p class="text-sm font-extralight mb-5">
         Discover personalized medicine and accessible healthcare at its best.
         Dedicated to improving the health and wellness of Squamish.
       </p>
@@ -18,11 +20,10 @@
           <Icon class="mr-2" name="fa6-solid:location-dot" /> Address
         </h4>
         <p>
-          <a
+          <NuxtLink
             :href="links.google_maps"
-            target="_blank"
-            rel="noopener noreferrer"
-            >{{ address }}</a
+            class="hover:opacity-50 transition-opacity"
+            >{{ address }}</NuxtLink
           >
         </p>
       </li>
@@ -33,7 +34,11 @@
             <Icon class="mr-2" name="fa6-solid:phone" /> Telephone
           </h4>
           <p>
-            <a :href="`tel:${phone.main}`">{{ phone.main }}</a>
+            <NuxtLink
+              :href="`tel:${phone.main}`"
+              class="hover:opacity-50 transition-opacity"
+              >{{ phone.main }}</NuxtLink
+            >
           </p>
         </li>
 
@@ -41,7 +46,11 @@
           <h4 class="mb-2 font-bold">
             <Icon class="mr-2" name="fa6-solid:fax" /> Fax
           </h4>
-          <a :href="`tel:${phone.fax}`">{{ phone.fax }}</a>
+          <NuxtLink
+            :href="`tel:${phone.fax}`"
+            class="hover:opacity-50 transition-opacity"
+            >{{ phone.fax }}</NuxtLink
+          >
         </li>
       </div>
 
@@ -50,24 +59,14 @@
           <Icon class="mr-2" name="fa6-solid:envelope" /> Email
         </h4>
         <p>
-          <a :href="`mailto:${email}`">{{ email }}</a>
+          <NuxtLink
+            :href="`mailto:${email}`"
+            class="hover:opacity-50 transition-opacity"
+            >{{ email }}</NuxtLink
+          >
         </p>
       </li>
     </ul>
-
-    <p class="font-extralight opacity-75 text-xs pt-5">
-      Garibaldi Pharmacy is licensed by the College of Pharmacists of British
-      Columbia. The college registrant who is the manager of the record is Dean
-      George. All pharmacy practice issues may be reported directly to the
-      College of Pharmacists of BC via their
-      <a
-        class="underline hover:no-underline"
-        href="https://www.bcpharmacists.org/"
-        target="_blank"
-        rel="noopener noreferrer"
-        >website</a
-      >.
-    </p>
   </div>
 </template>
 
