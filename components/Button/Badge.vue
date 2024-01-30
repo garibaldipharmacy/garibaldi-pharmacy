@@ -1,27 +1,20 @@
 <template>
   <NuxtLink
     :class="[
-      'py-4',
-      'px-5',
-      'shadow-lg',
+      'px-2',
+      'py-1',
+      'bg-primary-100',
       `text-primary-900`,
-      'inline-flex',
-      'items-center',
       'rounded-md',
+      'inline-block',
+      'font-light',
+      'text-xs',
       'bg-white',
-      'hover:shadow-xl',
-      'hover:-translate-y-1',
-      'transition-all',
+      'hover:text-primary-100',
+      'hover:bg-primary-900',
+      'transition-colors',
     ]"
-  >
-    <CircleIcon
-      :icon="icon"
-      :bgColor="bgColor"
-      :iconColor="iconColor"
-      class="mr-3"
-    />
-    <slot />
-    <Icon v-if="showArrow" class="ml-auto" name="fa6-solid:angle-right" />
+    ><slot />
   </NuxtLink>
 </template>
 

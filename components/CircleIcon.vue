@@ -1,8 +1,8 @@
 <template>
   <span
     :class="[
-      `text-${theme}-900`,
-      `bg-${theme}-100`,
+      iconColor,
+      bgColor,
       'rounded-full',
       'inline-flex',
       'items-center',
@@ -18,11 +18,13 @@
 <script lang="ts" setup>
 const props = defineProps({
   icon: String,
-  theme: {
+  bgColor: {
     type: String,
-    default: "primary",
+    default: "bg-primary-100",
+  },
+  iconColor: {
+    type: String,
+    default: "text-primary-900",
   },
 });
 </script>
-
-<style></style>

@@ -1,5 +1,5 @@
 <template>
-  <header class="bg-white header-lower flex items-center p-5 shadow-lg">
+  <header class="bg-white header-lower flex items-center p-5 shadow-lg z-50">
     <div class="logo">
       <NuxtLink to="/">
         <img
@@ -11,13 +11,13 @@
 
     <nav class="flex items-center ml-auto">
       <ul class="header-links ml-auto font-light text-primary-900 flex gap-5">
-        <li><NuxtLink to="/about">About</NuxtLink></li>
-        <li><NuxtLink to="/blog">Blog</NuxtLink></li>
-        <li><NuxtLink to="/compounding">Compounding</NuxtLink></li>
-        <li><NuxtLink to="/services">Pharmacy Services</NuxtLink></li>
-        <li>
+        <!-- <li><NuxtLink to="/about">About</NuxtLink></li> -->
+        <!-- <li><NuxtLink to="/blog">Blog</NuxtLink></li> -->
+        <!-- <li><NuxtLink to="/compounding">Compounding</NuxtLink></li> -->
+        <!-- <li><NuxtLink to="/services">Pharmacy Services</NuxtLink></li> -->
+        <!-- <li>
           <NuxtLink to="/health-and-wellness">Home Health & Wellness</NuxtLink>
-        </li>
+        </li> -->
       </ul>
 
       <div class="ml-5">
