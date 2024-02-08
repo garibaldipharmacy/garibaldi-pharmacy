@@ -41,7 +41,4 @@ export default defineNuxtConfig({
     },
   },
   ssr: true,
-
-  // TODO: add ssr/static rules for each page
-  // routeRules: {},
 });

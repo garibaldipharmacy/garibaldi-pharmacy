@@ -27,7 +27,6 @@
       method="post"
       class="mt-10"
       netlify-honeypot="bot-field"
-      data-netlify-recaptcha="true"
       data-netlify="true"
       enctype="multipart/form-data"
     >
@@ -258,7 +257,7 @@
         </div>
 
         <!-- Recapcha -->
-        <div class="px-5" data-netlify-recaptcha="true"></div>
+        <!-- <div class="px-5" data-netlify-recaptcha="true"></div> -->
 
         <div class="col-span-2 px-5 sm:col-span-2">
           <button

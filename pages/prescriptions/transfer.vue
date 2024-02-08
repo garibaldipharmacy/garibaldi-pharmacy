@@ -7,7 +7,6 @@
       method="post"
       class="mt-10"
       netlify-honeypot="bot-field"
-      data-netlify-recaptcha="true"
       data-netlify="true"
       enctype="multipart/form-data"
     >
