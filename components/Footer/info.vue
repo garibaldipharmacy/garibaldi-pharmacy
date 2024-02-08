@@ -8,7 +8,7 @@
         />
       </NuxtLink>
       <h3 class="text-xl mt-5">Garibaldi Pharmacy</h3>
-      <p class="text-sm font-extralight mb-5">
+      <p class="text-sm font-extralight mb-5 sm:w-1/2 md:w-auto">
         Discover personalized medicine and accessible healthcare at its best.
         Dedicated to improving the health and wellness of Squamish.
       </p>

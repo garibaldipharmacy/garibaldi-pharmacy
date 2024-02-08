@@ -1,11 +1,11 @@
 <template>
   <!-- Hero Section -->
-  <section class="landing-hero-section py-40">
-    <div class="text-white px-20">
-      <h1 class="text-3xl font-bold w-2/5">
+  <section class="landing-hero-section py-20 sm:py-40">
+    <div class="text-white px-10 sm:px-20">
+      <h1 class="text-3xl font-bold md:w-2/5">
         Discover personalized medicine and accessible healthcare at its best
       </h1>
-      <p class="font-light text-xl w-1/3">
+      <p class="font-light text-xl md:w-1/3">
         We are dedicated to improving the health and wellness of Squamish
       </p>
     </div>
@@ -14,49 +14,48 @@
   <!-- Navigation / Appointments -->
   <section class="container mx-auto">
     <nav>
-      <ul class="flex p-3 gap-2 -mt-16 mb-10">
-        <li class="flex-1">
+      <ul
+        class="flex p-3 gap-2 -mt-16 mb-10 items-center justify-center flex-wrap no-appointment-pills-only"
+      >
+        <!-- <li class="flex-1">
           <AppointmentCard />
+        </li> -->
+        <!-- <div class="flex gap-2 pill-buttons content-center flex-wrap basis-3/6"> -->
+        <li>
+          <ButtonPill :to="`tel:${contact.phone.main}`" icon="fa6-solid:phone">
+            Contact Us
+          </ButtonPill>
         </li>
-        <div class="flex gap-2 pill-buttons content-center flex-wrap basis-3/6">
-          <li>
-            <ButtonPill
-              to="https://garibaldipharmacy.com"
-              icon="fa6-solid:phone"
-            >
-              Call or Text Us
-            </ButtonPill>
-          </li>
 
-          <li>
-            <ButtonPill
-              to="https://garibaldipharmacy.com"
-              icon="fa6-solid:paper-plane"
-              theme="secondary"
-            >
-              Transfer Prescription
-            </ButtonPill>
-          </li>
+        <li>
+          <ButtonPill
+            to="/prescriptions/transfer"
+            icon="fa6-solid:paper-plane"
+            theme="secondary"
+          >
+            Transfer Prescription
+          </ButtonPill>
+        </li>
 
-          <li>
-            <ButtonPill
-              to="https://garibaldipharmacy.com"
-              icon="fa6-solid:prescription-bottle"
-            >
-              Refill Medications
-            </ButtonPill>
-          </li>
+        <li>
+          <ButtonPill
+            to="/prescriptions/refill"
+            icon="fa6-solid:prescription-bottle"
+          >
+            Refill Medications
+          </ButtonPill>
+        </li>
 
-          <li>
-            <ButtonPill
-              to="https://garibaldipharmacy.com"
-              icon="fa6-solid:prescription"
-              theme="secondary"
-            >
-              Send Prescription
-            </ButtonPill>
-          </li>
-        </div>
+        <li>
+          <ButtonPill
+            to="/prescriptions/send"
+            icon="fa6-solid:prescription"
+            theme="secondary"
+          >
+            Send Prescription
+          </ButtonPill>
+        </li>
+        <!-- </div> -->
       </ul>
     </nav>
   </section>
@@ -67,21 +66,21 @@
       title="Services"
       description="Discover our range of services designed for your wellness. From prescription refills to health consultations, we're here to support you."
     />
-    <div class="px-4 my-10 flex gap-5 py-5">
+    <div class="px-4 my-10 flex gap-5 py-5 flex-wrap">
       <BorderedCard
         v-for="card in serviceCards"
         :icon="card.icon"
         :title="card.title"
         :description="card.description"
-        class="flex-1"
+        class="w-full sm:w-auto sm:flex-1"
       />
     </div>
-    <NuxtLink
+    <!-- <NuxtLink
       to="/services"
       class="mx-auto text-center block mb-10 text-slate-500 hover:text-slate-800 transition-colors"
       >View all our service offerings
       <Icon class="ml-3" name="fa6-solid:arrow-right-long"
-    /></NuxtLink>
+    /></NuxtLink> -->
   </section>
 
   <!-- Why Us -->
@@ -92,6 +91,9 @@
 </template>
 
 <script setup lang="ts">
+import { businessInfo } from "~/constants/business";
+const { contact } = businessInfo;
+
 useSeoMeta({
   title: "Garibaldi Pharmacy | Home",
   description:
@@ -103,25 +105,25 @@ const serviceCards = [
     icon: "fa6-solid:truck",
     title: "Delivery",
     description:
-      "We provide free delivery throughout Squamish. Have your medications delivered straight to the comfort of your own home.",
+      "We provide delivery throughout Squamish. Have your medications delivered straight to the comfort of your own home.",
   },
   {
     icon: "healthicons:blister-pills-round-x4",
     title: "Compliance Packaging",
     description:
-      "Elit in et ipsum nisi enim enim laboris nostrud ea velit duis dolore sunt ex. Eiusmod enim Lorem id in magna nisi qui aliqua cillum pariatur dolore.",
+      "If you take several medications at different times of the day and find it difficult to manage, we can arrange your medication into a convenient blister or bubble pack to help you take the right medication at the right time.",
   },
   {
     icon: "fa6-solid:clipboard-list",
     title: "Medication Reviews",
     description:
-      "Elit in et ipsum nisi enim enim laboris nostrud ea velit duis dolore sunt ex. Eiusmod enim Lorem id in magna nisi qui aliqua cillum pariatur dolore.",
+      "Pharmacists are the therapeutics experts. Have a one-on-one consultation with a pharmacist to better understand your medications. We will make sure you are getting the maximum benefit from your medications.",
   },
   {
     icon: "bx:bxs-injection",
     title: "Vaccines & Immunizations",
     description:
-      "Elit in et ipsum nisi enim enim laboris nostrud ea velit duis dolore sunt ex. Eiusmod enim Lorem id in magna nisi qui aliqua cillum pariatur dolore.",
+      "Whether you need your seasonal flu shot, travel vaccinations, or most other vaccines to prevent certain diseases, we can make sure you get what you need to stay protected.",
   },
 ];
 </script>
@@ -133,5 +135,12 @@ const serviceCards = [
 
 .pill-buttons li a {
   width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .no-appointment-pills-only li,
+  .no-appointment-pills-only li a {
+    width: 100%;
+  }
 }
 </style>

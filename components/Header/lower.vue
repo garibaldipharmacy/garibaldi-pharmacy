@@ -21,11 +21,11 @@
       </ul>
 
       <div class="ml-5">
-        <NuxtLink
+        <!-- <NuxtLink
           to="/contact"
           class="p-3 px-5 rounded-full text-white font-normal bg-primary-900 hover:opacity-90 transition-all hover:scale-105 block"
           >Contact</NuxtLink
-        >
+        > -->
       </div>
     </nav>
   </header>

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex items-center gap-5 py-4 pb-1 border-t border-primary-800 mt-5 text-sm"
+    class="flex flex-wrap items-center justify-center gap-5 py-4 pb-1 border-t border-primary-800 mt-5 text-sm"
   >
     <span class="font-light">&copy; {{ year }} Goodfella's Pharmacy Ltd.</span>
     <ul class="flex gap-3">
@@ -16,7 +16,7 @@
     </ul>
 
     <ul class="ml-auto font-extralight opacity-75 flex gap-5">
-      <li>
+      <!-- <li>
         <NuxtLink to="/sitemap" class="hover:opacity-50 transition-opacity"
           >Sitemap</NuxtLink
         >
@@ -35,7 +35,7 @@
         <NuxtLink to="/cookies" class="hover:opacity-50 transition-opacity"
           >Cookies</NuxtLink
         >
-      </li>
+      </li> -->
     </ul>
   </div>
 </template>

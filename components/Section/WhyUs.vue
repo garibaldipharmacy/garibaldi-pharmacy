@@ -1,7 +1,9 @@
 <template>
-  <section class="flex justify-center my-10">
+  <section
+    class="2xl:container 2xl:mx-auto flex justify-center my-10 flex-wrap"
+  >
     <div
-      class="basis-1/2 bg-primary-900 text-white p-10 flex flex-col justify-center"
+      class="md:basis-1/2 bg-primary-900 text-white p-10 flex flex-col justify-center"
     >
       <h2 class="font-bold text-2xl mb-10">Why Us?</h2>
       <div class="font-extralight">
@@ -23,7 +25,7 @@
         </p>
       </div>
     </div>
-    <div class="basis-1/2">
+    <div class="md:basis-1/2">
       <img
         src="@/assets/images/doctor-patient.jpg"
         alt="A doctor showing information on a clipboard to their patient while sitting inside an exam room."

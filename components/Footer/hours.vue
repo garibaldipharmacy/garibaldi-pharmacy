@@ -1,6 +1,10 @@
 <template>
-  <div class="font-light bg-primary-930 rounded-lg p-5 text-sm">
-    <h4><Icon name="fa6-solid:clock" class="mr-2" /> Business Hours</h4>
+  <div
+    class="font-light bg-primary-930 rounded-lg p-5 text-sm w-full md:w-auto"
+  >
+    <h4 class="font-bold">
+      <Icon name="fa6-solid:clock" class="mr-2" /> Business Hours
+    </h4>
     <ul class="mt-5">
       <li
         v-for="(hour, day) in hours"
@@ -30,7 +34,7 @@ import { businessInfo } from "~/constants/business";
 
 const hours = businessInfo.business_hours.full_week;
 
-const isCurrentDay = (day) => {
+const isCurrentDay = (day: string) => {
   const currentDayIndex = new Date().getDay();
   const daysOfWeek = [
     "sunday",

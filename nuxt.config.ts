@@ -26,12 +26,14 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  modules: ["nuxt-icon", "@nuxtjs/google-fonts"],
+  modules: ["nuxt-icon", "@nuxtjs/google-fonts", "nuxt-headlessui"],
+
   googleFonts: {
     families: {
       Lexend: "200..700",
     },
   },
+
   // TODO: add ssr/static rules for each page
   routeRules: {},
 });

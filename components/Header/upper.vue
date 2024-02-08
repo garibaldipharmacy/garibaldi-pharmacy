@@ -1,36 +1,39 @@
 <template>
   <header>
     <ul
-      class="header-upper flex text-sm font-light bg-primary-900 text-white py-1 px-5"
+      class="header-upper flex flex-wrap items-center justify-center text-center text-sm font-light bg-primary-900 text-white sm:py-1 px-5 pt-3 pb-5"
     >
-      <li class="p-3">
-        <Icon name="fa6-solid:phone" class="mr-2" />
+      <li class="p-3 text-2xl sm:text-sm">
         <NuxtLink
-          class="hover:opacity-75 transition-colors delay-150"
+          class="hover:opacity-75 transition-colors delay-150 flex items-center justify-center"
           :href="`tel:${phoneMain}`"
-          >{{ phoneMain }}</NuxtLink
         >
+          <Icon name="fa6-solid:phone" class="mr-2" />
+          <span class="hidden sm:block">{{ phoneMain }}</span>
+        </NuxtLink>
       </li>
 
-      <li class="p-3">
+      <li class="p-3 hidden sm:flex items-center justify-center">
         <Icon name="fa6-solid:clock" class="mr-2" />
         <span>{{ hours }}</span>
       </li>
 
-      <li class="p-3">
-        <Icon name="fa6-solid:location-dot" class="mr-2" />
+      <li class="p-3 text-2xl sm:text-sm flex items-center justify-center">
         <NuxtLink
-          class="hover:opacity-75 transition-colors delay-150"
+          class="hover:opacity-75 transition-colors delay-150 flex items-center justify-center"
           :href="links.google_maps"
-          >{{ location }}</NuxtLink
         >
+          <Icon name="fa6-solid:location-dot" class="mr-2" />
+          <span class="hidden sm:block">{{ location }}</span>
+        </NuxtLink>
       </li>
 
-      <li class="ml-auto flex items-center justify-center">
+      <li class="sm:ml-auto flex items-center justify-center">
         <NuxtLink
           class="flex items-center rounded-full p-1.5 px-5 bg-primary-200 text-primary-900 hover:opacity-75 transition-opacity"
           :href="links.patient_register"
-          >Register As a Patient
+        >
+          <span>Register As a Patient</span>
           <Icon class="ml-2" name="fa6-solid:angle-right"
         /></NuxtLink>
       </li>
