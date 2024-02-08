@@ -33,7 +33,6 @@ export default defineNuxtConfig({
     "nuxt-headlessui",
     "@nuxtjs/seo",
     "@nuxtjs/sitemap",
-    "@nuxtjs/recaptcha",
   ],
 
   googleFonts: {
@@ -41,13 +40,7 @@ export default defineNuxtConfig({
       Lexend: "200..700",
     },
   },
-
-  recaptcha: {
-    hideBadge: false,
-    siteKey: process.env.SITE_RECAPTCHA_KEY,
-    size: "normal",
-    version: 2,
-  },
+  ssr: true,
 
   // TODO: add ssr/static rules for each page
   // routeRules: {},

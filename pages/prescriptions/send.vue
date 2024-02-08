@@ -258,7 +258,7 @@
         </div>
 
         <!-- Recapcha -->
-        <recaptcha class="px-5" />
+        <div class="px-5" data-netlify-recaptcha="true"></div>
 
         <div class="col-span-2 px-5 sm:col-span-2">
           <button

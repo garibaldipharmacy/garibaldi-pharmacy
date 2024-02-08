@@ -1316,11 +1316,6 @@
     google-fonts-helper "^3.4.1"
     pathe "^1.1.1"
 
-"@nuxtjs/recaptcha@^1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/recaptcha/-/recaptcha-1.1.2.tgz#ad47e554995cd7ba0b842a12cb670f6e14fe6376"
-  integrity sha512-qr7fyRvywyIvFyl1SgCz/JKOTmFf/O47G560s/t72uhfHsn41s7MR5ObtJFD0AGB2thqFtJwiwrndim2LCJl0g==
-
 "@nuxtjs/seo@^2.0.0-rc.8":
   version "2.0.0-rc.8"
   resolved "https://registry.npmjs.org/@nuxtjs/seo/-/seo-2.0.0-rc.8.tgz"
