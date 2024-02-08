@@ -266,6 +266,35 @@
 
 <script setup>
 import { ref } from "vue";
+
+useSeoMeta({
+  title: "Garibaldi Pharmacy | Transfer Prescription",
+  description:
+    "By completing this form, you consent to allow our pharmacy staff to contact your current pharmacy for a transfer of your medication.",
+  ogTitle: "Garibaldi Pharmacy | Transfer Prescription",
+  ogDescription:
+    "By completing this form, you consent to allow our pharmacy staff to contact your current pharmacy for a transfer of your medication.",
+  ogImage: "/favicon/android-chrome-512x512.png",
+  ogUrl: "https://garibaldipharmacy.com/prescriptions/transfer",
+  twitterTitle: "Garibaldi Pharmacy | Transfer Prescription",
+  twitterDescription:
+    "By completing this form, you consent to allow our pharmacy staff to contact your current pharmacy for a transfer of your medication.",
+  twitterImage: "/favicon/android-chrome-512x512.png",
+  twitterCard: "summary",
+});
+
+useHead({
+  htmlAttrs: {
+    lang: "en",
+  },
+  link: [
+    {
+      rel: "icon",
+      type: "image/png",
+      href: "/favicon/favicon-32x32.png",
+    },
+  ],
+});
 import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue";
 
 const options = ["Yes", "No"];

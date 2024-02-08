@@ -277,30 +277,31 @@
 useSeoMeta({
   title: "Garibaldi Pharmacy | Send Prescription",
   description:
-    "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
+    "If you were given a paper prescription by your doctor, you may send it to us electronically so we can prepare it in advance and reduce your wait time.",
+  ogTitle: "Garibaldi Pharmacy | Send Prescription",
+  ogDescription:
+    "By completing this form, you consent to allow our pharmacy staff to contact your current pharmacy for a transfer of your medication.",
+  ogImage: "/favicon/android-chrome-512x512.png",
+  ogUrl: "https://garibaldipharmacy.com/prescriptions/send",
+  twitterTitle: "Garibaldi Pharmacy | Send Prescription",
+  twitterDescription:
+    "If you were given a paper prescription by your doctor, you may send it to us electronically so we can prepare it in advance and reduce your wait time.",
+  twitterImage: "/favicon/android-chrome-512x512.png",
+  twitterCard: "summary",
 });
 
-// const submitForm = async () => {
-//   const form = document.querySelector("form");
-//   const formData = new FormData(form);
-//   console.log(uppy, uppy.getFiles());
-//   // Append Uppy files to the FormData
-//   uppy.getFiles().forEach((file, index) => {
-//     formData.append(`uppy-file-${index}`, file.data);
-//   });
-
-//   console.log("uppy", uppy.getFiles());
-
-//   for (const pair of formData.entries()) {
-//     console.log(pair[0], pair[1]);
-//   }
-//   const response = await fetch("/prescriptions/send", {
-//     method: "POST",
-//     body: formData,
-//   });
-//   const data = await response.json();
-//   console.log("data", data);
-// };
+useHead({
+  htmlAttrs: {
+    lang: "en",
+  },
+  link: [
+    {
+      rel: "icon",
+      type: "image/png",
+      href: "/favicon/favicon-32x32.png",
+    },
+  ],
+});
 </script>
 
 <style>

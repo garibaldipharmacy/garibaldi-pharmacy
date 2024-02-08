@@ -98,6 +98,29 @@ useSeoMeta({
   title: "Garibaldi Pharmacy | Home",
   description:
     "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
+  ogTitle: "Garibaldi Pharmacy | Home",
+  ogDescription:
+    "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
+  ogImage: "/favicon/android-chrome-512x512.png",
+  ogUrl: "https://garibaldipharmacy.com",
+  twitterTitle: "Garibaldi Pharmacy | Home",
+  twitterDescription:
+    "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
+  twitterImage: "/favicon/android-chrome-512x512.png",
+  twitterCard: "summary",
+});
+
+useHead({
+  htmlAttrs: {
+    lang: "en",
+  },
+  link: [
+    {
+      rel: "icon",
+      type: "image/png",
+      href: "/favicon/favicon-32x32.png",
+    },
+  ],
 });
 
 const serviceCards = [

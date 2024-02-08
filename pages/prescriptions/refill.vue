@@ -231,6 +231,35 @@ import { ref } from "vue";
 import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue";
 import { businessInfo } from "~/constants/business";
 
+useSeoMeta({
+  title: "Garibaldi Pharmacy | Refill Prescription",
+  description:
+    "By completing the form below, the information will be provided to our pharmacy staff to confirm and refill your prescription.",
+  ogTitle: "Garibaldi Pharmacy | Refill Prescription",
+  ogDescription:
+    "By completing the form below, the information will be provided to our pharmacy staff to confirm and refill your prescription.",
+  ogImage: "/favicon/android-chrome-512x512.png",
+  ogUrl: "https://garibaldipharmacy.com/prescriptions/refill",
+  twitterTitle: "Garibaldi Pharmacy | Refill Prescription",
+  twitterDescription:
+    "By completing the form below, the information will be provided to our pharmacy staff to confirm and refill your prescription.",
+  twitterImage: "/favicon/android-chrome-512x512.png",
+  twitterCard: "summary",
+});
+
+useHead({
+  htmlAttrs: {
+    lang: "en",
+  },
+  link: [
+    {
+      rel: "icon",
+      type: "image/png",
+      href: "/favicon/favicon-32x32.png",
+    },
+  ],
+});
+
 const phoneMain = businessInfo.contact.phone.main;
 
 const options = [
