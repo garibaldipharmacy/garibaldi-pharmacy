@@ -9,7 +9,7 @@
         :key="social.name"
         class="hover:opacity-50 transition-opacity"
       >
-        <NuxtLink :href="links.instagram" :title="social.name">
+        <NuxtLink :href="social.link" :title="social.name">
           <Icon :name="social.icon" />
         </NuxtLink>
       </li>

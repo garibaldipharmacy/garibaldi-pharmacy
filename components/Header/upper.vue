@@ -29,13 +29,13 @@
       </li>
 
       <li class="sm:ml-auto flex items-center justify-center">
-        <NuxtLink
+        <!-- <NuxtLink
           class="flex items-center rounded-full p-1.5 px-5 bg-primary-200 text-primary-900 hover:opacity-75 transition-opacity"
           :href="links.patient_register"
         >
           <span>Register As a Patient</span>
           <Icon class="ml-2" name="fa6-solid:angle-right"
-        /></NuxtLink>
+        /></NuxtLink> -->
       </li>
     </ul>
   </header>

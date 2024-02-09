@@ -12,7 +12,7 @@
       <p>
         <strong
           >By completing this form, you consent to allow the collection and use
-          of your personal information for the purpose of filling my
+          of your personal information for the purpose of filling your
           prescription at Garibaldi Pharmacy and understand that all personal
           information will reside at Garibaldi Pharmacy.</strong
         >
@@ -186,6 +186,12 @@
               both front and back of each card.
             </li>
           </ul>
+          <p class="mt-3 italic">
+            Note: If you have previously submitted your insurance plan cards,
+            the pharmacy will already have this in our system. You will only
+            need to take a photo of your insurance plan cards if the information
+            has changed.
+          </p>
         </div>
 
         <!-- Prescription Attachment -->
@@ -206,22 +212,24 @@
             required
           />
         </div>
+
         <!-- Prescription Attachment -->
         <div class="w-full col-span-2 px-5 sm:col-span-1">
-          <label
-            for="prescription-file-2"
-            class="block mb-2 text-sm font-medium text-gray-900"
-            >Prescription
-            <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
-          /></label>
-
-          <input
-            type="file"
-            name="prescription-file-2"
-            id="prescription-file-2"
-            accept="image/*,.pdf"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-          />
+          <div>
+            <label
+              for="prescription-file-2"
+              class="block mb-2 text-sm font-medium text-gray-900"
+              >Prescription
+              <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
+            /></label>
+            <input
+              type="file"
+              name="prescription-file-2"
+              id="prescription-file-2"
+              accept="image/*,.pdf"
+              class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
+            />
+          </div>
         </div>
         <!-- Insurance Card -->
         <div class="w-full col-span-2 px-5 sm:col-span-1">

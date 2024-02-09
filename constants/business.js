@@ -13,7 +13,8 @@ export const businessInfo = {
       main: "604-848-7059",
       fax: "778-605-2939",
     },
-    email: "info@garibaldipharmacy.com",
+    email: "pharmacist@garibaldipharmacy.com",
+    clinic_email: "squamish@terranovamedical.ca",
   },
   links: {
     website: "https://garibaldipharmacy.com",

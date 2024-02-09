@@ -60,6 +60,22 @@
     </nav>
   </section>
 
+  <section class="container mx-auto announcement-section mb-10">
+    <div class="p-1 sm:w-1/2 mx-auto text-primary-900 title-section">
+      <h2 class="text-2xl font-bold text-center">Announcement</h2>
+      <p class="text-center font-light opacity-80 mt-3">
+        We are now open! If you would like to register as a patient with our
+        in-house clinic, please email
+        <NuxtLink
+          :href="`mailto:${contact.clinic_email}`"
+          class="hover:underline text-secondary-900"
+        >
+          {{ contact.clinic_email }}
+        </NuxtLink>
+      </p>
+    </div>
+  </section>
+
   <!-- Services -->
   <section class="container mx-auto services-section">
     <TitleSection
