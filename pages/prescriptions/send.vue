@@ -195,40 +195,42 @@
         </div>
 
         <!-- Prescription Attachment -->
-        <div class="mx-5 col-span-2 flex-100 font-light sm:p-5">
-          <div
-            v-for="(row, index) in prescriptionRows"
-            :key="index"
-            class="flex gap-2 items-center mt-3 flex-wrap bg-slate-200 sm:bg-transparent rounded p-3"
-          >
-            <PrescriptionFileRow :index="index + 1" />
-            <button
-              v-if="index > 0"
-              type="button"
-              class="flex-1 sm:flex-none bg-white sm:bg-primary-100 rounded-full flex items-center justify-center hover:bg-primary-200 transition-colors p-2 text-sm mt-4 sm:mt-6"
-              @click="handleRemovePrescription"
-            >
-              <Icon name="fa6-solid:xmark" class="text-primary-900" />
-              <span class="ml-2 sm:hidden">Remove Prescription Row</span>
-            </button>
-            <span
-              v-else
-              class="rounded-full sm:flex items-center justify-center p-2 text-sm mt-6 hidden"
-              ><Icon name="fa6-solid:xmark" class="text-primary-900 invisible"
-            /></span>
-          </div>
-          <div class="">
-            <button
-              type="button"
-              class="bg-primary-100 rounded-full flex items-center justify-center hover:bg-primary-200 transition-colors p-2 text-sm mt-6"
-              @click="handleAddPrescription"
-            >
-              <Icon name="fa6-solid:plus" class="text-primary-900" />
-              <span class="ml-2">Add new prescription</span>
-            </button>
-          </div>
+        <div class="w-full col-span-2 px-5 sm:col-span-1">
+          <label
+            for="prescription-file"
+            class="block mb-2 text-sm font-medium text-gray-900"
+            >Prescription
+            <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
+          /></label>
+
+          <input
+            type="file"
+            name="prescription-file"
+            id="prescription-file"
+            accept="image/*,.pdf"
+            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
+            required
+          />
         </div>
 
+        <!-- Prescription Attachment -->
+        <div class="w-full col-span-2 px-5 sm:col-span-1">
+          <div>
+            <label
+              for="prescription-file-2"
+              class="block mb-2 text-sm font-medium text-gray-900"
+              >Prescription
+              <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
+            /></label>
+            <input
+              type="file"
+              name="prescription-file-2"
+              id="prescription-file-2"
+              accept="image/*,.pdf"
+              class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
+            />
+          </div>
+        </div>
         <!-- Insurance Card -->
         <div class="w-full col-span-2 px-5 sm:col-span-1">
           <label
@@ -279,8 +281,6 @@
 </template>
 
 <script setup>
-import PrescriptionFileRow from "~/components/PrescriptionFileRow.vue";
-import { ref } from "vue";
 useSeoMeta({
   title: "Garibaldi Pharmacy | Send Prescription",
   description:
@@ -309,16 +309,6 @@ useHead({
     },
   ],
 });
-
-const prescriptionRows = ref([0]);
-
-const handleAddPrescription = () => {
-  prescriptionRows.value.push(prescriptionRows.value.length);
-};
-
-const handleRemovePrescription = () => {
-  prescriptionRows.value.pop();
-};
 </script>
 
 <style>
