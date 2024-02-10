@@ -28,25 +28,25 @@ const footerLinks = [
       { title: "Send", href: "/prescriptions/send" },
     ],
   },
-  {
-    title: "Home Health & Wellness",
-    links: [
-      { title: "Compression stockings", href: "" },
-      { title: "Breast care", href: "" },
-      { title: "Ostomy and wound care", href: "" },
-      { title: "Crutches", href: "" },
-      { title: "Wheelchairs", href: "" },
-      { title: "Walkers", href: "" },
-      { title: "Cast", href: "" },
-    ],
-  },
+  // {
+  //   title: "Home Health & Wellness",
+  //   links: [
+  //     { title: "Compression stockings", href: "" },
+  //     { title: "Breast care", href: "" },
+  //     { title: "Ostomy and wound care", href: "" },
+  //     { title: "Crutches", href: "" },
+  //     { title: "Wheelchairs", href: "" },
+  //     { title: "Walkers", href: "" },
+  //     { title: "Cast", href: "" },
+  //   ],
+  // },
   {
     title: "Services",
     links: [
       { title: "Compounding", href: "" },
       { title: "Covid Vaccine", href: "" },
       { title: "One on one counselling", href: "" },
-      { title: "Injectable injection administration", href: "" },
+      { title: "Injection administration", href: "" },
       { title: "Immunizations", href: "" },
       { title: "Prescriptions", href: "" },
       { title: "Minor conditions", href: "" },
