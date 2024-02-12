@@ -28,12 +28,6 @@ import { useRoute } from "vue-router"; // required since we are using outside of
 const route = useRoute();
 const navItems = ref([
   {
-    name: "prescriptions-send",
-    icon: "fa6-solid:prescription",
-    text: "Send Prescription",
-    link: "/prescriptions/send",
-  },
-  {
     name: "prescriptions-transfer",
     icon: "fa6-solid:paper-plane",
     text: "Transfer Prescription",
@@ -44,6 +38,12 @@ const navItems = ref([
     icon: "fa6-solid:prescription-bottle",
     text: "Refill Prescription",
     link: "/prescriptions/refill",
+  },
+  {
+    name: "prescriptions-send",
+    icon: "fa6-solid:prescription",
+    text: "Send Prescription",
+    link: "/prescriptions/send",
   },
 ]);
 
