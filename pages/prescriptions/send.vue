@@ -178,6 +178,9 @@
               lighting
             </li>
             <li class="ml-5">
+              Make sure to take a photo of the entire page of the prescription
+            </li>
+            <li class="ml-5">
               Ensure you review each photo to ensure text is legible and in
               focus
             </li>
