@@ -188,7 +188,7 @@
             </li>
             <li class="ml-5">
               When taking photos of insurance plan cards, please take photos of
-              the entire card (both front and back of each card).
+              the entire card (both front and back).
             </li>
           </ul>
           <p class="mt-3 italic">
@@ -236,12 +236,17 @@
             />
           </div>
         </div>
+
+        <div class="col-span-2 flex-100 font-light px-5 rounded">
+          <span class="font-light uppercase opacity-75 block">Plan Card 1</span>
+        </div>
         <!-- Insurance Card -->
         <div class="w-full col-span-2 px-5 sm:col-span-1">
           <label
             for="insurance-card-front"
             class="block mb-2 text-sm font-medium text-gray-900"
-            >Insurance Card (Front)
+          >
+            Insurance Card (Front)
           </label>
 
           <input
@@ -257,13 +262,50 @@
           <label
             for="insurance-card-back"
             class="block mb-2 text-sm font-medium text-gray-900"
-            >Insurance Card (Back)
+          >
+            Insurance Card (Back)
           </label>
 
           <input
             type="file"
             name="insurance-card-back"
             id="insurance-card-back"
+            accept="image/*,.pdf"
+            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
+          />
+        </div>
+        <div class="col-span-2 flex-100 font-light px-5 rounded">
+          <span class="font-light uppercase opacity-75 block">Plan Card 2</span>
+        </div>
+        <!-- Insurance Card -->
+        <div class="w-full col-span-2 px-5 sm:col-span-1">
+          <label
+            for="insurance-card-front-2"
+            class="block mb-2 text-sm font-medium text-gray-900"
+          >
+            Insurance Card (Front)
+          </label>
+
+          <input
+            type="file"
+            name="insurance-card-front-2"
+            id="insurance-card-front-2"
+            accept="image/*,.pdf"
+            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
+          />
+        </div>
+        <!-- Insurance Card -->
+        <div class="w-full col-span-2 px-5 sm:col-span-1">
+          <label
+            for="insurance-card-back-2"
+            class="block mb-2 text-sm font-medium text-gray-900"
+            >Insurance Card (Back)
+          </label>
+
+          <input
+            type="file"
+            name="insurance-card-back-2"
+            id="insurance-card-back-2"
             accept="image/*,.pdf"
             class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
           />
