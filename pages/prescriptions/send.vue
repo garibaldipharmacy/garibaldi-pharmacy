@@ -178,7 +178,9 @@
               lighting
             </li>
             <li class="ml-5">
-              Make sure to take a photo of the entire page of the prescription
+              Make sure to take a photo of the
+              <strong class="font-bold underline">entire page</strong> of the
+              prescription
             </li>
             <li class="ml-5">
               Ensure you review each photo to ensure text is legible and in
@@ -186,7 +188,7 @@
             </li>
             <li class="ml-5">
               When taking photos of insurance plan cards, please take photos of
-              both front and back of each card.
+              the entire card (both front and back of each card).
             </li>
           </ul>
           <p class="mt-3 italic">
