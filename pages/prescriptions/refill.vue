@@ -252,6 +252,10 @@ useHead({
   },
   link: [
     {
+      rel: "canonical",
+      href: "https://garibaldipharmacy.com/prescriptions/refill",
+    },
+    {
       rel: "icon",
       type: "image/png",
       href: "/favicon/favicon-32x32.png",

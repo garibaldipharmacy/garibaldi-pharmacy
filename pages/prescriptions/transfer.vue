@@ -288,6 +288,10 @@ useHead({
   },
   link: [
     {
+      rel: "canonical",
+      href: "https://garibaldipharmacy.com/prescriptions/transfer",
+    },
+    {
       rel: "icon",
       type: "image/png",
       href: "/favicon/favicon-32x32.png",

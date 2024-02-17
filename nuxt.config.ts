@@ -11,7 +11,7 @@ export default defineNuxtConfig({
     site: {
       url: "https://garibaldipharmacy.com",
       name: "Garibaldi Pharmacy",
-      desrcription:
+      description:
         "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
       defaultLocale: "en",
     },

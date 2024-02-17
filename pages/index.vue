@@ -132,6 +132,10 @@ useHead({
   },
   link: [
     {
+      rel: "canonical",
+      href: "https://garibaldipharmacy.com",
+    },
+    {
       rel: "icon",
       type: "image/png",
       href: "/favicon/favicon-32x32.png",
