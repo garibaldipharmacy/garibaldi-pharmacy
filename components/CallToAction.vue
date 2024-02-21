@@ -33,14 +33,14 @@
           {{ secondaryButton.text }}
         </ButtonPill>
       </nav>
-      <!-- <p class="mt-10 text-slate-600">
+      <p class="mt-10 text-slate-600">
         Something else?
         <NuxtLink
           to="/contact"
           class="text-secondary-900 underline hover:no-underline"
           >Contact us</NuxtLink
         >
-      </p> -->
+      </p>
     </div>
     <img
       src="@/assets/images/cta-artifact.svg"

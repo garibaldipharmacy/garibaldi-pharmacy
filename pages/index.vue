@@ -15,16 +15,22 @@
   <section class="container mx-auto">
     <nav>
       <ul
-        class="flex p-3 gap-2 -mt-16 mb-10 items-center justify-center flex-wrap no-appointment-pills-only"
+        class="flex p-3 gap-2 -mt-16 mb-10 items-center pill-buttons justify-center flex-wrap no-appointment-pills-only"
       >
         <!-- <li class="flex-1">
           <AppointmentCard />
         </li> -->
         <!-- <div class="flex gap-2 pill-buttons content-center flex-wrap basis-3/6"> -->
         <li>
-          <ButtonPill :to="`tel:${contact.phone.main}`" icon="fa6-solid:phone">
-            Contact Us
-          </ButtonPill>
+          <button
+            type="button"
+            @click="openModal"
+            class="py-4 px-5 shadow-lg text-primary-900 inline-flex items-center rounded-md bg-white hover:shadow-xl hover:-translate-y-1 transition-all"
+          >
+            <CircleIcon icon="fa6-solid:phone" class="mr-3" />
+            <span>Contact Us</span>
+            <Icon class="ml-auto" name="fa6-solid:angle-right" />
+          </button>
         </li>
 
         <li>
@@ -59,6 +65,84 @@
       </ul>
     </nav>
   </section>
+
+  <TransitionRoot appear :show="isOpen" as="template">
+    <Dialog as="div" @close="closeModal" class="relative z-10">
+      <TransitionChild
+        as="template"
+        enter="duration-300 ease-out"
+        enter-from="opacity-0"
+        enter-to="opacity-100"
+        leave="duration-200 ease-in"
+        leave-from="opacity-100"
+        leave-to="opacity-0"
+      >
+        <div class="fixed inset-0 bg-black/25" />
+      </TransitionChild>
+
+      <div class="fixed inset-0 overflow-y-auto">
+        <div
+          class="flex min-h-full items-center justify-center p-4 text-center"
+        >
+          <TransitionChild
+            as="template"
+            enter="duration-300 ease-out"
+            enter-from="opacity-0 scale-95"
+            enter-to="opacity-100 scale-100"
+            leave="duration-200 ease-in"
+            leave-from="opacity-100 scale-100"
+            leave-to="opacity-0 scale-95"
+          >
+            <DialogPanel
+              class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+            >
+              <DialogTitle
+                as="h3"
+                class="text-lg font-medium leading-6 text-gray-900 flex items-center"
+              >
+                <CircleIcon icon="fa6-solid:address-book" class="mr-2" /><span
+                  >Contact Information</span
+                >
+              </DialogTitle>
+              <div class="mt-4">
+                <ul>
+                  <li
+                    v-for="option in contactOptions"
+                    :key="option.title"
+                    class="p-1"
+                  >
+                    <NuxtLink
+                      :to="option.link"
+                      class="text-primary-900 flex gap-2 flex-wrap"
+                    >
+                      <div>
+                        <Icon :name="option.icon" class="mr-3" />
+                        <span class="font-medium">{{ option.title }}</span>
+                      </div>
+                      <span
+                        class="font-light w-full sm:w-auto sm:ml-auto text-sm sm:text-base"
+                        >{{ option.value }}</span
+                      >
+                    </NuxtLink>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="mt-4">
+                <button
+                  type="button"
+                  class="inline-flex justify-center rounded-md border border-transparent bg-primary-100 px-4 py-2 text-sm font-medium text-primary-900 hover:bg-primary-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-900 focus-visible:ring-offset-2"
+                  @click="closeModal"
+                >
+                  Close
+                </button>
+              </div>
+            </DialogPanel>
+          </TransitionChild>
+        </div>
+      </div>
+    </Dialog>
+  </TransitionRoot>
 
   <section class="container mx-auto announcement-section mb-10">
     <div class="p-1 sm:w-1/2 mx-auto text-primary-900 title-section">
@@ -109,6 +193,35 @@
 <script setup lang="ts">
 import { businessInfo } from "~/constants/business";
 const { contact } = businessInfo;
+import { ref } from "vue";
+import {
+  TransitionRoot,
+  TransitionChild,
+  Dialog,
+  DialogPanel,
+  DialogTitle,
+} from "@headlessui/vue";
+
+const contactOptions = [
+  {
+    icon: "fa6-solid:phone",
+    title: "Phone",
+    value: contact.phone.main,
+    link: `tel:${contact.phone.main}`,
+  },
+  {
+    icon: "fa6-solid:fax",
+    title: "Fax",
+    value: contact.phone.fax,
+    link: `tel:${contact.phone.fax}`,
+  },
+  {
+    icon: "fa6-solid:envelope",
+    title: "Email",
+    value: contact.email,
+    link: `mailto:${contact.email}`,
+  },
+];
 
 useSeoMeta({
   title: "Garibaldi Pharmacy | Home",
@@ -169,14 +282,24 @@ const serviceCards = [
       "Whether you need your seasonal flu shot, travel vaccinations, or most other vaccines to prevent certain diseases, we can make sure you get what you need to stay protected.",
   },
 ];
+
+const isOpen = ref(false);
+
+function closeModal() {
+  isOpen.value = false;
+}
+function openModal() {
+  isOpen.value = true;
+}
 </script>
 
 <style scoped>
-.pill-buttons li {
+/* .pill-buttons li {
   flex: 1 1 33%;
-}
+} */
 
-.pill-buttons li a {
+.pill-buttons li a,
+.pill-buttons li button {
   width: 100%;
 }
 

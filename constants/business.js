@@ -15,6 +15,7 @@ export const businessInfo = {
     },
     email: "pharmacist@garibaldipharmacy.com",
     clinic_email: "squamish@terranovamedical.ca",
+    social_handle: "@garibaldipharmacy",
   },
   links: {
     website: "https://garibaldipharmacy.com",

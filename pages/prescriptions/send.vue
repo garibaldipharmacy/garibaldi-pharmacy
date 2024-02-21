@@ -204,7 +204,7 @@
           <label
             for="prescription-file"
             class="block mb-2 text-sm font-medium text-gray-900"
-            >Prescription
+            >Prescription 1
             <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
           /></label>
 
@@ -224,9 +224,8 @@
             <label
               for="prescription-file-2"
               class="block mb-2 text-sm font-medium text-gray-900"
-              >Prescription
-              <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
-            /></label>
+              >Prescription 2</label
+            >
             <input
               type="file"
               name="prescription-file-2"
@@ -246,7 +245,7 @@
             for="insurance-card-front"
             class="block mb-2 text-sm font-medium text-gray-900"
           >
-            Insurance Card (Front)
+            Insurance Card 1 (Front)
           </label>
 
           <input
@@ -263,7 +262,7 @@
             for="insurance-card-back"
             class="block mb-2 text-sm font-medium text-gray-900"
           >
-            Insurance Card (Back)
+            Insurance Card 1 (Back)
           </label>
 
           <input
@@ -283,7 +282,7 @@
             for="insurance-card-front-2"
             class="block mb-2 text-sm font-medium text-gray-900"
           >
-            Insurance Card (Front)
+            Insurance Card 2 (Front)
           </label>
 
           <input
@@ -299,7 +298,7 @@
           <label
             for="insurance-card-back-2"
             class="block mb-2 text-sm font-medium text-gray-900"
-            >Insurance Card (Back)
+            >Insurance Card 2 (Back)
           </label>
 
           <input
