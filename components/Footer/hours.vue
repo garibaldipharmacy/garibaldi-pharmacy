@@ -35,7 +35,11 @@ import { businessInfo } from "~/constants/business";
 const hours = businessInfo.business_hours.full_week;
 
 const isCurrentDay = (day: string) => {
-  const currentDayIndex = new Date().getDay();
+  const currentDate = new Date();
+  const currentDayIndex = new Date(
+    currentDate.toLocaleString("en-US", { timeZone: "America/Vancouver" })
+  ).getDay();
+
   const daysOfWeek = [
     "sunday",
     "monday",
