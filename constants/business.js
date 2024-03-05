@@ -15,6 +15,10 @@ export const businessInfo = {
     },
     email: "pharmacist@garibaldipharmacy.com",
     clinic_email: "squamish@terranovamedical.ca",
+    clinic: {
+      email: "squamish@terranovamedical.com",
+      phone: "604-898-6700",
+    },
     social_handle: "@garibaldipharmacy",
   },
   links: {
@@ -37,5 +41,15 @@ export const businessInfo = {
       holidays: "Closed",
     },
     short: "Mon-Fri 9:00 AM - 6:00 PM | Sat-Sun/Holidays: Closed",
+    clinic: {
+      monday: "9:00 AM - 5:00 PM",
+      tuesday: "9:00 AM - 5:00 PM",
+      wednesday: "Closed",
+      thursday: "9:00 AM - 5:00 PM",
+      friday: "9:00 AM - 5:00 PM",
+      saturday: "Closed",
+      sunday: "Closed",
+      holidays: "Closed",
+    },
   },
 };

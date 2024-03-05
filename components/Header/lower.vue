@@ -1,6 +1,8 @@
 <template>
-  <header class="bg-white header-lower flex items-center p-5 shadow-lg z-50">
-    <div class="logo">
+  <header
+    class="bg-white header-lower flex flex-wrap items-center p-5 shadow-lg z-50 gap-5"
+  >
+    <div class="logo w-1/3 sm:w-auto">
       <NuxtLink to="/">
         <img
           src="@/assets/images/logostyles/logo-wide.svg"
@@ -9,8 +11,15 @@
       </NuxtLink>
     </div>
 
-    <nav class="flex items-center ml-auto">
+    <nav class="flex items-center ml-auto text-sm sm:text-base">
       <ul class="header-links ml-auto font-light text-primary-900 flex gap-5">
+        <li>
+          <NuxtLink
+            to="/medical-clinic"
+            class="hover:text-secondary-900 transition-colors"
+            >Medical Clinic</NuxtLink
+          >
+        </li>
         <!-- <li><NuxtLink to="/about">About</NuxtLink></li> -->
         <!-- <li><NuxtLink to="/blog">Blog</NuxtLink></li> -->
         <!-- <li><NuxtLink to="/compounding">Compounding</NuxtLink></li> -->
