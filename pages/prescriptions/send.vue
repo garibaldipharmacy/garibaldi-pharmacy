@@ -183,8 +183,7 @@
               prescription
             </li>
             <li class="ml-5">
-              Ensure you review each photo to ensure text is legible and in
-              focus
+              Review each photo to ensure text is legible and in focus
             </li>
             <li class="ml-5">
               When taking photos of insurance plan cards, please take photos of
