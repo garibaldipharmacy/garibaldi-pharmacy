@@ -57,9 +57,11 @@
                             @click="toggleChild(link)"
                             class="flex items-center"
                           >
-                            <span class="text-primary-900 cursor-pointer">
-                              {{ link.title }}
-                            </span>
+                            <NuxtLink :to="link.link" @click="closeDialog">
+                              <span class="text-primary-900 cursor-pointer">
+                                {{ link.title }}
+                              </span>
+                            </NuxtLink>
                             <Icon
                               v-if="link.children"
                               class="ml-2"
@@ -163,6 +165,10 @@ const toggleChild = (link: HeaderNavLink) => {
   if (link.children) {
     link.expanded = !link.expanded;
   }
+};
+
+const closeDialog = () => {
+  open.value = false;
 };
 </script>
 
