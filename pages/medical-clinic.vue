@@ -31,8 +31,10 @@
         <div>
           <p>
             Due to the high volume of patient registrations, the clinic is no
-            longer taking in new patients. We are hoping to open up intake again
-            soon as more practitioners become available later this year.
+            longer taking in new patients. If you are in need of a family
+            doctor, you may call the clinic to be put on a wait list. We are
+            hoping to open up intake again soon as more practitioners become
+            available later this year.
           </p>
         </div>
       </div>
