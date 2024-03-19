@@ -33,7 +33,7 @@
   </section>
 
   <section class="container mx-auto p-5">
-    <div class="flex flex-wrap py-20 gap-1 text-primary-900">
+    <div class="flex flex-wrap py-20 text-primary-900">
       <div class="md:basis-1/2 p-1">
         <h2 class="text-2xl font-bold mb-5">Who we are</h2>
         <p class="font-light mb-5">
@@ -104,7 +104,40 @@
   <CallToAction />
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+useSeoMeta({
+  title: "Garibaldi Pharmacy | About",
+  description:
+    "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
+  ogTitle: "Garibaldi Pharmacy | About",
+  ogDescription:
+    "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
+  ogImage: "/favicon/android-chrome-512x512.png",
+  ogUrl: "https://garibaldipharmacy.com",
+  twitterTitle: "Garibaldi Pharmacy | About",
+  twitterDescription:
+    "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
+  twitterImage: "/favicon/android-chrome-512x512.png",
+  twitterCard: "summary",
+});
+
+useHead({
+  htmlAttrs: {
+    lang: "en",
+  },
+  link: [
+    {
+      rel: "canonical",
+      href: "https://garibaldipharmacy.com/about",
+    },
+    {
+      rel: "icon",
+      type: "image/png",
+      href: "/favicon/favicon-32x32.png",
+    },
+  ],
+});
+</script>
 
 <style scoped>
 .photo-credit {

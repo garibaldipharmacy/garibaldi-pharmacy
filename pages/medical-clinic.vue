@@ -16,6 +16,28 @@
         alt="The Squamish storefront of Garibaldi Pharmacy and Terra Nova Medical clinic"
       />
     </section>
+
+    <!-- Announcement -->
+    <section class="container mx-auto flex items-center justify-center mt-10">
+      <div
+        class="bg-secondary-100 p-4 rounded-md border-secondary-900 border-t-8 flex items-center justify-center gap-5 md:w-1/2 mx-10 md:mx-0 flex-wrap"
+      >
+        <div
+          class="flex items-center justify-center gap-5 text-secondary-900 font-bold"
+        >
+          <Icon name="fa6-solid:bullhorn" class="text-xl" />
+          <h3 class="text-xl">Announcement</h3>
+        </div>
+        <div>
+          <p>
+            Due to the high volume of patient registrations, the clinic is no
+            longer taking in new patients. We are hoping to open up intake again
+            soon as more practitioners become available later this year.
+          </p>
+        </div>
+      </div>
+    </section>
+
     <section
       class="flex container p-10 md:p-0 justify-center mx-auto gap-5 my-10 flex-wrap"
     >
@@ -37,8 +59,7 @@
             to="https://www.terranovamedical.ca/"
             rel="noopener noreferrer"
             >Terra Nova Medical Group</NuxtLink
-          >. The clinic is currently accepting new patients who do not already
-          have a family doctor in Squamish.
+          >.
         </p>
         <p>
           Terra Nova Squamish Clinic is currently led by Dr. Alison Ukrainec.

@@ -32,7 +32,7 @@
         <NuxtLink
           v-if="card.link"
           :to="card.link"
-          class="mt-10 block p-1 rounded border font-light text-primary-900 text-center cursor-pointer hover:bg-primary-900 hover:text-white transition-colors"
+          class="mt-10 block p-1 rounded-md border font-light text-primary-900 text-center cursor-pointer hover:bg-primary-900 hover:text-white transition-colors"
           >Complete Form</NuxtLink
         >
       </BorderedCard>
