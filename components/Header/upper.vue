@@ -1,7 +1,7 @@
 <template>
   <header>
     <ul
-      class="header-upper flex flex-wrap items-center justify-center text-center text-sm font-light bg-primary-900 text-white sm:py-1 px-5 pt-3 pb-5"
+      class="hidden header-upper lg:flex flex-wrap items-center justify-center text-center text-sm font-light bg-primary-900 text-white sm:py-1 px-5 pt-3 pb-5"
     >
       <li class="p-3 text-2xl sm:text-sm">
         <NuxtLink

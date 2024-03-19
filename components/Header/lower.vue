@@ -11,33 +11,55 @@
       </NuxtLink>
     </div>
 
-    <nav class="flex items-center ml-auto text-sm sm:text-base">
-      <ul class="header-links ml-auto font-light text-primary-900 flex gap-5">
-        <li>
-          <NuxtLink
-            to="/medical-clinic"
-            class="hover:text-secondary-900 transition-colors"
-            >Medical Clinic</NuxtLink
-          >
-        </li>
-        <!-- <li><NuxtLink to="/about">About</NuxtLink></li> -->
-        <!-- <li><NuxtLink to="/blog">Blog</NuxtLink></li> -->
-        <!-- <li><NuxtLink to="/compounding">Compounding</NuxtLink></li> -->
-        <!-- <li><NuxtLink to="/services">Pharmacy Services</NuxtLink></li> -->
-        <!-- <li>
-          <NuxtLink to="/health-and-wellness">Home Health & Wellness</NuxtLink>
-        </li> -->
-      </ul>
-
-      <div class="ml-5">
-        <NuxtLink
-          to="/contact"
-          class="p-3 px-5 rounded-full text-white font-normal bg-primary-900 hover:opacity-90 transition-all hover:scale-105 block"
-          >Contact</NuxtLink
-        >
-      </div>
-    </nav>
+    <Nav :links="links" class="hidden lg:flex" />
+    <NavMobile :links="links" class="lg:hidden" />
   </header>
 </template>
 
-<script lang="ts" setup></script>
+<script setup lang="ts">
+import { ref } from "vue";
+import type { HeaderNavLink } from "@/types/HeaderNavLink.interface";
+
+const links = ref<HeaderNavLink[]>([
+  {
+    title: "Home",
+    link: "/",
+  },
+  {
+    title: "About",
+    link: "/about",
+  },
+  // {
+  //   title: "Compounding",
+  //   link: "/services/compounding",
+  // },
+  // {
+  //   title: "Pharmacy Services",
+  //   link: "#",
+  //   expanded: true,
+  //   children: [
+  //     {
+  //       title: "Prescriptions",
+  //       link: "/prescriptions",
+  //       icon: "fa6-solid:prescription",
+  //     },
+  //     {
+  //       title: "Minor Ailments",
+  //       link: "/services/minor-ailments",
+  //       icon: "fa6-solid:hand-holding-medical",
+  //     },
+  //     {
+  //       title: "Immunizations",
+  //       link: "/services/immunizations",
+  //       icon: "medical-icon:i-immunizations",
+  //     },
+  //   ],
+  // },
+  {
+    title: "Medical Clinic",
+    link: "/medical-clinic",
+  },
+]);
+</script>
+
+<style scoped></style>

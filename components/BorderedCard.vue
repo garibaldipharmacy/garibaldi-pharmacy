@@ -5,6 +5,7 @@
     <p class="text-slate-600 font-light text-sm mt-5">
       {{ description }}
     </p>
+    <slot></slot>
   </div>
 </template>
 
