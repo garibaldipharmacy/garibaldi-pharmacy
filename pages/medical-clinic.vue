@@ -17,8 +17,8 @@
       />
     </section>
 
-    <!-- Announcement -->
-    <section class="container mx-auto flex items-center justify-center mt-10">
+    <!-- Announcement for No More Patients -->
+    <!-- <section class="container mx-auto flex items-center justify-center mt-10">
       <div
         class="bg-secondary-100 p-4 rounded-md border-secondary-900 border-t-8 flex items-center justify-center gap-5 md:w-1/2 mx-10 md:mx-0 flex-wrap"
       >
@@ -38,7 +38,7 @@
           </p>
         </div>
       </div>
-    </section>
+    </section> -->
 
     <section
       class="flex container p-10 md:p-0 justify-center mx-auto gap-5 my-10 flex-wrap"
@@ -61,7 +61,8 @@
             to="https://www.terranovamedical.ca/"
             rel="noopener noreferrer"
             >Terra Nova Medical Group</NuxtLink
-          >.
+          >. The clinic is currently accepting new patients who do not already
+          have a family doctor in Squamish.
         </p>
         <p>
           Terra Nova Squamish Clinic is currently led by Dr. Alison Ukrainec.
