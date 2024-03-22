@@ -104,6 +104,7 @@
             :class="[
               'flex',
               'gap-5',
+              'text-sm',
               'mb-2',
               'capitalize',
               {
@@ -115,8 +116,14 @@
             ]"
             :key="day"
           >
-            <span>{{ day }}</span>
-            <span class="ml-auto">{{ hour }}</span>
+            <span class="">{{ day }}</span>
+            <span class="ml-auto text-xs sm:text-sm">{{ hour }}</span>
+          </li>
+          <li
+            class="text-sm mt-5 text-secondary-900 flex items-center flex-wrap gap-2"
+          >
+            <Icon name="fa6-solid:asterisk" /> Please note the clinic is closed
+            from 12:30 - 1:30 PM daily for lunch
           </li>
         </ul>
       </div>
