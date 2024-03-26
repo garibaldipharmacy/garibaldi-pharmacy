@@ -56,7 +56,7 @@
       <div class="md:w-1/4">
         <NuxtLink
           to="https://www.bookapharmacist.gov.bc.ca/minorail/s/"
-          class="font-bold bg-primary-900 p-4 rounded-lg text-white flex gap-2 items-center justify-center"
+          class="font-bold bg-primary-900 p-4 rounded-lg text-white flex gap-2 items-center justify-center hover:scale-105 hover:opacity-95 transition-transform"
           >Book Appointment <Icon name="fa6-solid:arrow-up-right-from-square"
         /></NuxtLink>
       </div>

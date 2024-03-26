@@ -44,7 +44,7 @@ const footerLinks = [
     title: "Services",
     links: [
       { title: "Compounding", href: "/services/compounding" },
-      { title: "Immunizations", href: "services/immunizations" },
+      { title: "Immunizations", href: "/services/immunizations" },
       { title: "Prescriptions", href: "/prescriptions" },
       { title: "Minor Ailments", href: "/services/minor-ailments" },
       { title: "Covid Vaccine", href: "" },
