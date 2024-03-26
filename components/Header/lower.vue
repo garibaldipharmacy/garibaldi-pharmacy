@@ -29,32 +29,32 @@ const links = ref<HeaderNavLink[]>([
     title: "About",
     link: "/about",
   },
-  // {
-  //   title: "Compounding",
-  //   link: "/services/compounding",
-  // },
-  // {
-  //   title: "Pharmacy Services",
-  //   link: "#",
-  //   expanded: true,
-  //   children: [
-  //     {
-  //       title: "Prescriptions",
-  //       link: "/prescriptions",
-  //       icon: "fa6-solid:prescription",
-  //     },
-  //     {
-  //       title: "Minor Ailments",
-  //       link: "/services/minor-ailments",
-  //       icon: "fa6-solid:hand-holding-medical",
-  //     },
-  //     {
-  //       title: "Immunizations",
-  //       link: "/services/immunizations",
-  //       icon: "medical-icon:i-immunizations",
-  //     },
-  //   ],
-  // },
+  {
+    title: "Compounding",
+    link: "/services/compounding",
+  },
+  {
+    title: "Pharmacy Services",
+    link: "#",
+    expanded: true,
+    children: [
+      {
+        title: "Prescriptions",
+        link: "/prescriptions",
+        icon: "fa6-solid:prescription",
+      },
+      {
+        title: "Minor Ailments",
+        link: "/services/minor-ailments",
+        icon: "fa6-solid:hand-holding-medical",
+      },
+      {
+        title: "Immunizations",
+        link: "/services/immunizations",
+        icon: "medical-icon:i-immunizations",
+      },
+    ],
+  },
   {
     title: "Medical Clinic",
     link: "/medical-clinic",
