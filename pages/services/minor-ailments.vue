@@ -181,13 +181,20 @@ const minorAilments = [
     title: "Birth Control",
     description:
       "Get a prescription for ongoing and emergency contraceptive needs.",
-    synonyms: ["contraception", "contraceptive", "pregnancy", "condoms"],
+    synonyms: [
+      "contraception",
+      "contraceptive",
+      "pregnancy",
+      "condoms",
+      "iud",
+      "pill",
+    ],
   },
   {
     title: "Acne",
     description:
       "Red pimples that often occur on the face, neck, chest, and/or back primarily in teenagers.",
-    synonyms: [],
+    synonyms: ["pimples", "zits"],
   },
   {
     title: "Bladder Infections",
@@ -199,110 +206,110 @@ const minorAilments = [
     title: "Cold Sores",
     description:
       "A blister that usually forms near the lip and is caused by the herpes simplex virus.",
-    synonyms: [],
+    synonyms: ["lip sores", "fever blisters"],
   },
   {
     title: "Fungal Infections",
     description:
       "Infections that cause an itchy rash or discoloured toenail. Commonly affect the toenails, groin area, or feet.",
-    synonyms: [],
+    synonyms: ["athlete's foot", "ringworm"],
   },
   {
     title: "Headaches",
     description: "Continuous pain that affects the head.",
-    synonyms: [],
+    synonyms: ["migraine", "tension headache"],
   },
   {
     title: "Heartburn",
     description: "A burning sensation in the chest and or throat. ",
-    synonyms: [],
+    synonyms: ["acid reflux", "indigestion"],
   },
   {
     title: "Hemorrhoids",
     description: "Swollen veins in the anus that may cause pain or discomfort.",
-    synonyms: [],
+    synonyms: ["piles"],
   },
   {
     title: "Impetigo",
     description:
       "Yellow crusty sores with pus that form on the skin due to a contagious bacterial skin infection.",
-    synonyms: [],
+    synonyms: ["skin sores"],
   },
   {
     title: "Itching",
     description:
       "Itchy skin from raised welts that be due to an allergic reaction or an insect bite.",
-    synonyms: [],
+    synonyms: ["skin irritation", "pruritus"],
   },
   {
     title: "Menstrual Pain",
     description: "Cramping pain surrounding a person's menstrual period.",
-    synonyms: [],
+    synonyms: ["period pain", "dysmenorrhea"],
   },
   {
     title: "Mouth Ulcers",
     description:
       "Small round or oval patches in the mouth or under the tongue that are painful.",
-    synonyms: [],
+    synonyms: ["canker sores"],
   },
   {
     title: "Pink Eye",
     description:
       "Redness in the eye with possible discharge that may be due to an allergy or due to a bacterial or viral infection.",
-    synonyms: [],
+    synonyms: ["conjunctivitis"],
   },
   {
     title: "Quitting Smoking",
     description:
       "Nicotine replacement products or medication that can help one to gradually quit smoking cigarettes.",
-    synonyms: [],
+    synonyms: ["smoking cessation"],
   },
   {
     title: "Seasonal Allergies",
     description:
       "Sneezing or coughing with a runny nose or itchy/watery eyes that is triggered by an allergen. ",
-    synonyms: [],
+    synonyms: ["hay fever", "allergic rhinitis"],
   },
   {
     title: "Shingles",
     description:
       "A viral disease caused by the same virus as chickenpox that commonly occurs in people over the age of 50. Usually starting as a deep, burning or throbbing pain. ",
-    synonyms: [],
+    synonyms: ["herpes zoster"],
   },
   {
     title: "Skin Rashes",
     description:
       "Red, irritated, and scaly patches on the skin, which are usually itchy.",
-    synonyms: [],
+    synonyms: ["dermatitis", "eczema"],
   },
   {
     title: "Sprains and Strains",
     description: "Pain, bruising, and limited movement of a muscle or joint.",
-    synonyms: [],
+    synonyms: ["muscle injury", "ligament injury"],
   },
   {
     title: "Thrush",
     description:
       "A fungal infection in the mouth with creamy white patches on the tongue or inner cheeks.",
-    synonyms: [],
+    synonyms: ["oral candidiasis"],
   },
   {
     title: "Upset Stomach",
     description:
       "Discomfort in the upper abdomen, which may include pain, nausea, bloating, and an early feeling of fullness when eating.",
-    synonyms: [],
+    synonyms: ["dyspepsia", "stomach upset"],
   },
   {
     title: "Worms",
     description:
       "A contagious infection of the intestines by pinworms that cause itching in the anal area, especially at night.",
-    synonyms: [],
+    synonyms: ["pinworm infection"],
   },
   {
     title: "Yeast Infections",
     description:
       "A fungal infection that affects the vagina and its external skin area, commonly resulting in itch and discharge.",
-    synonyms: [],
+    synonyms: ["vaginal candidiasis", "thrush"],
   },
 ];
 
@@ -311,14 +318,6 @@ minorAilments.sort((a, b) => {
 });
 
 // Filter the minor ailments based on the search query
-// const filteredAilments = computed(() => {
-//   return minorAilments.filter((ailment) => {
-//     return ailment.title
-//       .toLowerCase()
-//       .includes(searchQuery.value.toLowerCase());
-//   });
-// });
-
 const filteredAilments = computed(() => {
   return minorAilments.filter((ailment) => {
     const searchTerm = searchQuery.value.toLowerCase();
