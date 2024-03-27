@@ -58,6 +58,16 @@ const links = ref<HeaderNavLink[]>([
         link: "/services/drug-administration",
         icon: "fa6-solid:prescription-bottle-medical",
       },
+      {
+        title: "Consultations",
+        link: "/services/consultations",
+        icon: "fa6-solid:user-doctor",
+      },
+      {
+        title: "Point-of-Care Testing",
+        link: "/services/point-of-care-testing",
+        icon: "solar:test-tube-bold",
+      },
     ],
   },
   {
