@@ -130,7 +130,7 @@
 <script lang="ts" setup>
 import type { HeaderNavLink } from "~/types/HeaderNavLink.interface";
 import { ref } from "vue";
-import { defineProps } from "vue";
+
 import {
   Dialog,
   DialogPanel,
