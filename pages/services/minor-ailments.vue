@@ -244,7 +244,7 @@ const minorAilments = [
   {
     title: "Menstrual Pain",
     description: "Cramping pain surrounding a person's menstrual period.",
-    synonyms: ["period pain", "dysmenorrhea"],
+    synonyms: ["period pain", "dysmenorrhea", "cramps"],
   },
   {
     title: "Mouth Ulcers",
@@ -262,13 +262,19 @@ const minorAilments = [
     title: "Quitting Smoking",
     description:
       "Nicotine replacement products or medication that can help one to gradually quit smoking cigarettes.",
-    synonyms: ["smoking cessation"],
+    synonyms: ["smoking cessation", "cigarettes"],
   },
   {
     title: "Seasonal Allergies",
     description:
       "Sneezing or coughing with a runny nose or itchy/watery eyes that is triggered by an allergen. ",
-    synonyms: ["hay fever", "allergic rhinitis"],
+    synonyms: [
+      "hay fever",
+      "allergic rhinitis",
+      "runny nose",
+      "itchy eyes",
+      "sneezing",
+    ],
   },
   {
     title: "Shingles",
@@ -325,7 +331,8 @@ const filteredAilments = computed(() => {
       ailment.title.toLowerCase().includes(searchTerm) ||
       ailment.synonyms.some((synonym) =>
         synonym.toLowerCase().includes(searchTerm)
-      )
+      ) ||
+      ailment.description.toLowerCase().includes(searchTerm)
     );
   });
 });
