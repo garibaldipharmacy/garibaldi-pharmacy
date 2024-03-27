@@ -53,6 +53,11 @@ const links = ref<HeaderNavLink[]>([
         link: "/services/immunizations",
         icon: "medical-icon:i-immunizations",
       },
+      {
+        title: "Drug Administration",
+        link: "/services/drug-administration",
+        icon: "fa6-solid:prescription-bottle-medical",
+      },
     ],
   },
   {

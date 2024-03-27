@@ -134,7 +134,7 @@ import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
 import { ref } from "vue";
 
 const defaultTabStyles =
-  "w-full sm:w-auto mx-3 p-5 rounded-xl  border-2 bg-white transition-all";
+  "w-full sm:w-auto mx-3 p-5 rounded-xl border-2 bg-white transition-all hover:bg-primary-50 hover:border-primary-200";
 
 const selectedTab = ref(0);
 

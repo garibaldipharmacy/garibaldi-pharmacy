@@ -181,106 +181,128 @@ const minorAilments = [
     title: "Birth Control",
     description:
       "Get a prescription for ongoing and emergency contraceptive needs.",
+    synonyms: ["contraception", "contraceptive", "pregnancy", "condoms"],
   },
   {
     title: "Acne",
     description:
       "Red pimples that often occur on the face, neck, chest, and/or back primarily in teenagers.",
+    synonyms: [],
   },
   {
     title: "Bladder Infections",
     description:
       "Bacterial infection in the bladder that causes pain when urinating.",
+    synonyms: ["uti"],
   },
   {
     title: "Cold Sores",
     description:
       "A blister that usually forms near the lip and is caused by the herpes simplex virus.",
+    synonyms: [],
   },
   {
     title: "Fungal Infections",
     description:
       "Infections that cause an itchy rash or discoloured toenail. Commonly affect the toenails, groin area, or feet.",
+    synonyms: [],
   },
   {
     title: "Headaches",
     description: "Continuous pain that affects the head.",
+    synonyms: [],
   },
   {
     title: "Heartburn",
     description: "A burning sensation in the chest and or throat. ",
+    synonyms: [],
   },
   {
     title: "Hemorrhoids",
     description: "Swollen veins in the anus that may cause pain or discomfort.",
+    synonyms: [],
   },
   {
     title: "Impetigo",
     description:
       "Yellow crusty sores with pus that form on the skin due to a contagious bacterial skin infection.",
+    synonyms: [],
   },
   {
     title: "Itching",
     description:
       "Itchy skin from raised welts that be due to an allergic reaction or an insect bite.",
+    synonyms: [],
   },
   {
     title: "Menstrual Pain",
     description: "Cramping pain surrounding a person's menstrual period.",
+    synonyms: [],
   },
   {
     title: "Mouth Ulcers",
     description:
       "Small round or oval patches in the mouth or under the tongue that are painful.",
+    synonyms: [],
   },
   {
     title: "Pink Eye",
     description:
       "Redness in the eye with possible discharge that may be due to an allergy or due to a bacterial or viral infection.",
+    synonyms: [],
   },
   {
     title: "Quitting Smoking",
     description:
       "Nicotine replacement products or medication that can help one to gradually quit smoking cigarettes.",
+    synonyms: [],
   },
   {
     title: "Seasonal Allergies",
     description:
       "Sneezing or coughing with a runny nose or itchy/watery eyes that is triggered by an allergen. ",
+    synonyms: [],
   },
   {
     title: "Shingles",
     description:
       "A viral disease caused by the same virus as chickenpox that commonly occurs in people over the age of 50. Usually starting as a deep, burning or throbbing pain. ",
+    synonyms: [],
   },
   {
     title: "Skin Rashes",
     description:
       "Red, irritated, and scaly patches on the skin, which are usually itchy.",
+    synonyms: [],
   },
   {
     title: "Sprains and Strains",
     description: "Pain, bruising, and limited movement of a muscle or joint.",
+    synonyms: [],
   },
   {
     title: "Thrush",
     description:
       "A fungal infection in the mouth with creamy white patches on the tongue or inner cheeks.",
+    synonyms: [],
   },
   {
     title: "Upset Stomach",
     description:
       "Discomfort in the upper abdomen, which may include pain, nausea, bloating, and an early feeling of fullness when eating.",
+    synonyms: [],
   },
   {
     title: "Worms",
     description:
       "A contagious infection of the intestines by pinworms that cause itching in the anal area, especially at night.",
+    synonyms: [],
   },
   {
     title: "Yeast Infections",
     description:
       "A fungal infection that affects the vagina and its external skin area, commonly resulting in itch and discharge.",
+    synonyms: [],
   },
 ];
 
@@ -289,11 +311,23 @@ minorAilments.sort((a, b) => {
 });
 
 // Filter the minor ailments based on the search query
+// const filteredAilments = computed(() => {
+//   return minorAilments.filter((ailment) => {
+//     return ailment.title
+//       .toLowerCase()
+//       .includes(searchQuery.value.toLowerCase());
+//   });
+// });
+
 const filteredAilments = computed(() => {
   return minorAilments.filter((ailment) => {
-    return ailment.title
-      .toLowerCase()
-      .includes(searchQuery.value.toLowerCase());
+    const searchTerm = searchQuery.value.toLowerCase();
+    return (
+      ailment.title.toLowerCase().includes(searchTerm) ||
+      ailment.synonyms.some((synonym) =>
+        synonym.toLowerCase().includes(searchTerm)
+      )
+    );
   });
 });
 </script>
