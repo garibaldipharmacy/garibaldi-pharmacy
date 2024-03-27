@@ -101,7 +101,7 @@
     </div>
   </section>
 
-  <CallToAction />
+  <CallToAction title="Interested in becoming a patient?" />
 </template>
 
 <script lang="ts" setup>

@@ -52,4 +52,33 @@ export const businessInfo = {
       holidays: "Closed",
     },
   },
+  pricing: {
+    consultations: [
+      {
+        name: "Health Consultation (1 hour)",
+        description:
+          "Personalized one-on-one session to address health concerns, goals, and lifestyle. Expert insights and actionable steps provided.",
+        price: "$120",
+      },
+      {
+        name: "Follow-up Health Consultation",
+        description:
+          "Ongoing support and guidance for your health journey. Review progress, address challenges, and adjust health plan as needed.",
+        price: "$90",
+      },
+      {
+        name: "Medication Review",
+        description:
+          "Comprehensive review of medications, potential interactions, and optimization strategies. Government coverage may apply.",
+        price: "$60",
+        note: "(may qualify for government coverage)",
+      },
+      {
+        name: "Compression Stocking Fitting",
+        description:
+          "Professional fitting service for compression stockings to promote circulation and comfort.",
+        price: "$30",
+      },
+    ],
+  },
 };

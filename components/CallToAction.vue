@@ -9,7 +9,7 @@
     />
     <div class="">
       <h2 class="text-3xl font-bold text-secondary-900 sm:w-1/2 mx-auto">
-        We're here to help, become a patient now!
+        {{ title }}
       </h2>
 
       <nav class="flex flex-wrap items-center justify-center gap-5 mt-5">
@@ -33,7 +33,7 @@
           {{ secondaryButton.text }}
         </ButtonPill>
       </nav>
-      <p class="mt-10 text-slate-600">
+      <p class="mt-10 text-slate-600" v-if="showFooter">
         Something else?
         <NuxtLink
           to="/contact"
@@ -52,6 +52,10 @@
 
 <script lang="ts" setup>
 const props = defineProps({
+  title: {
+    type: String,
+    default: "We're here to help, become a patient now!",
+  },
   primaryButton: {
     type: Object,
     default: () => ({
@@ -67,6 +71,10 @@ const props = defineProps({
       icon: "fa6-solid:prescription",
       link: "/prescriptions/send",
     }),
+  },
+  showFooter: {
+    type: Boolean,
+    default: true,
   },
 });
 </script>

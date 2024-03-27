@@ -43,13 +43,13 @@ const footerLinks = [
   {
     title: "Services",
     links: [
-      { title: "Compounding", href: "" },
+      { title: "Compounding", href: "/services/compounding" },
+      { title: "Immunizations", href: "/services/immunizations" },
+      { title: "Prescriptions", href: "/prescriptions" },
+      { title: "Minor Ailments", href: "/services/minor-ailments" },
+      { title: "Drug Administration", href: "/services/drug-administration" },
+      { title: "Consultations", href: "/services/consultations" },
       { title: "Covid Vaccine", href: "" },
-      { title: "One on one counselling", href: "" },
-      { title: "Injection administration", href: "" },
-      { title: "Immunizations", href: "" },
-      { title: "Prescriptions", href: "" },
-      { title: "Minor conditions", href: "" },
     ],
   },
 ];

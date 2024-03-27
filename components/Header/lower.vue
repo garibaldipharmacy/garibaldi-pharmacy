@@ -29,32 +29,47 @@ const links = ref<HeaderNavLink[]>([
     title: "About",
     link: "/about",
   },
-  // {
-  //   title: "Compounding",
-  //   link: "/services/compounding",
-  // },
-  // {
-  //   title: "Pharmacy Services",
-  //   link: "#",
-  //   expanded: true,
-  //   children: [
-  //     {
-  //       title: "Prescriptions",
-  //       link: "/prescriptions",
-  //       icon: "fa6-solid:prescription",
-  //     },
-  //     {
-  //       title: "Minor Ailments",
-  //       link: "/services/minor-ailments",
-  //       icon: "fa6-solid:hand-holding-medical",
-  //     },
-  //     {
-  //       title: "Immunizations",
-  //       link: "/services/immunizations",
-  //       icon: "medical-icon:i-immunizations",
-  //     },
-  //   ],
-  // },
+  {
+    title: "Compounding",
+    link: "/services/compounding",
+  },
+  {
+    title: "Pharmacy Services",
+    link: "#",
+    expanded: true,
+    children: [
+      {
+        title: "Prescriptions",
+        link: "/prescriptions",
+        icon: "fa6-solid:prescription",
+      },
+      {
+        title: "Minor Ailments",
+        link: "/services/minor-ailments",
+        icon: "fa6-solid:hand-holding-medical",
+      },
+      {
+        title: "Immunizations",
+        link: "/services/immunizations",
+        icon: "medical-icon:i-immunizations",
+      },
+      {
+        title: "Drug Administration",
+        link: "/services/drug-administration",
+        icon: "fa6-solid:prescription-bottle-medical",
+      },
+      {
+        title: "Consultations",
+        link: "/services/consultations",
+        icon: "fa6-solid:user-doctor",
+      },
+      {
+        title: "Point-of-Care Testing",
+        link: "/services/point-of-care-testing",
+        icon: "solar:test-tube-bold",
+      },
+    ],
+  },
   {
     title: "Medical Clinic",
     link: "/medical-clinic",
