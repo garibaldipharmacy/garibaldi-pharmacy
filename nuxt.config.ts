@@ -33,7 +33,12 @@ export default defineNuxtConfig({
     "nuxt-headlessui",
     "@nuxtjs/seo",
     "@nuxtjs/sitemap",
+    "@nuxt/image",
   ],
+
+  image: {
+    format: ["webp"],
+  },
 
   googleFonts: {
     families: {
