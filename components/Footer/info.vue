@@ -34,8 +34,8 @@
         </p>
       </li>
 
-      <div class="flex gap-5 mb-5">
-        <li class="font-extralight text-sm">
+      <li class="flex gap-5 mb-5">
+        <div class="font-extralight text-sm">
           <h4 class="mb-2 font-bold">
             <Icon class="mr-2" name="fa6-solid:phone" /> Telephone
           </h4>
@@ -46,9 +46,9 @@
               >{{ phone.main }}</NuxtLink
             >
           </p>
-        </li>
+        </div>
 
-        <li class="font-extralight text-sm">
+        <div class="font-extralight text-sm">
           <h4 class="mb-2 font-bold">
             <Icon class="mr-2" name="fa6-solid:fax" /> Fax
           </h4>
@@ -57,8 +57,8 @@
             class="hover:opacity-50 transition-opacity"
             >{{ phone.fax }}</NuxtLink
           >
-        </li>
-      </div>
+        </div>
+      </li>
 
       <li class="font-extralight text-sm">
         <h4 class="mb-2 font-bold">

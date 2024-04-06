@@ -49,7 +49,7 @@ const footerLinks = [
       { title: "Minor Ailments", href: "/services/minor-ailments" },
       { title: "Drug Administration", href: "/services/drug-administration" },
       { title: "Consultations", href: "/services/consultations" },
-      { title: "Covid Vaccine", href: "" },
+      { title: "Covid Vaccine", href: "#" },
     ],
   },
 ];

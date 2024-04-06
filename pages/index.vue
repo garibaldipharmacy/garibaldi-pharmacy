@@ -4,6 +4,7 @@
     <div class="relative">
       <!-- Desktop Hero Image -->
       <NuxtImg
+        preload
         src="/images/pharmacy-squamish-hero-image.jpg"
         alt="A happy family wearing white t-shirts and blue jeans in the park jumping and smiling."
         format="webp"
@@ -15,6 +16,7 @@
       />
       <!-- Tablet Hero Image -->
       <NuxtImg
+        preload
         src="/images/pharmacy-squamish-hero-image-tablet.jpg"
         alt="A happy family wearing white t-shirts and blue jeans in the park jumping and smiling."
         format="webp"
@@ -26,7 +28,8 @@
       />
       <!-- Mobile Hero Image -->
       <NuxtImg
-        src="/images/pharmacy-squamish-hero-image-mobile-4.jpg"
+        preload
+        src="/images/pharmacy-squamish-hero-image-mobile.jpg"
         alt="A happy family wearing white t-shirts and blue jeans in the park jumping and smiling."
         format="webp"
         height="600"
@@ -242,15 +245,15 @@ const contactOptions = [
 ];
 
 useSeoMeta({
-  title: "Garibaldi Pharmacy | Home",
+  title: "Garibaldi Pharmacy - Your Squamish Compounding Pharmacy",
   description:
     "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
-  ogTitle: "Garibaldi Pharmacy | Home",
+  ogTitle: "Garibaldi Pharmacy - Your Squamish Compounding Pharmacy",
   ogDescription:
     "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
   ogImage: "/favicon/android-chrome-512x512.png",
   ogUrl: "https://garibaldipharmacy.com",
-  twitterTitle: "Garibaldi Pharmacy | Home",
+  twitterTitle: "Garibaldi Pharmacy - Your Squamish Compounding Pharmacy",
   twitterDescription:
     "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
   twitterImage: "/favicon/android-chrome-512x512.png",
@@ -312,10 +315,6 @@ function openModal() {
 </script>
 
 <style scoped>
-/* .pill-buttons li {
-  flex: 1 1 33%;
-} */
-
 .pill-buttons li a,
 .pill-buttons li button {
   width: 100%;

@@ -1,6 +1,6 @@
 <template>
   <div class="ml-auto">
-    <button @click="toggleOpen" class="text-primary-900">
+    <button @click="toggleOpen" class="text-primary-900" aria-label="Menu">
       <div
         :class="['tham', 'tham-e-spin', 'tham-w-6', { 'tham-active': open }]"
       >
