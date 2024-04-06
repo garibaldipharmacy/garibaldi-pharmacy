@@ -2,9 +2,13 @@
   <div
     class="my-10 bg-secondary-100 p-10 sm:px-20 sm:py-10 container mx-auto text-center relative"
   >
-    <img
-      src="@/assets/images/cta-artifact.svg"
-      alt="an illustration of a half circle artifact"
+    <NuxtImg
+      src="/images/pharmacy-contact-artifact.svg"
+      alt="A half circle artifact for with Garibaldi Pharmacy green color"
+      format="webp"
+      width="180"
+      height="240"
+      :placeholder="[90, 120.5, 75, 0.5]"
       class="absolute top-0 left-0 opacity-25 md:opacity-100"
     />
     <div class="">
@@ -41,11 +45,17 @@
           >Contact us</NuxtLink
         >
       </p>
+      <div class="mb-12" v-else></div>
     </div>
-    <img
-      src="@/assets/images/cta-artifact.svg"
-      alt="an illustration of a half circle artifact"
+    <NuxtImg
+      src="/images/pharmacy-contact-artifact.svg"
+      alt="A half circle artifact for with Garibaldi Pharmacy green color"
+      format="webp"
+      width="180"
+      height="240"
+      :placeholder="[90, 120.5, 75, 0.5]"
       class="absolute bottom-0 right-0 rotate-180 opacity-25 md:opacity-100"
+      loading="lazy"
     />
   </div>
 </template>

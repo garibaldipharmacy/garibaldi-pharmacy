@@ -2,9 +2,15 @@
   <div>
     <div>
       <NuxtLink to="/">
-        <img
-          src="@/assets/images/logostyles/logo-wide-dark.svg"
-          alt="Garibaldi Pharmacy and Compounding Lab logo"
+        <NuxtImg
+          src="/images/logostyles/garibaldi-pharmacy-squamish-logo-dark.svg"
+          title="Garibaldi Pharmacy & Compounding Lab"
+          alt="A medical cross with leaves and Mount Garibaldi with text Garibaldi Pharmacy & Compounding Lab"
+          format="webp"
+          width="172"
+          height="50"
+          :placeholder="[86, 25, 75, 0.5]"
+          loading="lazy"
         />
       </NuxtLink>
       <h3 class="text-xl mt-5">Garibaldi Pharmacy</h3>

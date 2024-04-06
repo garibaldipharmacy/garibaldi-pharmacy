@@ -2,10 +2,15 @@
   <!-- Hero Section -->
   <section class="mx-auto">
     <div class="relative">
-      <img
+      <NuxtImg
+        src="/images/mortar-and-pestle-pharmacy-compounding.jpg"
+        title="Pharmacy compounding"
+        alt="A stone mortar and pestle with some medical compounds in it"
+        format="webp"
+        width="1700"
+        height="648"
+        :placeholder="[850, 324, 75, 10]"
         class="w-full"
-        src="@/assets/images/squamish-compounding-pharmacy.jpg"
-        alt="A healthcare professional in a white coat and gloves is using a stethoscope to check the heart or lungs of a smiling young man wearing a denim jacket in a clinical setting."
       />
       <div class="hero-over-text sm:text-white px-5 mt-5 text-primary-900">
         <h1 class="text-4xl font-bold">Compounding</h1>
