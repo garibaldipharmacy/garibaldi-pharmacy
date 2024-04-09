@@ -226,14 +226,15 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/vue";
-import { breakpointsTailwind, useBreakpoints } from "@vueuse/core";
 
-// use Tailwind device breakpoints
-const breakpoints = useBreakpoints(breakpointsTailwind);
-
-const mobileView = breakpoints.smallerOrEqual("sm");
-const TabletView = breakpoints.smaller("lg");
-const desktopView = breakpoints.greaterOrEqual("lg");
+defineOgImageComponent("NuxtSeo", {
+  title: "Garibaldi Pharmacy",
+  description:
+    "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
+  theme: "#141E39",
+  siteLogo: "/images/logostyles/garibaldi-pharmacy-squamish-logo.svg",
+  icon: "/pwa/garibaldi-pharmacy-512.png",
+});
 
 const contactOptions = [
   {

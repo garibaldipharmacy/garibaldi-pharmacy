@@ -3,7 +3,7 @@
     class="bg-white header-lower flex flex-wrap items-center p-5 shadow-lg z-50 gap-5"
   >
     <div class="logo w-1/3 sm:w-auto">
-      <NuxtLink to="/">
+      <NuxtLink to="/" title="Home">
         <NuxtImg
           src="/images/logostyles/garibaldi-pharmacy-squamish-logo.svg"
           title="Garibaldi Pharmacy & Compounding Lab"
@@ -40,7 +40,7 @@ const links = ref<HeaderNavLink[]>([
   },
   {
     title: "Pharmacy Services",
-    link: "#",
+    link: "",
     expanded: true,
     children: [
       {

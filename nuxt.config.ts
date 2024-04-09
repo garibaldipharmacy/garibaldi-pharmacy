@@ -27,6 +27,9 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+  site: {
+    url: "https://garibaldipharmacy.com",
+  },
 
   modules: [
     "nuxt-icon",
