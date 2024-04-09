@@ -11,6 +11,7 @@
         width="1700"
         height="600"
         :placeholder="[850, 300, 75, 10]"
+        sizes="lg:1478px"
         class="w-full hidden lg:block"
         fit="cover"
       />
@@ -23,6 +24,7 @@
         width="1700"
         height="800"
         :placeholder="[850, 300, 75, 10]"
+        sizes="sm:768px"
         class="w-full hidden sm:block lg:hidden"
         fit="cover"
       />
@@ -34,10 +36,12 @@
         format="webp"
         height="600"
         width="400"
-        :placeholder="[300, 200, 75, 10]"
+        :placeholder="[400, 600, 75, 10]"
+        sizes="xs:600px"
         class="w-full sm:hidden"
         fit="cover"
       />
+
       <div
         class="text-white px-5 mb-10 sm:px-10 xl:px-20 absolute top-0 bottom-0 left-0 right-0 flex flex-col justify-start md:justify-center mt-10 md:mt-0 text-center sm:text-left"
       >
@@ -222,6 +226,14 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/vue";
+import { breakpointsTailwind, useBreakpoints } from "@vueuse/core";
+
+// use Tailwind device breakpoints
+const breakpoints = useBreakpoints(breakpointsTailwind);
+
+const mobileView = breakpoints.smallerOrEqual("sm");
+const TabletView = breakpoints.smaller("lg");
+const desktopView = breakpoints.greaterOrEqual("lg");
 
 const contactOptions = [
   {
