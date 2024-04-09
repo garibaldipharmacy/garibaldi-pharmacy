@@ -57,7 +57,12 @@
                             @click="toggleChild(link)"
                             class="flex items-center"
                           >
-                            <NuxtLink :to="link.link" @click="closeDialog">
+                            <NuxtLink
+                              :to="link.link"
+                              @click="closeDialog"
+                              :title="link.title"
+                              :aria-label="link.title"
+                            >
                               <span class="text-primary-900 cursor-pointer">
                                 {{ link.title }}
                               </span>
@@ -84,6 +89,8 @@
                               >
                                 <NuxtLink
                                   :to="child.link"
+                                  :title="child.title"
+                                  :aria-label="child.title"
                                   class="text-primary-900 hover:opacity-75 transition-colors"
                                   ><Icon
                                     v-if="child.icon"
