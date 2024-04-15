@@ -61,8 +61,7 @@
             to="https://www.terranovamedical.ca/"
             rel="noopener noreferrer"
             >Terra Nova Medical Group</NuxtLink
-          >. The clinic is currently accepting new patients who do not already
-          have a family doctor in Squamish.
+          >.
         </p>
         <p>
           Terra Nova Squamish Clinic is currently led by Dr. Alison Ukrainec.
