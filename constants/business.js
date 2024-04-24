@@ -16,7 +16,7 @@ export const businessInfo = {
     email: "pharmacist@garibaldipharmacy.com",
     clinic_email: "squamish@terranovamedical.ca",
     clinic: {
-      email: "squamish@terranovamedical.com",
+      email: "squamish@terranovamedical.ca",
       phone: "604-898-6700",
     },
     social_handle: "@garibaldipharmacy",
