@@ -6,6 +6,7 @@
       name="transfer-prescription"
       method="post"
       class="mt-10"
+      action="/success/transfer"
       netlify-honeypot="bot-field"
       data-netlify="true"
       enctype="multipart/form-data"

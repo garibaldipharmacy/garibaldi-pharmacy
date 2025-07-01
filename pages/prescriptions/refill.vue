@@ -6,6 +6,7 @@
       name="refill-prescription"
       method="post"
       class="mt-10"
+      action="/success/refill"
       netlify-honeypot="bot-field"
       data-netlify="true"
       enctype="multipart/form-data"

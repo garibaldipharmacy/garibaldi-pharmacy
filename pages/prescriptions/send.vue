@@ -26,6 +26,7 @@
       name="send-prescription"
       method="post"
       class="mt-10"
+      action="/success/send"
       netlify-honeypot="bot-field"
       data-netlify="true"
       enctype="multipart/form-data"
