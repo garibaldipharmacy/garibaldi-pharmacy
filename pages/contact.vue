@@ -123,7 +123,7 @@ const { address, contact, links } = businessInfo;
 const contactOptions = [
   {
     icon: "fa6-solid:phone",
-    title: "Phone",
+    title: "Phone / Text",
     value: contact.phone.main,
     link: `tel:${contact.phone.main}`,
   },
