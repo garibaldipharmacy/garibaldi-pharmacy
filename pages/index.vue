@@ -1,69 +1,110 @@
 <template>
   <!-- Hero Section -->
-  <section class="landing-hero-section py-20 sm:py-40">
-    <div class="text-white px-10 sm:px-20">
-      <h1 class="text-3xl font-bold md:w-2/5">
-        Discover personalized medicine and accessible healthcare at its best
-      </h1>
-      <p class="font-light text-xl md:w-1/3">
-        We are dedicated to improving the health and wellness of Squamish
-      </p>
-    </div>
-  </section>
+  <section class="">
+    <div class="relative">
+      <!-- Desktop Hero Image -->
+      <NuxtImg
+        preload
+        src="/images/pharmacy-squamish-hero-image.jpg"
+        alt="A happy family wearing white t-shirts and blue jeans in the park jumping and smiling."
+        format="webp"
+        width="1700"
+        height="600"
+        :placeholder="[850, 300, 75, 10]"
+        sizes="lg:1478px"
+        class="w-full hidden lg:block"
+        fit="cover"
+      />
+      <!-- Tablet Hero Image -->
+      <NuxtImg
+        preload
+        src="/images/pharmacy-squamish-hero-image-tablet.jpg"
+        alt="A happy family wearing white t-shirts and blue jeans in the park jumping and smiling."
+        format="webp"
+        width="1700"
+        height="800"
+        :placeholder="[850, 300, 75, 10]"
+        sizes="sm:768px"
+        class="w-full hidden sm:block lg:hidden"
+        fit="cover"
+      />
+      <!-- Mobile Hero Image -->
+      <NuxtImg
+        preload
+        src="/images/pharmacy-squamish-hero-image-mobile.jpg"
+        alt="A happy family wearing white t-shirts and blue jeans in the park jumping and smiling."
+        format="webp"
+        height="600"
+        width="400"
+        :placeholder="[400, 600, 75, 10]"
+        sizes="xs:600px"
+        class="w-full sm:hidden"
+        fit="cover"
+      />
 
-  <!-- Navigation / Appointments -->
-  <section class="container mx-auto">
-    <nav>
-      <ul
-        class="flex p-3 gap-2 -mt-16 mb-10 items-center pill-buttons justify-center flex-wrap no-appointment-pills-only"
+      <div
+        class="text-white px-5 mb-10 sm:px-10 xl:px-20 absolute top-0 bottom-0 left-0 right-0 flex flex-col justify-start md:justify-center mt-10 md:mt-0 text-center sm:text-left"
       >
-        <!-- <li class="flex-1">
+        <h1 class="text-3xl font-bold md:w-2/6">
+          Discover personalized medicine and accessible healthcare at its best
+        </h1>
+        <p class="font-light text-xl md:w-2/6 mt-2">
+          We are dedicated to improving the health and wellness of Squamish
+        </p>
+      </div>
+
+      <nav class="">
+        <ul
+          class="flex p-3 gap-2 -mt-10 mb-10 items-center pill-buttons justify-center flex-wrap no-appointment-pills-only"
+        >
+          <!-- <li class="flex-1">
           <AppointmentCard />
         </li> -->
-        <!-- <div class="flex gap-2 pill-buttons content-center flex-wrap basis-3/6"> -->
-        <li>
-          <button
-            type="button"
-            @click="openModal"
-            class="py-4 px-5 shadow-lg text-primary-900 inline-flex items-center rounded-md bg-white hover:shadow-xl hover:-translate-y-1 transition-all"
-          >
-            <CircleIcon icon="fa6-solid:phone" class="mr-3" />
-            <span>Contact Us</span>
-            <Icon class="ml-auto" name="fa6-solid:angle-right" />
-          </button>
-        </li>
+          <!-- <div class="flex gap-2 pill-buttons content-center flex-wrap basis-3/6"> -->
+          <li>
+            <button
+              type="button"
+              @click="openModal"
+              class="py-4 px-5 shadow-lg text-primary-900 inline-flex items-center rounded-md bg-white hover:shadow-xl hover:-translate-y-1 transition-all"
+            >
+              <CircleIcon icon="fa6-solid:phone" class="mr-3" />
+              <span>Contact Us</span>
+              <Icon class="ml-auto" name="fa6-solid:angle-right" />
+            </button>
+          </li>
 
-        <li>
-          <ButtonPill
-            to="/prescriptions/transfer"
-            icon="fa6-solid:paper-plane"
-            theme="secondary"
-          >
-            Transfer Prescription
-          </ButtonPill>
-        </li>
+          <li>
+            <ButtonPill
+              to="/prescriptions/transfer"
+              icon="fa6-solid:paper-plane"
+              theme="secondary"
+            >
+              Transfer Prescription
+            </ButtonPill>
+          </li>
 
-        <li>
-          <ButtonPill
-            to="/prescriptions/refill"
-            icon="fa6-solid:prescription-bottle"
-          >
-            Refill Medications
-          </ButtonPill>
-        </li>
+          <li>
+            <ButtonPill
+              to="/prescriptions/refill"
+              icon="fa6-solid:prescription-bottle"
+            >
+              Refill Medications
+            </ButtonPill>
+          </li>
 
-        <li>
-          <ButtonPill
-            to="/prescriptions/send"
-            icon="fa6-solid:prescription"
-            theme="secondary"
-          >
-            Send Prescription
-          </ButtonPill>
-        </li>
-        <!-- </div> -->
-      </ul>
-    </nav>
+          <li>
+            <ButtonPill
+              to="/prescriptions/send"
+              icon="fa6-solid:prescription"
+              theme="secondary"
+            >
+              Send Prescription
+            </ButtonPill>
+          </li>
+          <!-- </div> -->
+        </ul>
+      </nav>
+    </div>
   </section>
 
   <TransitionRoot appear :show="isOpen" as="template">
@@ -186,6 +227,15 @@ import {
   DialogTitle,
 } from "@headlessui/vue";
 
+defineOgImageComponent("NuxtSeo", {
+  title: "Garibaldi Pharmacy",
+  description:
+    "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
+  theme: "#141E39",
+  siteLogo: "/images/logostyles/garibaldi-pharmacy-squamish-logo.svg",
+  icon: "/pwa/garibaldi-pharmacy-512.png",
+});
+
 const contactOptions = [
   {
     icon: "fa6-solid:phone",
@@ -208,15 +258,15 @@ const contactOptions = [
 ];
 
 useSeoMeta({
-  title: "Garibaldi Pharmacy | Home",
+  title: "Garibaldi Pharmacy - Your Squamish Compounding Pharmacy",
   description:
     "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
-  ogTitle: "Garibaldi Pharmacy | Home",
+  ogTitle: "Garibaldi Pharmacy - Your Squamish Compounding Pharmacy",
   ogDescription:
     "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
   ogImage: "/favicon/android-chrome-512x512.png",
   ogUrl: "https://garibaldipharmacy.com",
-  twitterTitle: "Garibaldi Pharmacy | Home",
+  twitterTitle: "Garibaldi Pharmacy - Your Squamish Compounding Pharmacy",
   twitterDescription:
     "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
   twitterImage: "/favicon/android-chrome-512x512.png",
@@ -278,10 +328,6 @@ function openModal() {
 </script>
 
 <style scoped>
-/* .pill-buttons li {
-  flex: 1 1 33%;
-} */
-
 .pill-buttons li a,
 .pill-buttons li button {
   width: 100%;

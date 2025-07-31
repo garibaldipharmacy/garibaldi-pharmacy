@@ -10,10 +10,15 @@
           Squamish!
         </h2>
       </div>
-      <img
+      <NuxtImg
+        src="/images/terra-nova-squamish-medical-clinic.jpg"
+        title="Terra Nova Medical Clinic reception area"
+        alt="A view of the reception area of Terra Nova Medical Clinic in Squamish BC"
+        format="webp"
+        width="850"
+        height="640"
+        :placeholder="[425, 320, 75, 10]"
         class="sm:w-1/2"
-        src="@/assets/images/terra-nova-squamish-medical-clinic.jpg"
-        alt="The Squamish storefront of Garibaldi Pharmacy and Terra Nova Medical clinic"
       />
     </section>
 
@@ -46,10 +51,14 @@
       <div
         class="bg-secondary-100 rounded-md p-10 text font-light flex flex-col gap-5 flex-1"
       >
-        <img
-          src="@/assets/images/logostyles/terranova-logo.svg"
-          alt="Terranova Medical Clinic Logo"
+        <NuxtImg
+          src="/images/logostyles/terranova-medical-clinic-logo.svg"
+          title="Terra Nova Medical Clinic Squamish"
+          alt="A logo with two leaves and the words Terranova Medical Clinic"
+          format="webp"
           width="150"
+          height="91"
+          :placeholder="[75, 45, 75, 0.5]"
           class="mx-auto mb-5"
         />
         <p>

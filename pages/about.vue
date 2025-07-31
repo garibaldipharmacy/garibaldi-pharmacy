@@ -16,19 +16,28 @@
 
   <section class="mx-auto">
     <div class="bg-primary-100">
-      <div class="relative">
-        <img
+      <figure class="relative">
+        <NuxtImg
+          src="/images/squamish-garibaldi-region.jpg"
+          title="Squamish Garibaldi region view"
+          alt="The view in Squamish, Garibaldi area, a forest-covered cliff beside a fjord under a cloudy sky."
+          width="1700"
+          height="650"
+          :placeholder="[850, 325, 75, 10]"
+          format="webp"
           class="w-full"
-          src="@/assets/images/squamish-garibaldi-area.jpg"
-          alt="The image captures the view in Squamish BC, a forest-covered cliffs beside a tranquil fjord under a cloudy sky."
         />
-        <NuxtLink
-          to="https://mattanthonyphoto.com/"
-          class="flex items-center justify-center photo-credit absolute bg-primary-100 opacity-75 px-2 py-1 rounded-full text-xs text-primary-900 backdrop-blur-lg hover:bg-primary-900 hover:text-primary-100 transition-colors"
-          ><Icon name="fa6-solid:circle-info" class="mr-2" />Photo: Matt Anthony
-          Photography</NuxtLink
-        >
-      </div>
+
+        <figcaption>
+          <NuxtLink
+            href="https://mattanthonyphoto.com/"
+            target="_blank"
+            class="flex items-center justify-center photo-credit absolute bg-primary-100 opacity-75 px-2 py-1 rounded-full text-xs text-primary-900 backdrop-blur-lg hover:bg-primary-900 hover:text-primary-100 transition-colors"
+            ><Icon name="fa6-solid:circle-info" class="mr-2" />Photo: Matt
+            Anthony Photography</NuxtLink
+          >
+        </figcaption>
+      </figure>
     </div>
   </section>
 
@@ -65,10 +74,16 @@
 
   <section class="2xl:container 2xl:mx-auto flex justify-center flex-wrap">
     <div class="md:basis-1/2">
-      <img
+      <NuxtImg
+        src="/images/squamish-pharmacist-medicine-to-patient.jpg"
+        title="Pharmacist assisting patient with medication"
+        alt="A pharmacist standing in an pharmacy aisle with a patient giving an explanation about a certain medication."
+        width="768"
+        height="512"
+        :placeholder="[384, 256, 75, 10]"
+        format="webp"
         class="fill-image"
-        src="@/assets/images/squamish-pharmacist-medicine-to-patient.jpg"
-        alt="A doctor showing information on a clipboard to their patient while sitting inside an exam room."
+        loading="lazy"
       />
     </div>
     <div

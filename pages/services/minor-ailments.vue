@@ -2,10 +2,15 @@
   <!-- Hero Section -->
   <section class="mx-auto">
     <div class="relative">
-      <img
+      <NuxtImg
+        src="/images/minor-ailments-patient-diagnosis.jpg"
+        title="Healthcare professional diagnosing a patient"
+        alt="A healthcare professional in a white coat and gloves using a stethoscope to check the heart of a smiling young man in a clinical setting."
+        format="webp"
+        width="1700"
+        height="675"
+        :placeholder="[850, 337, 75, 10]"
         class="w-full"
-        src="@/assets/images/minor-ailments-pharmacy-squamish.jpg"
-        alt="A healthcare professional in a white coat and gloves is using a stethoscope to check the heart or lungs of a smiling young man wearing a denim jacket in a clinical setting."
       />
       <div class="hero-over-text sm:text-white px-5 mt-5 text-primary-900">
         <h1 class="text-4xl font-bold">Minor Ailments</h1>
@@ -55,7 +60,7 @@
       </div>
       <div class="md:w-1/4">
         <NuxtLink
-          to="https://www.bookapharmacist.gov.bc.ca/minorail/s/"
+          href="https://www.bookapharmacist.gov.bc.ca/minorail/s/"
           class="font-bold bg-primary-900 p-4 rounded-lg text-white flex gap-2 items-center justify-center hover:scale-105 hover:opacity-95 transition-transform"
           >Book Appointment <Icon name="fa6-solid:arrow-up-right-from-square"
         /></NuxtLink>

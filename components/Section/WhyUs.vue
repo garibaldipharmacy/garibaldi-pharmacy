@@ -26,9 +26,15 @@
       </div>
     </div>
     <div class="md:basis-1/2">
-      <img
-        src="@/assets/images/doctor-patient.jpg"
-        alt="A doctor showing information on a clipboard to their patient while sitting inside an exam room."
+      <NuxtImg
+        src="/images/pharmacist-consulting-with-patient.jpg"
+        title="Pharmacy health consultation with patient"
+        alt="A pharmacist sitting down with a patient providing a health consultation and discussing their medication."
+        format="webp"
+        width="780"
+        height="780"
+        :placeholder="[390, 390, 75, 10]"
+        loading="lazy"
       />
     </div>
   </section>

@@ -4,10 +4,15 @@
     <section
       class="flex flex-wrap bg-primary-900 mx-auto items-center justify-center"
     >
-      <img
+      <NuxtImg
+        src="/images/squamish-pharmacy-front.jpg"
+        title="Garibaldi Pharmacy storefront in Squamish BC"
+        alt="The entrance looking at the storefront of Garibaldi Pharmacy and Terra Nova Medical clinic in Squamish BC"
+        format="webp"
+        width="850"
+        height="640"
+        :placeholder="[425, 320, 75, 10]"
         class="sm:w-1/2"
-        src="@/assets/images/squamish-pharmacy-front.jpg"
-        alt="The Squamish storefront of Garibaldi Pharmacy and Terra Nova Medical clinic"
       />
       <div class="p-10 sm:w-1/2 mx-auto text-white title-section">
         <h2 class="text-3xl font-bold text-center">Contact Us</h2>

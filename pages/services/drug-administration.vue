@@ -2,10 +2,16 @@
   <!-- Hero Section -->
   <section class="mx-auto">
     <div class="relative">
-      <img
+      <NuxtImg
+        src="/images/administering-pills-from-jar.jpg"
+        title="Administering pills from a jar"
+        alt="A woman taking medication out of a jar onto her hand"
+        format="webp"
+        width="1920"
+        height="1080"
         class="w-full"
-        src="@/assets/images/squamish-drug-administration.jpg"
-        alt="Woman taking pills from a jar on hand"
+        fit="cover"
+        :placeholder="[1280, 720, 75, 10]"
       />
       <div
         class="hero-over-text px-5 my-10 text-primary-900 bg-white sm:shadow-lg rounded-xl"

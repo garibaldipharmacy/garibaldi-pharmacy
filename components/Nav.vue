@@ -9,6 +9,8 @@
         >
           <NuxtLink
             :to="link.link"
+            :title="link.title"
+            :aria-label="link.title"
             class="group-hover:opacity-60 transition-opacity relative inline-block"
           >
             <span>{{ link.title }}</span>
@@ -34,7 +36,9 @@
                 <li v-for="child in link.children" :key="child.title">
                   <NuxtLink
                     :to="child.link"
+                    :title="child.title"
                     class="pr-10 hover:opacity-60 transition-opacity"
+                    :aria-label="child.title"
                     ><Icon
                       :name="child.icon"
                       v-if="child.icon"
