@@ -232,17 +232,17 @@ import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue";
 import { businessInfo } from "~/constants/business";
 
 useSeoMeta({
-  title: "Garibaldi Pharmacy | Refill Prescription",
+  title: "Refill Prescriptions in Squamish | Garibaldi Pharmacy",
   description:
-    "By completing the form below, the information will be provided to our pharmacy staff to confirm and refill your prescription.",
-  ogTitle: "Garibaldi Pharmacy | Refill Prescription",
+    "Refill your prescriptions quickly at Garibaldi Pharmacy in Squamish. Our expert pharmacists ensure your medications are ready when you need them.",
+  ogTitle: "Refill Prescriptions in Squamish | Garibaldi Pharmacy",
   ogDescription:
-    "By completing the form below, the information will be provided to our pharmacy staff to confirm and refill your prescription.",
+    "Refill your prescriptions quickly at Garibaldi Pharmacy in Squamish. Our expert pharmacists ensure your medications are ready when you need them.",
   ogImage: "/favicon/android-chrome-512x512.png",
   ogUrl: "https://garibaldipharmacy.com/prescriptions/refill",
-  twitterTitle: "Garibaldi Pharmacy | Refill Prescription",
+  twitterTitle: "Refill Prescriptions in Squamish | Garibaldi Pharmacy",
   twitterDescription:
-    "By completing the form below, the information will be provided to our pharmacy staff to confirm and refill your prescription.",
+    "Refill your prescriptions quickly at Garibaldi Pharmacy in Squamish. Our expert pharmacists ensure your medications are ready when you need them.",
   twitterImage: "/favicon/android-chrome-512x512.png",
   twitterCard: "summary",
 });

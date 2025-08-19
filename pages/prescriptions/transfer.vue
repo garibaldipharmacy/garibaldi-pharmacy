@@ -268,17 +268,17 @@
 import { ref } from "vue";
 
 useSeoMeta({
-  title: "Garibaldi Pharmacy | Transfer Prescription",
+  title: "Transfer Prescriptions in Squamish | Garibaldi Pharmacy",
   description:
-    "By completing this form, you consent to allow our pharmacy staff to contact your current pharmacy for a transfer of your medication.",
-  ogTitle: "Garibaldi Pharmacy | Transfer Prescription",
+    "Easily transfer your prescriptions to Garibaldi Pharmacy in Squamish. Our pharmacists handle the process quickly and safely, ensuring your medications are ready when you need them.",
+  ogTitle: "Transfer Prescriptions in Squamish | Garibaldi Pharmacy",
   ogDescription:
-    "By completing this form, you consent to allow our pharmacy staff to contact your current pharmacy for a transfer of your medication.",
+    "Easily transfer your prescriptions to Garibaldi Pharmacy in Squamish. Our pharmacists handle the process quickly and safely, ensuring your medications are ready when you need them.",
   ogImage: "/favicon/android-chrome-512x512.png",
   ogUrl: "https://garibaldipharmacy.com/prescriptions/transfer",
-  twitterTitle: "Garibaldi Pharmacy | Transfer Prescription",
+  twitterTitle: "Transfer Prescriptions in Squamish | Garibaldi Pharmacy",
   twitterDescription:
-    "By completing this form, you consent to allow our pharmacy staff to contact your current pharmacy for a transfer of your medication.",
+    "Easily transfer your prescriptions to Garibaldi Pharmacy in Squamish. Our pharmacists handle the process quickly and safely, ensuring your medications are ready when you need them.",
   twitterImage: "/favicon/android-chrome-512x512.png",
   twitterCard: "summary",
 });

@@ -174,17 +174,19 @@ const isCurrentDay = (day: string) => {
 };
 
 useSeoMeta({
-  title: "Garibaldi Pharmacy | Medical Clinic",
+  title: "Medical Clinic in Squamish | Garibaldi Pharmacy & Terra Nova Clinic",
   description:
-    "Our in-house medical clinic is a family practice clinic and is managed by the Terra Nova Medical Group.",
-  ogTitle: "Garibaldi Pharmacy | Medical Clinic",
+    "Garibaldi Pharmacy in Squamish offers an in-house medical clinic, managed by Terra Nova Medical Group. Get family healthcare, prescriptions, minor ailment care, and vaccinations conveniently on-site.",
+  ogTitle:
+    "Medical Clinic in Squamish | Garibaldi Pharmacy & Terra Nova Clinic",
   ogDescription:
-    "Our in-house medical clinic is a family practice clinic and is managed by the Terra Nova Medical Group.",
+    "Garibaldi Pharmacy in Squamish offers an in-house medical clinic, managed by Terra Nova Medical Group. Get family healthcare, prescriptions, minor ailment care, and vaccinations conveniently on-site.",
   ogImage: "/favicon/android-chrome-512x512.png",
   ogUrl: "https://garibaldipharmacy.com",
-  twitterTitle: "Garibaldi Pharmacy | Medical Clinic",
+  twitterTitle:
+    "Medical Clinic in Squamish | Garibaldi Pharmacy & Terra Nova Clinic",
   twitterDescription:
-    "Our in-house medical clinic is a family practice clinic and is managed by the Terra Nova Medical Group.",
+    "Garibaldi Pharmacy in Squamish offers an in-house medical clinic, managed by Terra Nova Medical Group. Get family healthcare, prescriptions, minor ailment care, and vaccinations conveniently on-site.",
   twitterImage: "/favicon/android-chrome-512x512.png",
   twitterCard: "summary",
 });

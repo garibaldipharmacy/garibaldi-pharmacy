@@ -144,17 +144,17 @@ const clearInput = () => {
 };
 
 useSeoMeta({
-  title: "Garibaldi Pharmacy | Minor Ailments",
+  title: "Garibaldi Pharmacy | Minor Ailment Pharmacy in Squamish",
   description:
-    "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
-  ogTitle: "Garibaldi Pharmacy | Minor Ailments",
+    "Get fast treatment for minor ailments at Garibaldi Pharmacy in Squamish. Our expert pharmacists provide accessible care, helping you feel better without waiting to see a doctor.",
+  ogTitle: "Garibaldi Pharmacy | Minor Ailment Pharmacy in Squamish",
   ogDescription:
-    "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
+    "Get fast treatment for minor ailments at Garibaldi Pharmacy in Squamish. Our expert pharmacists provide accessible care, helping you feel better without waiting to see a doctor.",
   ogImage: "/favicon/android-chrome-512x512.png",
   ogUrl: "https://garibaldipharmacy.com",
-  twitterTitle: "Garibaldi Pharmacy | Minor Ailments",
+  twitterTitle: "Garibaldi Pharmacy | Minor Ailment Pharmacy in Squamish",
   twitterDescription:
-    "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
+    "Get fast treatment for minor ailments at Garibaldi Pharmacy in Squamish. Our expert pharmacists provide accessible care, helping you feel better without waiting to see a doctor.",
   twitterImage: "/favicon/android-chrome-512x512.png",
   twitterCard: "summary",
 });

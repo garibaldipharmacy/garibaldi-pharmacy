@@ -208,17 +208,19 @@ const contactOptions = [
 ];
 
 useSeoMeta({
-  title: "Garibaldi Pharmacy | Home",
+  title: "Garibaldi Pharmacy | Your Local Squamish Pharmacy & Compounding Lab",
   description:
-    "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
-  ogTitle: "Garibaldi Pharmacy | Home",
+    "Garibaldi Pharmacy is your trusted pharmacy in Squamish, offering personalized medicine, compounding services, and accessible healthcare to improve your health and wellness.",
+  ogTitle:
+    "Garibaldi Pharmacy | Your Local Squamish Pharmacy & Compounding Lab",
   ogDescription:
-    "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
+    "Garibaldi Pharmacy is your trusted pharmacy in Squamish, offering personalized medicine, compounding services, and accessible healthcare to improve your health and wellness.",
   ogImage: "/favicon/android-chrome-512x512.png",
   ogUrl: "https://garibaldipharmacy.com",
-  twitterTitle: "Garibaldi Pharmacy | Home",
+  twitterTitle:
+    "Garibaldi Pharmacy | Your Local Squamish Pharmacy & Compounding Lab",
   twitterDescription:
-    "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
+    "Garibaldi Pharmacy is your trusted pharmacy in Squamish, offering personalized medicine, compounding services, and accessible healthcare to improve your health and wellness.",
   twitterImage: "/favicon/android-chrome-512x512.png",
   twitterCard: "summary",
 });

@@ -42,17 +42,17 @@ const phoneMain = businessInfo.contact.phone.main;
 const email = businessInfo.contact.email;
 
 useSeoMeta({
-  title: "Garibaldi Pharmacy | Drug Administration",
+  title: "Drug Administration in Squamish | Garibaldi Pharmacy",
   description:
-    "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
-  ogTitle: "Garibaldi Pharmacy | Drug Administration",
+    "Garibaldi Pharmacy in Squamish offers professional drug administration services. Our pharmacists can safely administer your medications with personalized care.",
+  ogTitle: "Drug Administration in Squamish | Garibaldi Pharmacy",
   ogDescription:
-    "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
+    "Garibaldi Pharmacy in Squamish offers professional drug administration services. Our pharmacists can safely administer your medications with personalized care.",
   ogImage: "/favicon/android-chrome-512x512.png",
   ogUrl: "https://garibaldipharmacy.com",
-  twitterTitle: "Garibaldi Pharmacy | Drug Administration",
+  twitterTitle: "Drug Administration in Squamish | Garibaldi Pharmacy",
   twitterDescription:
-    "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
+    "Garibaldi Pharmacy in Squamish offers professional drug administration services. Our pharmacists can safely administer your medications with personalized care.",
   twitterImage: "/favicon/android-chrome-512x512.png",
   twitterCard: "summary",
 });

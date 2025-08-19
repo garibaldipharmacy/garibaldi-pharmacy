@@ -328,17 +328,17 @@
 
 <script setup>
 useSeoMeta({
-  title: "Garibaldi Pharmacy | Send Prescription",
+  title: "Send Prescriptions in Squamish | Garibaldi Pharmacy",
   description:
-    "If you were given a paper prescription by your doctor, you may send it to us electronically so we can prepare it in advance and reduce your wait time.",
-  ogTitle: "Garibaldi Pharmacy | Send Prescription",
+    "Send your prescription to Garibaldi Pharmacy in Squamish with ease. Our pharmacists provide fast, safe, and personalized medication services.",
+  ogTitle: "Send Prescriptions in Squamish | Garibaldi Pharmacy",
   ogDescription:
-    "By completing this form, you consent to allow our pharmacy staff to contact your current pharmacy for a transfer of your medication.",
+    "Send your prescription to Garibaldi Pharmacy in Squamish with ease. Our pharmacists provide fast, safe, and personalized medication services.",
   ogImage: "/favicon/android-chrome-512x512.png",
   ogUrl: "https://garibaldipharmacy.com/prescriptions/send",
-  twitterTitle: "Garibaldi Pharmacy | Send Prescription",
+  twitterTitle: "Send Prescriptions in Squamish | Garibaldi Pharmacy",
   twitterDescription:
-    "If you were given a paper prescription by your doctor, you may send it to us electronically so we can prepare it in advance and reduce your wait time.",
+    "Send your prescription to Garibaldi Pharmacy in Squamish with ease. Our pharmacists provide fast, safe, and personalized medication services.",
   twitterImage: "/favicon/android-chrome-512x512.png",
   twitterCard: "summary",
 });

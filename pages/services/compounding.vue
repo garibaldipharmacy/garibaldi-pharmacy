@@ -139,17 +139,17 @@ const defaultTabStyles =
 const selectedTab = ref(0);
 
 useSeoMeta({
-  title: "Garibaldi Pharmacy | Compounding",
+  title: "Garibaldi Pharmacy | Compounding Pharmacy in Squamish",
   description:
-    "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
-  ogTitle: "Garibaldi Pharmacy | Compounding",
+    "Garibaldi Pharmacy in Squamish offers professional compounding services. Our NAPRA-certified lab creates customized medications tailored to your exact needs with the highest quality standards.",
+  ogTitle: "Garibaldi Pharmacy | Compounding Pharmacy in Squamish",
   ogDescription:
-    "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
+    "Garibaldi Pharmacy in Squamish offers professional compounding services. Our NAPRA-certified lab creates customized medications tailored to your exact needs with the highest quality standards.",
   ogImage: "/favicon/android-chrome-512x512.png",
   ogUrl: "https://garibaldipharmacy.com",
-  twitterTitle: "Garibaldi Pharmacy | Compounding",
+  twitterTitle: "Garibaldi Pharmacy | Compounding Pharmacy in Squamish",
   twitterDescription:
-    "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
+    "Garibaldi Pharmacy in Squamish offers professional compounding services. Our NAPRA-certified lab creates customized medications tailored to your exact needs with the highest quality standards.",
   twitterImage: "/favicon/android-chrome-512x512.png",
   twitterCard: "summary",
 });

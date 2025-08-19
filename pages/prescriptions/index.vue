@@ -44,17 +44,18 @@
 import { ref } from "vue";
 
 useSeoMeta({
-  title: "Garibaldi Pharmacy | Transfer Prescription",
+  title: "Prescriptions in Squamish | Garibaldi Pharmacy & Compounding Lab",
   description:
-    "By completing this form, you consent to allow our pharmacy staff to contact your current pharmacy for a transfer of your medication.",
-  ogTitle: "Garibaldi Pharmacy | Transfer Prescription",
+    "Easily transfer, refill, or send prescriptions at Garibaldi Pharmacy in Squamish. Our expert pharmacists provide fast, convenient, and personalized prescription services.",
+  ogTitle: "Prescriptions in Squamish | Garibaldi Pharmacy & Compounding Lab",
   ogDescription:
-    "By completing this form, you consent to allow our pharmacy staff to contact your current pharmacy for a transfer of your medication.",
+    "Easily transfer, refill, or send prescriptions at Garibaldi Pharmacy in Squamish. Our expert pharmacists provide fast, convenient, and personalized prescription services.",
   ogImage: "/favicon/android-chrome-512x512.png",
   ogUrl: "https://garibaldipharmacy.com/prescriptions/transfer",
-  twitterTitle: "Garibaldi Pharmacy | Transfer Prescription",
+  twitterTitle:
+    "Prescriptions in Squamish | Garibaldi Pharmacy & Compounding Lab",
   twitterDescription:
-    "By completing this form, you consent to allow our pharmacy staff to contact your current pharmacy for a transfer of your medication.",
+    "Easily transfer, refill, or send prescriptions at Garibaldi Pharmacy in Squamish. Our expert pharmacists provide fast, convenient, and personalized prescription services.",
   twitterImage: "/favicon/android-chrome-512x512.png",
   twitterCard: "summary",
 });

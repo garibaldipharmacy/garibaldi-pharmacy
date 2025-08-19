@@ -148,17 +148,18 @@ const contactOptions = [
 ];
 
 useSeoMeta({
-  title: "Garibaldi Pharmacy | Contact",
+  title: "Contact Garibaldi Pharmacy | Squamish Pharmacy & Compounding Lab",
   description:
-    "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
-  ogTitle: "Garibaldi Pharmacy | Contact",
+    "Get in touch with Garibaldi Pharmacy in Squamish. Reach us by phone, email, or visit our location for prescriptions, compounding, vaccinations, and healthcare services.",
+  ogTitle: "Contact Garibaldi Pharmacy | Squamish Pharmacy & Compounding Lab",
   ogDescription:
-    "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
+    "Get in touch with Garibaldi Pharmacy in Squamish. Reach us by phone, email, or visit our location for prescriptions, compounding, vaccinations, and healthcare services.",
   ogImage: "/favicon/android-chrome-512x512.png",
   ogUrl: "https://garibaldipharmacy.com",
-  twitterTitle: "Garibaldi Pharmacy | Contact",
+  twitterTitle:
+    "Contact Garibaldi Pharmacy | Squamish Pharmacy & Compounding Lab",
   twitterDescription:
-    "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
+    "Get in touch with Garibaldi Pharmacy in Squamish. Reach us by phone, email, or visit our location for prescriptions, compounding, vaccinations, and healthcare services.",
   twitterImage: "/favicon/android-chrome-512x512.png",
   twitterCard: "summary",
 });

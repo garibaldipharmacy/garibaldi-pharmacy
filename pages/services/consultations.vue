@@ -18,7 +18,7 @@
     >
       <li
         v-for="card in pricingCards"
-        :key="card.title"
+        :key="card.name"
         class="shadow-md text-primary-900 flex flex-col gap-2 p-5 bg-white rounded-xl"
       >
         <span class="text-xl">{{ card.name }}</span>
@@ -131,17 +131,17 @@ function openModal() {
 }
 
 useSeoMeta({
-  title: "Garibaldi Pharmacy | Consultations",
+  title: "Pharmacist Consultations in Squamish | Garibaldi Pharmacy",
   description:
-    "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
-  ogTitle: "Garibaldi Pharmacy | Consultations",
+    "Book a personalized pharmacist consultation at Garibaldi Pharmacy in Squamish. Our experts provide health advice, medication reviews, and one-on-one guidance tailored to you.",
+  ogTitle: "Pharmacist Consultations in Squamish | Garibaldi Pharmacy",
   ogDescription:
-    "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
+    "Book a personalized pharmacist consultation at Garibaldi Pharmacy in Squamish. Our experts provide health advice, medication reviews, and one-on-one guidance tailored to you.",
   ogImage: "/favicon/android-chrome-512x512.png",
   ogUrl: "https://garibaldipharmacy.com",
-  twitterTitle: "Garibaldi Pharmacy | Consultations",
+  twitterTitle: "Pharmacist Consultations in Squamish | Garibaldi Pharmacy",
   twitterDescription:
-    "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
+    "Book a personalized pharmacist consultation at Garibaldi Pharmacy in Squamish. Our experts provide health advice, medication reviews, and one-on-one guidance tailored to you.",
   twitterImage: "/favicon/android-chrome-512x512.png",
   twitterCard: "summary",
 });

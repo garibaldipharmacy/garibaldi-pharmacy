@@ -106,17 +106,17 @@
 
 <script lang="ts" setup>
 useSeoMeta({
-  title: "Garibaldi Pharmacy | About",
+  title: "About Garibaldi Pharmacy | Independent Pharmacy in Squamish",
   description:
-    "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
-  ogTitle: "Garibaldi Pharmacy | About",
+    "Garibaldi Pharmacy is Squamish's first independent pharmacy, owned and operated by locals. We provide full-service care, including compounding, prescriptions, immunizations, and an in-house medical clinic.",
+  ogTitle: "About Garibaldi Pharmacy | Independent Pharmacy in Squamish",
   ogDescription:
-    "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
+    "Garibaldi Pharmacy is Squamish's first independent pharmacy, owned and operated by locals. We provide full-service care, including compounding, prescriptions, immunizations, and an in-house medical clinic.",
   ogImage: "/favicon/android-chrome-512x512.png",
   ogUrl: "https://garibaldipharmacy.com",
-  twitterTitle: "Garibaldi Pharmacy | About",
+  twitterTitle: "About Garibaldi Pharmacy | Independent Pharmacy in Squamish",
   twitterDescription:
-    "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
+    "Garibaldi Pharmacy is Squamish's first independent pharmacy, owned and operated by locals. We provide full-service care, including compounding, prescriptions, immunizations, and an in-house medical clinic.",
   twitterImage: "/favicon/android-chrome-512x512.png",
   twitterCard: "summary",
 });
