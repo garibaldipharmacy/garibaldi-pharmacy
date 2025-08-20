@@ -63,7 +63,7 @@ export default defineNuxtConfig({
         extendedAddress: "Unit 102",
         addressLocality: "Squamish",
         addressRegion: "BC",
-        postalCode: "V8B 0C1",
+        postalCode: "V8B 1C4",
         addressCountry: "CA",
       },
       faxNumber: "778-605-2939",
