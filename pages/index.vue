@@ -17,10 +17,6 @@
       <ul
         class="flex p-3 gap-2 -mt-16 mb-10 items-center pill-buttons justify-center flex-wrap no-appointment-pills-only"
       >
-        <!-- <li class="flex-1">
-          <AppointmentCard />
-        </li> -->
-        <!-- <div class="flex gap-2 pill-buttons content-center flex-wrap basis-3/6"> -->
         <li>
           <button
             type="button"
@@ -61,7 +57,6 @@
             Send Prescription
           </ButtonPill>
         </li>
-        <!-- </div> -->
       </ul>
     </nav>
   </section>
