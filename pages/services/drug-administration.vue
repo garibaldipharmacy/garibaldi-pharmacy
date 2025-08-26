@@ -49,7 +49,7 @@ useSeoMeta({
   ogDescription:
     "Garibaldi Pharmacy in Squamish offers professional drug administration services. Our pharmacists can safely administer your medications with personalized care.",
   ogImage: "/favicon/android-chrome-512x512.png",
-  ogUrl: "https://garibaldipharmacy.com",
+  ogUrl: "https://garibaldipharmacy.com/services/drug-administration",
   twitterTitle: "Drug Administration in Squamish | Garibaldi Pharmacy",
   twitterDescription:
     "Garibaldi Pharmacy in Squamish offers professional drug administration services. Our pharmacists can safely administer your medications with personalized care.",

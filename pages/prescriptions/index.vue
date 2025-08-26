@@ -51,7 +51,7 @@ useSeoMeta({
   ogDescription:
     "Easily transfer, refill, or send prescriptions at Garibaldi Pharmacy in Squamish. Our expert pharmacists provide fast, convenient, and personalized prescription services.",
   ogImage: "/favicon/android-chrome-512x512.png",
-  ogUrl: "https://garibaldipharmacy.com/prescriptions/transfer",
+  ogUrl: "https://garibaldipharmacy.com/prescriptions",
   twitterTitle:
     "Prescriptions in Squamish | Garibaldi Pharmacy & Compounding Lab",
   twitterDescription:
@@ -67,7 +67,7 @@ useHead({
   link: [
     {
       rel: "canonical",
-      href: "https://garibaldipharmacy.com/prescriptions/transfer",
+      href: "https://garibaldipharmacy.com/prescriptions",
     },
     {
       rel: "icon",
@@ -101,12 +101,3 @@ const formLinks = [
   },
 ];
 </script>
-
-<!-- 
-
-  Is your prescription currently at another pharmacy? Just submit the quick "Transfer Prescription" form and we'll handle the rest?!
-
-  Did your doctor give you a paper prescription? Snap a photo using your smartphone and send it to us using the Send feature
-
-
- -->

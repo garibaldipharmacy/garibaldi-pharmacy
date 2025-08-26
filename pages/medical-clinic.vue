@@ -182,7 +182,7 @@ useSeoMeta({
   ogDescription:
     "Garibaldi Pharmacy in Squamish offers an in-house medical clinic, managed by Terra Nova Medical Group. Get family healthcare, prescriptions, minor ailment care, and vaccinations conveniently on-site.",
   ogImage: "/favicon/android-chrome-512x512.png",
-  ogUrl: "https://garibaldipharmacy.com",
+  ogUrl: "https://garibaldipharmacy.com/medical-clinic",
   twitterTitle:
     "Medical Clinic in Squamish | Garibaldi Pharmacy & Terra Nova Clinic",
   twitterDescription:

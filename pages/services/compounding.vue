@@ -146,7 +146,7 @@ useSeoMeta({
   ogDescription:
     "Garibaldi Pharmacy in Squamish offers professional compounding services. Our NAPRA-certified lab creates customized medications tailored to your exact needs with the highest quality standards.",
   ogImage: "/favicon/android-chrome-512x512.png",
-  ogUrl: "https://garibaldipharmacy.com",
+  ogUrl: "https://garibaldipharmacy.com/compounding",
   twitterTitle: "Garibaldi Pharmacy | Compounding Pharmacy in Squamish",
   twitterDescription:
     "Garibaldi Pharmacy in Squamish offers professional compounding services. Our NAPRA-certified lab creates customized medications tailored to your exact needs with the highest quality standards.",

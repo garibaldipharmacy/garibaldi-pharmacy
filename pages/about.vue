@@ -113,7 +113,7 @@ useSeoMeta({
   ogDescription:
     "Garibaldi Pharmacy is Squamish's first independent pharmacy, owned and operated by locals. We provide full-service care, including compounding, prescriptions, immunizations, and an in-house medical clinic.",
   ogImage: "/favicon/android-chrome-512x512.png",
-  ogUrl: "https://garibaldipharmacy.com",
+  ogUrl: "https://garibaldipharmacy.com/about",
   twitterTitle: "About Garibaldi Pharmacy | Independent Pharmacy in Squamish",
   twitterDescription:
     "Garibaldi Pharmacy is Squamish's first independent pharmacy, owned and operated by locals. We provide full-service care, including compounding, prescriptions, immunizations, and an in-house medical clinic.",

@@ -155,7 +155,7 @@ useSeoMeta({
   ogDescription:
     "Get in touch with Garibaldi Pharmacy in Squamish. Reach us by phone, email, or visit our location for prescriptions, compounding, vaccinations, and healthcare services.",
   ogImage: "/favicon/android-chrome-512x512.png",
-  ogUrl: "https://garibaldipharmacy.com",
+  ogUrl: "https://garibaldipharmacy.com/contact",
   twitterTitle:
     "Contact Garibaldi Pharmacy | Squamish Pharmacy & Compounding Lab",
   twitterDescription:
