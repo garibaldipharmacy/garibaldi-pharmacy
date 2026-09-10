@@ -6,13 +6,13 @@
     <div class="p-10 sm:w-1/2 mx-auto text-primary-900 title-section">
       <h2 class="text-3xl font-bold text-center">Prescriptions</h2>
       <p class="text-center font-light opacity-80 mt-3">
-        <NuxtLink to="/prescriptions/transfer" class="hover:underline"
+        <NuxtLink to="/prescriptions/transfer/" class="hover:underline"
           >Transfer</NuxtLink
         >,
-        <NuxtLink to="/prescriptions/refill" class="hover:underline"
+        <NuxtLink to="/prescriptions/refill/" class="hover:underline"
           >refill</NuxtLink
         >, or
-        <NuxtLink to="/prescriptions/send" class="hover:underline"
+        <NuxtLink to="/prescriptions/send/" class="hover:underline"
           >send</NuxtLink
         >
         your prescription easily using our online prescription form! Select an
@@ -51,7 +51,7 @@ useSeoMeta({
   ogDescription:
     "Easily transfer, refill, or send prescriptions at Garibaldi Pharmacy in Squamish. Our expert pharmacists provide fast, convenient, and personalized prescription services.",
   ogImage: "/favicon/android-chrome-512x512.png",
-  ogUrl: "https://garibaldipharmacy.com/prescriptions",
+  ogUrl: "https://garibaldipharmacy.com/prescriptions/",
   twitterTitle:
     "Prescriptions in Squamish | Garibaldi Pharmacy & Compounding Lab",
   twitterDescription:
@@ -67,7 +67,7 @@ useHead({
   link: [
     {
       rel: "canonical",
-      href: "https://garibaldipharmacy.com/prescriptions",
+      href: "https://garibaldipharmacy.com/prescriptions/",
     },
     {
       rel: "icon",
@@ -83,21 +83,21 @@ const formLinks = [
     title: "Transfer Prescription",
     description:
       "Is your prescription currently at another pharmacy? Just submit a quick form with your details and we will handle the rest!",
-    link: "/prescriptions/transfer",
+    link: "/prescriptions/transfer/",
   },
   {
     icon: "fa6-solid:prescription-bottle",
     title: "Refill Prescription",
     description:
       "Do you have an existing prescription that needs to be refilled? Simply fill out the form and we'll have it ready for you!",
-    link: "/prescriptions/refill",
+    link: "/prescriptions/refill/",
   },
   {
     icon: "fa6-solid:prescription",
     title: "Send Prescription",
     description:
       "Did your doctor give you a paper prescription? Snap a photo using your smartphone and send it to us. We'll have it ready before you get here!",
-    link: "/prescriptions/send",
+    link: "/prescriptions/send/",
   },
 ];
 </script>

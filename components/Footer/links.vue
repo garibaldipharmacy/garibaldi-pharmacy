@@ -22,10 +22,10 @@ const footerLinks = [
   {
     title: "Prescriptions",
     links: [
-      { title: "Contact", href: "/contact" },
-      { title: "Transfer", href: "/prescriptions/transfer" },
-      { title: "Refill", href: "/prescriptions/refill" },
-      { title: "Send", href: "/prescriptions/send" },
+      { title: "Contact", href: "/contact/" },
+      { title: "Transfer", href: "/prescriptions/transfer/" },
+      { title: "Refill", href: "/prescriptions/refill/" },
+      { title: "Send", href: "/prescriptions/send/" },
     ],
   },
   // {
@@ -43,12 +43,12 @@ const footerLinks = [
   {
     title: "Services",
     links: [
-      { title: "Compounding", href: "/services/compounding" },
-      { title: "Immunizations", href: "/services/immunizations" },
-      { title: "Prescriptions", href: "/prescriptions" },
-      { title: "Minor Ailments", href: "/services/minor-ailments" },
-      { title: "Drug Administration", href: "/services/drug-administration" },
-      { title: "Consultations", href: "/services/consultations" },
+      { title: "Compounding", href: "/services/compounding/" },
+      { title: "Immunizations", href: "/services/immunizations/" },
+      { title: "Prescriptions", href: "/prescriptions/" },
+      { title: "Minor Ailments", href: "/services/minor-ailments/" },
+      { title: "Drug Administration", href: "/services/drug-administration/" },
+      { title: "Consultations", href: "/services/consultations/" },
       { title: "Covid Vaccine", href: "" },
     ],
   },

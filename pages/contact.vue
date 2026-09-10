@@ -25,7 +25,7 @@
           <div class="flex items-center md:w-2/3 flex-wrap gap-5">
             <li class="w-full">
               <ButtonPill
-                to="/prescriptions/transfer"
+                to="/prescriptions/transfer/"
                 icon="fa6-solid:paper-plane"
                 theme="secondary"
                 class="w-full"
@@ -36,7 +36,7 @@
 
             <li class="w-full">
               <ButtonPill
-                to="/prescriptions/refill"
+                to="/prescriptions/refill/"
                 icon="fa6-solid:prescription-bottle"
                 class="w-full"
               >
@@ -46,7 +46,7 @@
 
             <li class="w-full">
               <ButtonPill
-                to="/prescriptions/send"
+                to="/prescriptions/send/"
                 icon="fa6-solid:prescription"
                 theme="secondary"
                 class="w-full"
@@ -155,7 +155,7 @@ useSeoMeta({
   ogDescription:
     "Get in touch with Garibaldi Pharmacy in Squamish. Reach us by phone, email, or visit our location for prescriptions, compounding, vaccinations, and healthcare services.",
   ogImage: "/favicon/android-chrome-512x512.png",
-  ogUrl: "https://garibaldipharmacy.com/contact",
+  ogUrl: "https://garibaldipharmacy.com/contact/",
   twitterTitle:
     "Contact Garibaldi Pharmacy | Squamish Pharmacy & Compounding Lab",
   twitterDescription:
@@ -171,7 +171,7 @@ useHead({
   link: [
     {
       rel: "canonical",
-      href: "https://garibaldipharmacy.com/contact",
+      href: "https://garibaldipharmacy.com/contact/",
     },
     {
       rel: "icon",

@@ -151,7 +151,7 @@ useSeoMeta({
   ogDescription:
     "Get fast treatment for minor ailments at Garibaldi Pharmacy in Squamish. Our expert pharmacists provide accessible care, helping you feel better without waiting to see a doctor.",
   ogImage: "/favicon/android-chrome-512x512.png",
-  ogUrl: "https://garibaldipharmacy.com/services/minor-ailments",
+  ogUrl: "https://garibaldipharmacy.com/services/minor-ailments/",
   twitterTitle: "Garibaldi Pharmacy | Minor Ailment Pharmacy in Squamish",
   twitterDescription:
     "Get fast treatment for minor ailments at Garibaldi Pharmacy in Squamish. Our expert pharmacists provide accessible care, helping you feel better without waiting to see a doctor.",
@@ -166,7 +166,7 @@ useHead({
   link: [
     {
       rel: "canonical",
-      href: "https://garibaldipharmacy.com/services/minor-ailments",
+      href: "https://garibaldipharmacy.com/services/minor-ailments/",
     },
     {
       rel: "icon",

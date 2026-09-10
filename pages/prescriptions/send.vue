@@ -335,7 +335,7 @@ useSeoMeta({
   ogDescription:
     "Send your prescription to Garibaldi Pharmacy in Squamish with ease. Our pharmacists provide fast, safe, and personalized medication services.",
   ogImage: "/favicon/android-chrome-512x512.png",
-  ogUrl: "https://garibaldipharmacy.com/prescriptions/send",
+  ogUrl: "https://garibaldipharmacy.com/prescriptions/send/",
   twitterTitle: "Send Prescriptions in Squamish | Garibaldi Pharmacy",
   twitterDescription:
     "Send your prescription to Garibaldi Pharmacy in Squamish with ease. Our pharmacists provide fast, safe, and personalized medication services.",
@@ -350,7 +350,7 @@ useHead({
   link: [
     {
       rel: "canonical",
-      href: "https://garibaldipharmacy.com/prescriptions/send",
+      href: "https://garibaldipharmacy.com/prescriptions/send/",
     },
     {
       rel: "icon",

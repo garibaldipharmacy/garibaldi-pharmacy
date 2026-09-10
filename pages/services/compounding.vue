@@ -89,7 +89,7 @@
               <p>
                 Bring your prescription into Garibaldi Pharmacy or
                 <NuxtLink
-                  to="/prescriptions/send"
+                  to="/prescriptions/send/"
                   class="underline hover:no-underline hover:opacity-75 transition-opacity"
                   >submit your prescription online.</NuxtLink
                 >
@@ -101,7 +101,7 @@
                 Visit your physician next door at
                 <NuxtLink
                   class="underline hover:no-underline hover:opacity-75 transition-opacity"
-                  to="/medical-clinic"
+                  to="/medical-clinic/"
                   >Terra Nova Medical Clinic</NuxtLink
                 >
                 and receive a prescription.
@@ -146,7 +146,7 @@ useSeoMeta({
   ogDescription:
     "Garibaldi Pharmacy in Squamish offers professional compounding services. Our NAPRA-certified lab creates customized medications tailored to your exact needs with the highest quality standards.",
   ogImage: "/favicon/android-chrome-512x512.png",
-  ogUrl: "https://garibaldipharmacy.com/compounding",
+  ogUrl: "https://garibaldipharmacy.com/services/compounding/",
   twitterTitle: "Garibaldi Pharmacy | Compounding Pharmacy in Squamish",
   twitterDescription:
     "Garibaldi Pharmacy in Squamish offers professional compounding services. Our NAPRA-certified lab creates customized medications tailored to your exact needs with the highest quality standards.",
@@ -161,7 +161,7 @@ useHead({
   link: [
     {
       rel: "canonical",
-      href: "https://garibaldipharmacy.com/services/compounding",
+      href: "https://garibaldipharmacy.com/services/compounding/",
     },
     {
       rel: "icon",
@@ -174,7 +174,7 @@ useHead({
 const primaryButton = {
   text: "Contact Us",
   icon: "fa6-solid:phone",
-  link: "/contact",
+  link: "/contact/",
 };
 </script>
 

@@ -22,7 +22,7 @@ const headerItems = ref([
     name: "prescriptions-send",
     icon: "fa6-solid:prescription",
     title: "Send Prescription",
-    link: "/prescriptions/send",
+    link: "/prescriptions/send/",
     description:
       "If you were given a paper prescription by your doctor, you may send it to us electronically so we can prepare it in advance and reduce your wait time.",
   },
@@ -30,7 +30,7 @@ const headerItems = ref([
     name: "prescriptions-transfer",
     icon: "fa6-solid:paper-plane",
     title: "Transfer Prescription",
-    link: "/prescriptions/transfer",
+    link: "/prescriptions/transfer/",
     description:
       "By completing this form, you consent to allow our pharmacy staff to contact your current pharmacy for a transfer of your medication.",
   },
@@ -38,7 +38,7 @@ const headerItems = ref([
     name: "prescriptions-refill",
     icon: "fa6-solid:prescription-bottle",
     title: "Refill Prescription",
-    link: "/prescriptions/refill",
+    link: "/prescriptions/refill/",
     description:
       "By completing the form below, the information will be provided to our pharmacy staff to confirm and refill your prescription.",
   },
