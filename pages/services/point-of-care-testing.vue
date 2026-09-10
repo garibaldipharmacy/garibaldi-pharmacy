@@ -21,7 +21,7 @@ useSeoMeta({
   ogDescription:
     "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
   ogImage: "/favicon/android-chrome-512x512.png",
-  ogUrl: "https://garibaldipharmacy.com/services/point-of-care-testing",
+  ogUrl: "https://garibaldipharmacy.com/services/point-of-care-testing/",
   twitterTitle: "Garibaldi Pharmacy | Point of Care Testing",
   twitterDescription:
     "Discover personalized medicine and accessible healthcare at its best. Garibaldi Pharmacy, your Squamish compounding pharmacy, is dedicated to improving your health and wellness.",
@@ -36,7 +36,7 @@ useHead({
   link: [
     {
       rel: "canonical",
-      href: "https://garibaldipharmacy.com/services/point-of-care-testing",
+      href: "https://garibaldipharmacy.com/services/point-of-care-testing/",
     },
     {
       rel: "icon",

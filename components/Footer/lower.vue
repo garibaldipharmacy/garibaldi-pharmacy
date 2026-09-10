@@ -17,22 +17,22 @@
 
     <ul class="ml-auto font-extralight opacity-75 flex gap-5">
       <!-- <li>
-        <NuxtLink to="/sitemap" class="hover:opacity-50 transition-opacity"
+        <NuxtLink to="/sitemap/" class="hover:opacity-50 transition-opacity"
           >Sitemap</NuxtLink
         >
       </li>
       <li>
-        <NuxtLink to="/terms" class="hover:opacity-50 transition-opacity"
+        <NuxtLink to="/terms/" class="hover:opacity-50 transition-opacity"
           >Terms</NuxtLink
         >
       </li>
       <li>
-        <NuxtLink to="/privacy" class="hover:opacity-50 transition-opacity"
+        <NuxtLink to="/privacy/" class="hover:opacity-50 transition-opacity"
           >Privacy</NuxtLink
         >
       </li>
       <li>
-        <NuxtLink to="/cookies" class="hover:opacity-50 transition-opacity"
+        <NuxtLink to="/cookies/" class="hover:opacity-50 transition-opacity"
           >Cookies</NuxtLink
         >
       </li> -->

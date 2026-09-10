@@ -138,7 +138,7 @@ useSeoMeta({
   ogDescription:
     "Book a personalized pharmacist consultation at Garibaldi Pharmacy in Squamish. Our experts provide health advice, medication reviews, and one-on-one guidance tailored to you.",
   ogImage: "/favicon/android-chrome-512x512.png",
-  ogUrl: "https://garibaldipharmacy.com/services/consultations",
+  ogUrl: "https://garibaldipharmacy.com/services/consultations/",
   twitterTitle: "Pharmacist Consultations in Squamish | Garibaldi Pharmacy",
   twitterDescription:
     "Book a personalized pharmacist consultation at Garibaldi Pharmacy in Squamish. Our experts provide health advice, medication reviews, and one-on-one guidance tailored to you.",
@@ -153,7 +153,7 @@ useHead({
   link: [
     {
       rel: "canonical",
-      href: "https://garibaldipharmacy.com/services/consultations",
+      href: "https://garibaldipharmacy.com/services/consultations/",
     },
     {
       rel: "icon",

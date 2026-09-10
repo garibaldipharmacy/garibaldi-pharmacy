@@ -51,7 +51,7 @@
 
     <div class="ml-5">
       <NuxtLink
-        to="/contact"
+        to="/contact/"
         class="p-3 px-5 rounded-full text-white font-normal bg-primary-900 hover:opacity-90 transition-all hover:scale-105 block"
         >Contact</NuxtLink
       >

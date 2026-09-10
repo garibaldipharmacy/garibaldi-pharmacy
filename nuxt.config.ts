@@ -9,10 +9,18 @@ export default defineNuxtConfig({
       charset: "utf-8",
       viewport: "width=device-width, initial-scale=1",
       titleTemplate: "%s %separator",
+      // 404.html / 200.html are empty SPA shells, so without a default here
+      // they ship no <title> at all for crawlers to fall back on.
+      title: "Garibaldi Pharmacy",
     },
   },
   nitro: {
     // You can leave empty or customize as needed
+  },
+  routeRules: {
+    // Thank-you pages have no search value. A route rule keeps them out of
+    // both the robots meta tag and the sitemap.
+    "/success/**": { robots: "noindex, nofollow" },
   },
   site: {
     url: "https://garibaldipharmacy.com",
@@ -20,6 +28,9 @@ export default defineNuxtConfig({
     description:
       "Garibaldi Pharmacy is your trusted pharmacy in Squamish, offering personalized medicine, compounding services, and accessible healthcare to improve your health and wellness.",
     defaultLocale: "en",
+    // Netlify serves prerendered routes at /path/ and 301s /path to it, so
+    // canonicals and the sitemap must use the trailing-slash form.
+    trailingSlash: true,
   },
   devtools: { enabled: true },
   alias: {
@@ -48,6 +59,18 @@ export default defineNuxtConfig({
     },
   },
   ssr: true,
+  seo: {
+    // This plugin titles error states "<statusCode> - <raw error message>",
+    // which Google indexed once a chunk failed to load. Every page and
+    // error.vue set their own title, so the fallback is not needed.
+    fallbackTitle: false,
+  },
+  experimental: {
+    // Old hashed /_nuxt/*.js files are gone after each atomic deploy, so a
+    // client holding pre-deploy HTML fails to import them. Reload the route
+    // right away rather than letting it surface as Nuxt's 500 error page.
+    emitRouteChunkError: "automatic-immediate",
+  },
   schemaOrg: {
     identity: defineLocalBusiness({
       // @ts-expect-error: "Pharmacy" is valid in JSON-LD but not in NuxtSEO types

@@ -31,19 +31,19 @@ const navItems = ref([
     name: "prescriptions-transfer",
     icon: "fa6-solid:paper-plane",
     text: "Transfer Prescription",
-    link: "/prescriptions/transfer",
+    link: "/prescriptions/transfer/",
   },
   {
     name: "prescriptions-refill",
     icon: "fa6-solid:prescription-bottle",
     text: "Refill Prescription",
-    link: "/prescriptions/refill",
+    link: "/prescriptions/refill/",
   },
   {
     name: "prescriptions-send",
     icon: "fa6-solid:prescription",
     text: "Send Prescription",
-    link: "/prescriptions/send",
+    link: "/prescriptions/send/",
   },
 ]);
 

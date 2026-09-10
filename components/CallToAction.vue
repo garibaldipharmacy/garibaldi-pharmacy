@@ -36,7 +36,7 @@
       <p class="mt-10 text-slate-600" v-if="showFooter">
         Something else?
         <NuxtLink
-          to="/contact"
+          to="/contact/"
           class="text-secondary-900 underline hover:no-underline"
           >Contact us</NuxtLink
         >
@@ -61,7 +61,7 @@ const props = defineProps({
     default: () => ({
       text: "Transfer Prescription",
       icon: "fa6-solid:paper-plane",
-      link: "/prescriptions/transfer",
+      link: "/prescriptions/transfer/",
     }),
   },
   secondaryButton: {
@@ -69,7 +69,7 @@ const props = defineProps({
     default: () => ({
       text: "Send Prescription",
       icon: "fa6-solid:prescription",
-      link: "/prescriptions/send",
+      link: "/prescriptions/send/",
     }),
   },
   showFooter: {

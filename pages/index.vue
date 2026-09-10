@@ -31,7 +31,7 @@
 
         <li>
           <ButtonPill
-            to="/prescriptions/transfer"
+            to="/prescriptions/transfer/"
             icon="fa6-solid:paper-plane"
             theme="secondary"
           >
@@ -41,7 +41,7 @@
 
         <li>
           <ButtonPill
-            to="/prescriptions/refill"
+            to="/prescriptions/refill/"
             icon="fa6-solid:prescription-bottle"
           >
             Refill Medications
@@ -50,7 +50,7 @@
 
         <li>
           <ButtonPill
-            to="/prescriptions/send"
+            to="/prescriptions/send/"
             icon="fa6-solid:prescription"
             theme="secondary"
           >
@@ -155,7 +155,7 @@
       />
     </div>
     <!-- <NuxtLink
-      to="/services"
+      to="/services/"
       class="mx-auto text-center block mb-10 text-slate-500 hover:text-slate-800 transition-colors"
       >View all our service offerings
       <Icon class="ml-3" name="fa6-solid:arrow-right-long"
@@ -211,7 +211,7 @@ useSeoMeta({
   ogDescription:
     "Garibaldi Pharmacy is your trusted pharmacy in Squamish, offering personalized medicine, compounding services, and accessible healthcare to improve your health and wellness.",
   ogImage: "/favicon/android-chrome-512x512.png",
-  ogUrl: "https://garibaldipharmacy.com",
+  ogUrl: "https://garibaldipharmacy.com/",
   twitterTitle:
     "Garibaldi Pharmacy | Your Local Squamish Pharmacy & Compounding Lab",
   twitterDescription:
@@ -227,7 +227,7 @@ useHead({
   link: [
     {
       rel: "canonical",
-      href: "https://garibaldipharmacy.com",
+      href: "https://garibaldipharmacy.com/",
     },
     {
       rel: "icon",

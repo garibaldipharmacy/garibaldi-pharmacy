@@ -88,7 +88,7 @@
           latest regulatory standards, we can produce your customized medication
           in-house.
           <NuxtLink
-            to="/services/compounding"
+            to="/services/compounding/"
             class="underline hover:no-underline"
             >Learn more about our compounding services.</NuxtLink
           >
@@ -113,7 +113,7 @@ useSeoMeta({
   ogDescription:
     "Garibaldi Pharmacy is Squamish's first independent pharmacy, owned and operated by locals. We provide full-service care, including compounding, prescriptions, immunizations, and an in-house medical clinic.",
   ogImage: "/favicon/android-chrome-512x512.png",
-  ogUrl: "https://garibaldipharmacy.com/about",
+  ogUrl: "https://garibaldipharmacy.com/about/",
   twitterTitle: "About Garibaldi Pharmacy | Independent Pharmacy in Squamish",
   twitterDescription:
     "Garibaldi Pharmacy is Squamish's first independent pharmacy, owned and operated by locals. We provide full-service care, including compounding, prescriptions, immunizations, and an in-house medical clinic.",
@@ -128,7 +128,7 @@ useHead({
   link: [
     {
       rel: "canonical",
-      href: "https://garibaldipharmacy.com/about",
+      href: "https://garibaldipharmacy.com/about/",
     },
     {
       rel: "icon",
