@@ -2,10 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-.landing-hero-section {
-  background-image: url("@/assets/images/hero.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  // Keeps the family in frame when narrow screens crop the sides
-  background-position: 70% top;
+// Shown until Lexend loads. Scaled to Lexend's average glyph width and
+// vertical metrics (between its 300 and 400 weights, which most text uses)
+// so lines wrap the same way and nothing below jumps when the font swaps in.
+@font-face {
+  font-family: "Lexend Fallback";
+  src: local("Arial"), local("Liberation Sans"), local("Roboto");
+  size-adjust: 107%;
+  ascent-override: 93%;
+  descent-override: 23%;
+  line-gap-override: 0%;
 }

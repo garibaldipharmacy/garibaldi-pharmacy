@@ -137,7 +137,7 @@
             name="options"
             class="col-span-2 px-5 sm:col-span-1"
           >
-            <RadioGroupLabel> Medication Retrieval </RadioGroupLabel>
+            <RadioGroupLabel as="span"> Medication Retrieval </RadioGroupLabel>
             <RadioGroupOption
               v-for="option in options"
               :key="option"
@@ -227,6 +227,8 @@
 </template>
 
 <script setup>
+// Registered here rather than globally so only the form pages load it
+import { vMaska } from "maska";
 import { ref } from "vue";
 import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue";
 import { businessInfo } from "~/constants/business";

@@ -12,7 +12,15 @@
       </div>
       <img
         class="sm:w-1/2"
-        src="@/assets/images/terra-nova-squamish-medical-clinic.jpg"
+        src="@/assets/images/terra-nova-squamish-medical-clinic-900.webp"
+        srcset="
+          @/assets/images/terra-nova-squamish-medical-clinic-480.webp 480w,
+          @/assets/images/terra-nova-squamish-medical-clinic-900.webp 900w
+        "
+        sizes="(min-width: 640px) 50vw, 100vw"
+        width="900"
+        height="600"
+        fetchpriority="high"
         alt="The Squamish storefront of Garibaldi Pharmacy and Terra Nova Medical clinic"
       />
     </section>
@@ -50,6 +58,7 @@
           src="@/assets/images/logostyles/terranova-logo.svg"
           alt="Terranova Medical Clinic Logo"
           width="150"
+          height="91"
           class="mx-auto mb-5"
         />
         <p>

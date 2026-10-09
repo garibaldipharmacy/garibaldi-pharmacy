@@ -188,7 +188,7 @@
             name="options"
             class="col-span-2 px-5 sm:col-span-1"
           >
-            <RadioGroupLabel>
+            <RadioGroupLabel as="span">
               Transfer all eligible prescriptions?
             </RadioGroupLabel>
             <RadioGroupOption
@@ -265,6 +265,8 @@
 </template>
 
 <script setup>
+// Registered here rather than globally so only the form pages load it
+import { vMaska } from "maska";
 import { ref } from "vue";
 
 useSeoMeta({

@@ -1,8 +1,20 @@
 <template>
   <!-- Hero Section -->
   <section
-    class="landing-hero-section relative isolate flex min-h-[24rem] items-center pt-12 pb-24 md:min-h-[26rem] lg:min-h-[28rem]"
+    class="relative isolate flex min-h-[24rem] items-center pt-12 pb-24 md:min-h-[26rem] lg:min-h-[28rem]"
   >
+    <!-- A real image rather than a CSS background so the browser finds it in
+         the HTML and fetches it first, as it is the largest paint on the page.
+         The position keeps the family in frame when narrow screens crop the
+         sides -->
+    <img
+      :src="heroImage"
+      alt=""
+      width="1440"
+      height="579"
+      fetchpriority="high"
+      class="absolute inset-0 -z-10 h-full w-full object-cover object-[70%_top]"
+    />
     <!-- Darkens the photo behind the text: evenly on mobile where the text
          spans the width, from the left on larger screens -->
     <div
@@ -50,83 +62,8 @@
     </nav>
   </section>
 
-  <TransitionRoot appear :show="isOpen" as="template">
-    <Dialog as="div" @close="closeModal" class="relative z-10">
-      <TransitionChild
-        as="template"
-        enter="duration-300 ease-out"
-        enter-from="opacity-0"
-        enter-to="opacity-100"
-        leave="duration-200 ease-in"
-        leave-from="opacity-100"
-        leave-to="opacity-0"
-      >
-        <div class="fixed inset-0 bg-black/25" />
-      </TransitionChild>
-
-      <div class="fixed inset-0 overflow-y-auto">
-        <div
-          class="flex min-h-full items-center justify-center p-4 text-center"
-        >
-          <TransitionChild
-            as="template"
-            enter="duration-300 ease-out"
-            enter-from="opacity-0 scale-95"
-            enter-to="opacity-100 scale-100"
-            leave="duration-200 ease-in"
-            leave-from="opacity-100 scale-100"
-            leave-to="opacity-0 scale-95"
-          >
-            <DialogPanel
-              class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
-            >
-              <DialogTitle
-                as="h3"
-                class="text-lg font-medium leading-6 text-gray-900 flex items-center"
-              >
-                <CircleIcon icon="fa6-solid:address-book" class="mr-2" /><span
-                  >Contact Information</span
-                >
-              </DialogTitle>
-              <div class="mt-4">
-                <ul>
-                  <li
-                    v-for="option in contactOptions"
-                    :key="option.title"
-                    class="p-1"
-                  >
-                    <NuxtLink
-                      :to="option.link"
-                      class="text-primary-900 flex gap-2 flex-wrap"
-                    >
-                      <div>
-                        <Icon :name="option.icon" class="mr-3" />
-                        <span class="font-medium">{{ option.title }}</span>
-                      </div>
-                      <span
-                        class="font-light w-full sm:w-auto sm:ml-auto text-sm sm:text-base"
-                        >{{ option.value }}</span
-                      >
-                    </NuxtLink>
-                  </li>
-                </ul>
-              </div>
-
-              <div class="mt-4">
-                <button
-                  type="button"
-                  class="inline-flex justify-center rounded-md border border-transparent bg-primary-100 px-4 py-2 text-sm font-medium text-primary-900 hover:bg-primary-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-900 focus-visible:ring-offset-2"
-                  @click="closeModal"
-                >
-                  Close
-                </button>
-              </div>
-            </DialogPanel>
-          </TransitionChild>
-        </div>
-      </div>
-    </Dialog>
-  </TransitionRoot>
+  <!-- Loads its dialog code on the first click rather than with the page -->
+  <LazyContactModal v-if="modalRequested" :open="isOpen" @close="closeModal" />
 
   <!-- Services -->
   <section class="container mx-auto services-section">
@@ -159,38 +96,9 @@
 </template>
 
 <script setup lang="ts">
-import { businessInfo } from "~/constants/business";
+import heroImage from "~/assets/images/hero.webp";
 import { prescriptionActions } from "~/constants/prescriptionActions";
-const { contact } = businessInfo;
 import { ref } from "vue";
-import {
-  TransitionRoot,
-  TransitionChild,
-  Dialog,
-  DialogPanel,
-  DialogTitle,
-} from "@headlessui/vue";
-
-const contactOptions = [
-  {
-    icon: "fa6-solid:phone",
-    title: "Phone / Text",
-    value: contact.phone.main,
-    link: `tel:${contact.phone.main}`,
-  },
-  {
-    icon: "fa6-solid:fax",
-    title: "Fax",
-    value: contact.phone.fax,
-    link: `tel:${contact.phone.fax}`,
-  },
-  {
-    icon: "fa6-solid:envelope",
-    title: "Email",
-    value: contact.email,
-    link: `mailto:${contact.email}`,
-  },
-];
 
 useSeoMeta({
   title: "Garibaldi Pharmacy | Your Local Squamish Pharmacy & Compounding Lab",
@@ -255,11 +163,13 @@ const serviceCards = [
 ];
 
 const isOpen = ref(false);
+const modalRequested = ref(false);
 
 function closeModal() {
   isOpen.value = false;
 }
 function openModal() {
+  modalRequested.value = true;
   isOpen.value = true;
 }
 </script>

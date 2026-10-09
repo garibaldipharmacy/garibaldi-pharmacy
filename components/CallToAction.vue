@@ -5,6 +5,9 @@
     <img
       src="@/assets/images/cta-artifact.svg"
       alt="an illustration of a half circle artifact"
+      width="180"
+      height="241"
+      loading="lazy"
       class="absolute top-0 left-0 opacity-25 md:opacity-100"
     />
     <div class="">
@@ -45,6 +48,9 @@
     <img
       src="@/assets/images/cta-artifact.svg"
       alt="an illustration of a half circle artifact"
+      width="180"
+      height="241"
+      loading="lazy"
       class="absolute bottom-0 right-0 rotate-180 opacity-25 md:opacity-100"
     />
   </div>

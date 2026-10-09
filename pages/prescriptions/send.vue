@@ -169,11 +169,11 @@
           <p class="font-medium">
             Submit photos of prescription and any insurance plan cards:
           </p>
-          <ul class="list-disc mt-3">
-            <p>
-              Please follow these instructions to ensure there are no delays in
-              processing your prescription:
-            </p>
+          <p class="mt-3">
+            Please follow these instructions to ensure there are no delays in
+            processing your prescription:
+          </p>
+          <ul class="list-disc">
             <li class="ml-5">
               Please place your prescription on a flat surface with adequate
               lighting
@@ -327,6 +327,9 @@
 </template>
 
 <script setup>
+// Registered here rather than globally so only the form pages load it
+import { vMaska } from "maska";
+
 useSeoMeta({
   title: "Send Prescriptions in Squamish | Garibaldi Pharmacy",
   description:

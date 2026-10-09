@@ -19,7 +19,15 @@
       <div class="relative">
         <img
           class="w-full"
-          src="@/assets/images/squamish-garibaldi-area.jpg"
+          src="@/assets/images/squamish-garibaldi-area-1440.webp"
+          srcset="
+            @/assets/images/squamish-garibaldi-area-800.webp 800w,
+            @/assets/images/squamish-garibaldi-area-1440.webp 1440w
+          "
+          sizes="100vw"
+          width="1440"
+          height="549"
+          fetchpriority="high"
           alt="The image captures the view in Squamish BC, a forest-covered cliffs beside a tranquil fjord under a cloudy sky."
         />
         <NuxtLink
@@ -67,8 +75,17 @@
     <div class="md:basis-1/2">
       <img
         class="fill-image"
-        src="@/assets/images/squamish-pharmacist-medicine-to-patient.jpg"
-        alt="A doctor showing information on a clipboard to their patient while sitting inside an exam room."
+        src="@/assets/images/squamish-pharmacist-medicine-to-patient-1440.webp"
+        srcset="
+          @/assets/images/squamish-pharmacist-medicine-to-patient-800.webp 800w,
+          @/assets/images/squamish-pharmacist-medicine-to-patient-1440.webp 1440w,
+          @/assets/images/squamish-pharmacist-medicine-to-patient-2400.webp 2400w
+        "
+        sizes="(min-width: 768px) 50vw, 100vw"
+        width="1440"
+        height="960"
+        loading="lazy"
+        alt="A pharmacist showing a box of medication to a customer in a pharmacy."
       />
     </div>
     <div
