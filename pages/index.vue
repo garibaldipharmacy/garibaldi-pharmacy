@@ -165,6 +165,9 @@
   <!-- Why Us -->
   <SectionWhyUs />
 
+  <!-- Testimonials -->
+  <SectionTestimonials />
+
   <!-- CTA -->
   <CallToAction />
 </template>
