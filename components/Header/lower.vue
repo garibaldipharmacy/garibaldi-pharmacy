@@ -7,6 +7,8 @@
         <img
           src="@/assets/images/logostyles/logo-wide.svg"
           alt="Garibaldi Pharmacy and Compounding Lab logo"
+          width="172"
+          height="50"
         />
       </NuxtLink>
     </div>

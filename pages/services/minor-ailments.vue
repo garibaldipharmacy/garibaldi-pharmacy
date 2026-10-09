@@ -4,7 +4,15 @@
     <div class="relative">
       <img
         class="w-full"
-        src="@/assets/images/minor-ailments-pharmacy-squamish.jpg"
+        src="@/assets/images/minor-ailments-pharmacy-squamish-1440.webp"
+        srcset="
+          @/assets/images/minor-ailments-pharmacy-squamish-800.webp 800w,
+          @/assets/images/minor-ailments-pharmacy-squamish-1440.webp 1440w
+        "
+        sizes="100vw"
+        width="1440"
+        height="572"
+        fetchpriority="high"
         alt="A healthcare professional in a white coat and gloves is using a stethoscope to check the heart or lungs of a smiling young man wearing a denim jacket in a clinical setting."
       />
       <div class="hero-over-text sm:text-white px-5 mt-5 text-primary-900">

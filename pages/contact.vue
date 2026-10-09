@@ -6,7 +6,16 @@
     >
       <img
         class="sm:w-1/2"
-        src="@/assets/images/squamish-pharmacy-front.jpg"
+        src="@/assets/images/squamish-pharmacy-front-1440.webp"
+        srcset="
+          @/assets/images/squamish-pharmacy-front-800.webp 800w,
+          @/assets/images/squamish-pharmacy-front-1440.webp 1440w,
+          @/assets/images/squamish-pharmacy-front-2400.webp 2400w
+        "
+        sizes="(min-width: 640px) 50vw, 100vw"
+        width="1440"
+        height="1080"
+        fetchpriority="high"
         alt="The Squamish storefront of Garibaldi Pharmacy and Terra Nova Medical clinic"
       />
       <div class="p-10 sm:w-1/2 mx-auto text-white title-section">
@@ -18,11 +27,11 @@
     </section>
     <section class="bg-primary-100 flex items-center justify-center">
       <nav class="container">
-        <ul
+        <div
           class="flex gap-5 flex-wrap md:flex-nowrap p-10 mx-auto items-center justify-center"
         >
           <!-- Prescription buttons -->
-          <div class="flex items-center md:w-2/3 flex-wrap gap-5">
+          <ul class="flex items-center md:w-2/3 flex-wrap gap-5">
             <li class="w-full">
               <ButtonPill
                 to="/prescriptions/transfer/"
@@ -54,7 +63,7 @@
                 Send Prescription
               </ButtonPill>
             </li>
-          </div>
+          </ul>
           <div class="bg-white shadow-md rounded-md py-2.5 px-3 w-full">
             <h3 class="text-primary-900 text-lg p-3">
               <CircleIcon icon="fa6-solid:address-book" class="mr-3" />
@@ -83,7 +92,7 @@
               </li>
             </ul>
           </div>
-        </ul>
+        </div>
       </nav>
     </section>
     <section
@@ -103,6 +112,7 @@
       <div class="w-full mt-3">
         <iframe
           class="w-full"
+          title="Map showing Garibaldi Pharmacy in Squamish"
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d10312.492073503878!2d-123.14409766842617!3d49.74612905701535!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5486f9aba5d1b65d%3A0xbf08346d48a7b8a6!2sGaribaldi%20Pharmacy%20%26%20Compounding%20Lab!5e0!3m2!1sen!2sca!4v1708477543698!5m2!1sen!2sca"
           width="600"
           height="450"

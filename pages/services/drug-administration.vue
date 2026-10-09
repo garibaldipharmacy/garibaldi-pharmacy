@@ -4,7 +4,16 @@
     <div class="relative">
       <img
         class="w-full"
-        src="@/assets/images/squamish-drug-administration.jpg"
+        src="@/assets/images/squamish-drug-administration-1440.webp"
+        srcset="
+          @/assets/images/squamish-drug-administration-800.webp 800w,
+          @/assets/images/squamish-drug-administration-1440.webp 1440w,
+          @/assets/images/squamish-drug-administration-2400.webp 2400w
+        "
+        sizes="100vw"
+        width="1440"
+        height="960"
+        fetchpriority="high"
         alt="Woman taking pills from a jar on hand"
       />
       <div

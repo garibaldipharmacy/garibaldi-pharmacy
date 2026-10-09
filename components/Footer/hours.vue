@@ -2,9 +2,9 @@
   <div
     class="font-light bg-primary-930 rounded-lg p-5 text-sm w-full md:w-auto"
   >
-    <h4 class="font-bold">
+    <h3 class="font-bold">
       <Icon name="fa6-solid:clock" class="mr-2" /> Business Hours
-    </h4>
+    </h3>
 
     <ul class="mt-5">
       <li

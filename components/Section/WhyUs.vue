@@ -27,7 +27,15 @@
     </div>
     <div class="md:basis-1/2">
       <img
-        src="@/assets/images/doctor-patient.jpg"
+        src="@/assets/images/doctor-patient-720.webp"
+        srcset="
+          @/assets/images/doctor-patient-480.webp 480w,
+          @/assets/images/doctor-patient-720.webp 720w
+        "
+        sizes="(min-width: 768px) 50vw, 100vw"
+        width="720"
+        height="639"
+        loading="lazy"
         alt="A doctor showing information on a clipboard to their patient while sitting inside an exam room."
       />
     </div>

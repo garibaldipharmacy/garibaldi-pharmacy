@@ -65,6 +65,25 @@ export default defineNuxtConfig({
     // error.vue set their own title, so the fallback is not needed.
     fallbackTitle: false,
   },
+  hooks: {
+    "build:manifest": (manifest) => {
+      for (const chunk of Object.values(manifest)) {
+        // Nuxt prefetches every image a chunk imports, which means each
+        // srcset candidate (mobile and desktop sizes alike) and images far
+        // below the fold. The <img> tags already fetch the one they need.
+        chunk.assets = chunk.assets?.filter(
+          (asset) => !/\.(avif|webp|jpe?g|png|gif|svg)$/.test(asset)
+        );
+
+        // entry.css only holds the scoped styles of the layout components,
+        // which are already inlined into every prerendered page. Linking it
+        // as well adds a render-blocking request before first paint.
+        if (chunk.isEntry) {
+          chunk.css = chunk.css?.filter((file) => !file.startsWith("entry"));
+        }
+      }
+    },
+  },
   experimental: {
     // Old hashed /_nuxt/*.js files are gone after each atomic deploy, so a
     // client holding pre-deploy HTML fails to import them. Reload the route

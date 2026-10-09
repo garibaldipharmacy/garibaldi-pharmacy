@@ -10,7 +10,7 @@ export default {
   ],
   theme: {
     fontFamily: {
-      sans: ["Lexend", "sans-serif"],
+      sans: ["Lexend", "Lexend Fallback", "sans-serif"],
     },
     extend: {
       colors: {
@@ -38,7 +38,7 @@ export default {
           600: "#6BC053",
           700: "#56B33D",
           800: "#46982F",
-          900: "#377E23",
+          900: "#357922",
           950: "#1D3E13",
         },
       },

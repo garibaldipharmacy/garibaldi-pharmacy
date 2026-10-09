@@ -3,7 +3,7 @@
     class="flex bg-primary-930 rounded-lg p-5 gap-5 text-sm flex-wrap w-full md:w-auto"
   >
     <div v-for="footerLink in footerLinks">
-      <h4 class="mb-5">{{ footerLink.title }}</h4>
+      <h3 class="mb-5">{{ footerLink.title }}</h3>
       <ul class="font-light text-primary-300">
         <li v-for="link in footerLink.links" class="mb-3">
           <NuxtLink
@@ -53,7 +53,7 @@ const footerLinks = [
         title: "Point-of-Care Testing",
         href: "/services/point-of-care-testing/",
       },
-      { title: "Covid Vaccine", href: "" },
+      { title: "Covid Vaccine", href: "/services/immunizations/" },
     ],
   },
 ];
