@@ -49,6 +49,10 @@ const footerLinks = [
       { title: "Minor Ailments", href: "/services/minor-ailments/" },
       { title: "Drug Administration", href: "/services/drug-administration/" },
       { title: "Consultations", href: "/services/consultations/" },
+      {
+        title: "Point-of-Care Testing",
+        href: "/services/point-of-care-testing/",
+      },
       { title: "Covid Vaccine", href: "" },
     ],
   },
