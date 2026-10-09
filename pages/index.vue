@@ -1,11 +1,23 @@
 <template>
   <!-- Hero Section -->
-  <section class="landing-hero-section py-20 sm:py-40">
-    <div class="text-white px-10 sm:px-20">
-      <h1 class="text-3xl font-bold md:w-2/5">
+  <section
+    class="landing-hero-section relative isolate flex min-h-[24rem] items-center pt-12 pb-24 md:min-h-[26rem] lg:min-h-[28rem]"
+  >
+    <!-- Darkens the photo behind the text: evenly on mobile where the text
+         spans the width, from the left on larger screens -->
+    <div
+      aria-hidden="true"
+      class="absolute inset-0 -z-10 bg-black/[.35] md:bg-transparent md:bg-gradient-to-r md:from-black/40 md:via-black/10 md:to-transparent"
+    />
+    <div
+      class="w-full px-6 text-white [text-shadow:0_1px_12px_rgba(0,0,0,0.35)] sm:px-12 lg:px-20"
+    >
+      <h1
+        class="max-w-md text-3xl font-bold leading-tight lg:max-w-xl lg:text-4xl"
+      >
         Discover personalized medicine and accessible healthcare at its best
       </h1>
-      <p class="font-light text-xl md:w-1/3">
+      <p class="mt-3 max-w-md text-lg font-light sm:text-xl">
         We are dedicated to improving the health and wellness of Squamish
       </p>
     </div>
@@ -15,7 +27,7 @@
   <section class="container mx-auto">
     <nav>
       <ul
-        class="flex p-3 gap-2 -mt-16 mb-10 items-center pill-buttons justify-center flex-wrap no-appointment-pills-only"
+        class="pill-buttons relative z-10 -mt-16 mb-10 grid max-w-2xl mx-auto gap-2 p-3 sm:grid-cols-2 lg:flex lg:max-w-none lg:justify-center"
       >
         <li>
           <button
@@ -29,32 +41,9 @@
           </button>
         </li>
 
-        <li>
-          <ButtonPill
-            to="/prescriptions/transfer/"
-            icon="fa6-solid:paper-plane"
-            theme="secondary"
-          >
-            Transfer Prescription
-          </ButtonPill>
-        </li>
-
-        <li>
-          <ButtonPill
-            to="/prescriptions/refill/"
-            icon="fa6-solid:prescription-bottle"
-          >
-            Refill Medications
-          </ButtonPill>
-        </li>
-
-        <li>
-          <ButtonPill
-            to="/prescriptions/send/"
-            icon="fa6-solid:prescription"
-            theme="secondary"
-          >
-            Send Prescription
+        <li v-for="action in prescriptionActions" :key="action.link">
+          <ButtonPill :to="action.link" :icon="action.icon" :theme="action.theme">
+            {{ action.title }}
           </ButtonPill>
         </li>
       </ul>
@@ -171,6 +160,7 @@
 
 <script setup lang="ts">
 import { businessInfo } from "~/constants/business";
+import { prescriptionActions } from "~/constants/prescriptionActions";
 const { contact } = businessInfo;
 import { ref } from "vue";
 import {
@@ -282,12 +272,6 @@ function openModal() {
 .pill-buttons li a,
 .pill-buttons li button {
   width: 100%;
-}
-
-@media screen and (max-width: 768px) {
-  .no-appointment-pills-only li,
-  .no-appointment-pills-only li a {
-    width: 100%;
-  }
+  height: 100%;
 }
 </style>

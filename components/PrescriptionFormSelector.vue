@@ -1,21 +1,41 @@
 <template>
   <nav>
+    <!-- Mobile: segmented control so all three forms fit on one row -->
+    <ul class="grid grid-cols-3 gap-1 bg-primary-100 p-2 md:hidden">
+      <li v-for="action in prescriptionActions" :key="action.link">
+        <NuxtLink
+          :to="action.link"
+          :class="[
+            'flex flex-col items-center gap-1 rounded-lg px-2 py-3 text-sm transition-colors',
+            isActive(action.link)
+              ? 'bg-white text-primary-900 shadow-sm'
+              : 'text-primary-700 hover:bg-primary-200',
+          ]"
+        >
+          <Icon :name="action.icon" class="text-lg" />
+          <span>{{ action.shortTitle }}</span>
+        </NuxtLink>
+      </li>
+    </ul>
+
     <ul
-      class="flex bg-primary-100 p-5 text-primary-900 border-b-2 flex-wrap gap-10 sm:gap-0"
+      class="hidden md:flex bg-primary-100 px-5 text-primary-900 border-b-2 flex-wrap"
     >
-      <li v-for="link in navItems">
+      <li v-for="action in prescriptionActions" :key="action.link">
         <NuxtLink
           :class="[
+            'flex',
+            'items-center',
             'p-5',
             'hover:border-primary-400',
             'hover:border-b-4',
             'hover-bg-primary-200',
-            activeClass(link?.name),
+            { 'border-primary-900 bg-primary-200 border-b-4': isActive(action.link) },
           ]"
-          :to="link?.link"
+          :to="action.link"
         >
-          <Icon class="mr-3" :name="link?.icon" />
-          <span>{{ link?.text }}</span>
+          <Icon class="mr-3" :name="action.icon" />
+          <span>{{ action.title }}</span>
         </NuxtLink>
       </li>
     </ul>
@@ -24,32 +44,12 @@
 
 <script lang="ts" setup>
 import { useRoute } from "vue-router"; // required since we are using outside of <NuxtPage />
+import { prescriptionActions } from "~/constants/prescriptionActions";
 
 const route = useRoute();
-const navItems = ref([
-  {
-    name: "prescriptions-transfer",
-    icon: "fa6-solid:paper-plane",
-    text: "Transfer Prescription",
-    link: "/prescriptions/transfer/",
-  },
-  {
-    name: "prescriptions-refill",
-    icon: "fa6-solid:prescription-bottle",
-    text: "Refill Prescription",
-    link: "/prescriptions/refill/",
-  },
-  {
-    name: "prescriptions-send",
-    icon: "fa6-solid:prescription",
-    text: "Send Prescription",
-    link: "/prescriptions/send/",
-  },
-]);
 
-const activeClass = (name: string) => {
-  return route.name === name
-    ? "border-primary-900 bg-primary-200 border-b-4"
-    : "";
-};
+const withoutTrailingSlash = (path: string) => path.replace(/\/$/, "");
+
+const isActive = (link: string) =>
+  withoutTrailingSlash(route.path) === withoutTrailingSlash(link);
 </script>

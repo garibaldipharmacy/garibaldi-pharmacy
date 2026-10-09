@@ -19,6 +19,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import type { HeaderNavLink } from "@/types/HeaderNavLink.interface";
+import { prescriptionActions } from "@/constants/prescriptionActions";
 
 const links = ref<HeaderNavLink[]>([
   {
@@ -35,44 +36,68 @@ const links = ref<HeaderNavLink[]>([
   },
   {
     title: "Pharmacy Services",
-    link: "#",
-    expanded: true,
+    cta: {
+      text: "Moving from another pharmacy?",
+      linkText: "Transfer a prescription",
+      link: "/prescriptions/transfer/",
+    },
     children: [
       {
         title: "Prescriptions",
         link: "/prescriptions/",
         icon: "fa6-solid:prescription",
+        description: "Transfer, refill or send a prescription",
       },
       {
         title: "Minor Ailments",
         link: "/services/minor-ailments/",
         icon: "fa6-solid:hand-holding-medical",
+        description: "Treat common conditions without seeing a doctor",
       },
       {
         title: "Immunizations",
         link: "/services/immunizations/",
         icon: "medical-icon:i-immunizations",
+        description: "Vaccinations given by our pharmacists",
       },
       {
         title: "Drug Administration",
         link: "/services/drug-administration/",
         icon: "fa6-solid:prescription-bottle-medical",
+        description: "Have a pharmacist administer your medication",
       },
       {
         title: "Consultations",
         link: "/services/consultations/",
         icon: "fa6-solid:user-doctor",
+        description: "One-on-one health advice and medication reviews",
       },
       {
         title: "Point-of-Care Testing",
         link: "/services/point-of-care-testing/",
         icon: "solar:test-tube-bold",
+        description: "Quick health checks done right at the pharmacy",
       },
     ],
   },
   {
+    title: "Prescriptions",
+    mobileOnly: true,
+    children: prescriptionActions.map(({ title, link, icon, theme }) => ({
+      title,
+      link,
+      icon,
+      theme,
+    })),
+  },
+  {
     title: "Medical Clinic",
     link: "/medical-clinic/",
+  },
+  {
+    title: "Contact",
+    link: "/contact/",
+    variant: "button",
   },
 ]);
 </script>
