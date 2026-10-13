@@ -15,14 +15,28 @@ export default defineNuxtConfig({
     },
   },
   nitro: {
-    // You can leave empty or customize as needed
+    // Pinned explicitly. Netlify auto-detected its own preset; on the droplet we
+    // run `node .output/server/index.mjs` under systemd behind Caddy.
+    preset: "node-server",
+  },
+  runtimeConfig: {
+    public: {
+      // Overridden at runtime by NUXT_PUBLIC_TURNSTILE_SITE_KEY. When empty the
+      // widget does not render and the server skips verification, so local
+      // development works without a Cloudflare account.
+      turnstileSiteKey: "",
+    },
   },
   routeRules: {
     // Thank-you pages have no search value. A route rule keeps them out of
     // both the robots meta tag and the sitemap.
     "/success/**": { robots: "noindex, nofollow" },
+    // Patient data must never be cached by a browser or an intermediary.
+    "/api/**": { headers: { "cache-control": "no-store" } },
   },
   site: {
+    // Overridden at runtime by NUXT_SITE_URL, which is how staging advertises
+    // itself rather than claiming to be production.
     url: "https://garibaldipharmacy.com",
     name: "Garibaldi Pharmacy",
     description:
