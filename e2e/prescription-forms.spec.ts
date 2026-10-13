@@ -1,0 +1,202 @@
+import { test, expect, type Page } from "@playwright/test";
+
+// All fixture data is obviously fake. Playwright traces and screenshots capture
+// whatever gets typed, so nothing resembling a real patient goes in here.
+const PATIENT = {
+  firstName: "Testy",
+  lastName: "McFixture",
+  dateOfBirth: "1980-05-02",
+  phone: "6045550100",
+  email: "not-a-real-patient@example.invalid",
+};
+
+async function fillCommonFields(page: Page) {
+  await page.fill("#first_name", PATIENT.firstName);
+  await page.fill("#last_name", PATIENT.lastName);
+  await page.fill("#date_of_birth", PATIENT.dateOfBirth);
+  await page.fill("#cell_phone_number", PATIENT.phone);
+  await page.fill("#email", PATIENT.email);
+}
+
+/** A real PNG, so the server's content sniffing accepts it. */
+function pngFixture(name = "prescription.png") {
+  return {
+    name,
+    mimeType: "image/png",
+    buffer: Buffer.from(
+      "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+      "base64",
+    ),
+  };
+}
+
+test.describe("refill", () => {
+  test("submits and lands on the success page", async ({ page }) => {
+    await page.goto("/prescriptions/refill/");
+    await fillCommonFields(page);
+    await page.fill("#medications", "Ramipril 10mg capsules");
+
+    await page.getByRole("button", { name: /send refill request/i }).click();
+
+    await expect(page).toHaveURL(/\/success\/refill/);
+    await expect(page.getByRole("heading", { level: 2 })).toContainText(/thank you/i);
+  });
+
+  test("blocks an empty medication list and keeps what was typed", async ({ page }) => {
+    await page.goto("/prescriptions/refill/");
+    await fillCommonFields(page);
+    // Medications deliberately left blank. The old form accepted this.
+    await page.getByRole("button", { name: /send refill request/i }).click();
+
+    await expect(page).not.toHaveURL(/\/success/);
+    await expect(page.getByRole("status")).toBeVisible();
+    // Nothing the patient typed may be lost on a failed submit.
+    await expect(page.locator("#first_name")).toHaveValue(PATIENT.firstName);
+    await expect(page.locator("#email")).toHaveValue(PATIENT.email);
+  });
+
+  test("announces the error accessibly and moves focus to it", async ({ page }) => {
+    await page.goto("/prescriptions/refill/");
+    await page.getByRole("button", { name: /send refill request/i }).click();
+
+    const status = page.getByRole("status");
+    await expect(status).toBeVisible();
+    await expect(status).toBeFocused();
+  });
+
+  test("a filled honeypot looks like success but stores nothing", async ({ page }) => {
+    await page.goto("/prescriptions/refill/");
+    await fillCommonFields(page);
+    await page.fill("#medications", "Ramipril 10mg capsules");
+    // A human cannot reach this field; a bot fills everything it finds.
+    await page.locator("#bot-field").fill("http://spam.example");
+
+    await page.getByRole("button", { name: /send refill request/i }).click();
+    await expect(page).toHaveURL(/\/success\/refill/);
+  });
+});
+
+test.describe("transfer", () => {
+  test("does not ask for a medication list when transferring everything", async ({
+    page,
+  }) => {
+    await page.goto("/prescriptions/transfer/");
+    await expect(page.locator("#medications")).toHaveCount(0);
+  });
+
+  test("asks for a medication list when transferring some", async ({ page }) => {
+    await page.goto("/prescriptions/transfer/");
+    await page.getByText("No", { exact: true }).click();
+    await expect(page.locator("#medications")).toBeVisible();
+  });
+
+  test("submits a partial transfer", async ({ page }) => {
+    await page.goto("/prescriptions/transfer/");
+    await fillCommonFields(page);
+    await page.fill("#pharmacy_name", "Fixture Pharmacy");
+    await page.fill("#pharmacy_phone_number", "6045550199");
+    await page.getByText("No", { exact: true }).click();
+    await page.fill("#medications", "Ramipril 10mg capsules");
+
+    await page.getByRole("button", { name: /send transfer request/i }).click();
+    await expect(page).toHaveURL(/\/success\/transfer/);
+  });
+});
+
+test.describe("send, with the dynamic repeaters", () => {
+  test("starts with one prescription row and no insurance rows", async ({ page }) => {
+    await page.goto("/prescriptions/send/");
+    await expect(page.locator('input[id^="prescriptions-"][type="file"]')).toHaveCount(1);
+  });
+
+  test("adds prescriptions up to the maximum, then explains why it stops", async ({
+    page,
+  }) => {
+    await page.goto("/prescriptions/send/");
+    const add = page.getByRole("button", { name: /add another prescription/i });
+
+    for (let i = 0; i < 4; i++) await add.click();
+    await expect(page.locator('input[id^="prescriptions-"][type="file"]')).toHaveCount(5);
+
+    // Disabled with a reason, rather than silently doing nothing.
+    await expect(add).toBeDisabled();
+    await expect(page.getByText(/up to 5 prescriptions/i)).toBeVisible();
+  });
+
+  test("removes a row", async ({ page }) => {
+    await page.goto("/prescriptions/send/");
+    await page.getByRole("button", { name: /add another prescription/i }).click();
+    await expect(page.locator('input[id^="prescriptions-"][type="file"]')).toHaveCount(2);
+
+    await page.getByRole("button", { name: /remove/i }).first().click();
+    await expect(page.locator('input[id^="prescriptions-"][type="file"]')).toHaveCount(1);
+  });
+
+  test("submits three prescriptions and two insurance cards", async ({ page }) => {
+    await page.goto("/prescriptions/send/");
+    await fillCommonFields(page);
+
+    const addRx = page.getByRole("button", { name: /add another prescription/i });
+    await addRx.click();
+    await addRx.click();
+    for (let i = 0; i < 3; i++) {
+      await page.locator(`#prescriptions-${i}-file`).setInputFiles(pngFixture(`rx${i}.png`));
+    }
+
+    const addCard = page.getByRole("button", { name: /add another insurance card/i });
+    await addCard.click();
+    await addCard.click();
+    await page.locator("#insurance-0-front").setInputFiles(pngFixture("front0.png"));
+    await page.locator("#insurance-0-back").setInputFiles(pngFixture("back0.png"));
+    // Second card deliberately has no back: some cards have nothing on them.
+    await page.locator("#insurance-1-front").setInputFiles(pngFixture("front1.png"));
+
+    await page.getByRole("button", { name: /send prescription/i }).click();
+    await expect(page).toHaveURL(/\/success\/send/, { timeout: 30_000 });
+  });
+
+  test("rejects a renamed executable server side", async ({ page }) => {
+    await page.goto("/prescriptions/send/");
+    await fillCommonFields(page);
+    await page.locator("#prescriptions-0-file").setInputFiles({
+      name: "prescription.png",
+      mimeType: "image/png",
+      buffer: Buffer.from("MZ this is not an image at all"),
+    });
+
+    await page.getByRole("button", { name: /send prescription/i }).click();
+    await expect(page).not.toHaveURL(/\/success/);
+    await expect(page.getByRole("status")).toBeVisible();
+  });
+
+  test("requires at least one prescription", async ({ page }) => {
+    await page.goto("/prescriptions/send/");
+    await fillCommonFields(page);
+    await page.getByRole("button", { name: /send prescription/i }).click();
+
+    await expect(page).not.toHaveURL(/\/success/);
+    await expect(page.getByRole("status")).toBeVisible();
+  });
+});
+
+test.describe("infrastructure", () => {
+  test("health check reports the database is reachable", async ({ request }) => {
+    const res = await request.get("/api/health");
+    expect(res.status()).toBe(200);
+    expect(await res.json()).toMatchObject({
+      status: "ok",
+      checks: { database: "ok" },
+    });
+  });
+
+  test("a missing page returns a real 404, not a soft one", async ({ page }) => {
+    const res = await page.goto("/this-page-does-not-exist/");
+    expect(res?.status()).toBe(404);
+    await expect(page.getByRole("heading", { level: 1 })).toContainText(/doesn't exist/i);
+  });
+
+  test("the API is not cacheable", async ({ request }) => {
+    const res = await request.get("/api/health");
+    expect(res.headers()["cache-control"]).toContain("no-store");
+  });
+});

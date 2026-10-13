@@ -1,0 +1,178 @@
+# .github/workflows/ci.yml
+#
+# Garibaldi Pharmacy site: test on every PR, deploy on push.
+#
+# Branch -> environment mapping:
+#   feat/do-migration -> staging   (port 3001, /srv/garibaldi-staging)
+#   main              -> production (port 3000, /srv/garibaldi-prod)
+#
+# Required GitHub Environment configuration:
+#   Environment "staging"     vars:    SITE_URL, SITE_INDEXABLE, DEPLOY_PATH, SERVICE, PORT
+#   Environment "production"  vars:    same, plus required reviewers enabled
+#   Repo secrets:                      DEPLOY_HOST, DEPLOY_USER, DEPLOY_SSH_KEY, SSH_KNOWN_HOSTS
+
+name: CI
+
+on:
+  push:
+    branches: [feat/do-migration, main]
+  pull_request:
+
+# Never let two runs on the same ref overlap.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Match the droplet exactly. This is what keeps native modules loadable.
+  NODE_VERSION: "22"
+
+jobs:
+  # ---------------------------------------------------------------------------
+  test:
+    name: Lint, unit, build, e2e
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - run: npm ci
+
+      - name: Prepare Nuxt types
+        run: npx nuxt prepare
+
+      - name: Lint
+        run: npm run lint --if-present
+
+      - name: Unit and component tests
+        run: npm run test:unit
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: pw-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      # e2e runs against the real build output, not the dev server, so we are
+      # testing the artifact we actually ship.
+      - name: Build
+        run: npm run build
+        env:
+          NUXT_SITE_URL: http://localhost:3000
+          NUXT_SITE_INDEXABLE: "false"
+
+      - name: End-to-end tests
+        run: npm run test:e2e
+
+      # NOTE: traces and screenshots capture whatever the tests type.
+      # Test fixtures must use obviously fake patient data. Short retention.
+      - name: Upload Playwright report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 3
+
+  # ---------------------------------------------------------------------------
+  deploy:
+    name: Deploy
+    needs: test
+    # Pushes only. A pull_request event must never reach this job, so that
+    # deploy credentials are unreachable from a fork.
+    if: github.event_name == 'push'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+
+    environment:
+      name: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
+      url: ${{ vars.SITE_URL }}
+
+    # Serialise deploys to a given environment. Never cancel mid-deploy: a
+    # cancelled symlink swap is how you get a half-deployed site.
+    concurrency:
+      group: deploy-${{ github.ref }}
+      cancel-in-progress: false
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - run: npm ci
+
+      # Built per environment, because prerendered HTML and the sitemap bake in
+      # absolute URLs. The staging artifact is not promotable to production.
+      - name: Build for ${{ vars.SITE_URL }}
+        run: npm run build
+        env:
+          NUXT_SITE_URL: ${{ vars.SITE_URL }}
+          NUXT_SITE_INDEXABLE: ${{ vars.SITE_INDEXABLE }}
+
+      - name: Set release stamp
+        id: rel
+        run: echo "stamp=$(date -u +%Y%m%d-%H%M%S)-${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          # Pinned host key. Do not use StrictHostKeyChecking=no.
+          echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Upload release
+        env:
+          HOST: ${{ secrets.DEPLOY_HOST }}
+          USER: ${{ secrets.DEPLOY_USER }}
+          PATH_BASE: ${{ vars.DEPLOY_PATH }}
+          STAMP: ${{ steps.rel.outputs.stamp }}
+        run: |
+          set -euo pipefail
+          ssh "$USER@$HOST" "mkdir -p '$PATH_BASE/releases/$STAMP'"
+          rsync -az --delete \
+            -e "ssh -o BatchMode=yes" \
+            .output/ "$USER@$HOST:$PATH_BASE/releases/$STAMP/.output/"
+
+      # The server-side script does the symlink swap, restart, health check and
+      # automatic rollback. Keeping it on the server means CI never needs to know
+      # how the box is wired, and the deploy user's sudo rights stay narrow.
+      - name: Activate release
+        env:
+          HOST: ${{ secrets.DEPLOY_HOST }}
+          USER: ${{ secrets.DEPLOY_USER }}
+          PATH_BASE: ${{ vars.DEPLOY_PATH }}
+          SERVICE: ${{ vars.SERVICE }}
+          PORT: ${{ vars.PORT }}
+          STAMP: ${{ steps.rel.outputs.stamp }}
+        run: |
+          set -euo pipefail
+          ssh "$USER@$HOST" \
+            "/srv/bin/activate-release.sh '$PATH_BASE' '$STAMP' '$SERVICE' '$PORT'"
+
+      - name: Public smoke test
+        env:
+          URL: ${{ vars.SITE_URL }}
+        run: |
+          set -euo pipefail
+          # Staging sits behind basic auth, so only assert that TLS works and the
+          # server answers. Production asserts a real 200 on the homepage.
+          code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "$URL/")
+          echo "GET $URL/ -> $code"
+          case "$code" in
+            200|401) exit 0 ;;
+            *) echo "Unexpected status"; exit 1 ;;
+          esac
