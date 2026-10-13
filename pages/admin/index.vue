@@ -1,16 +1,20 @@
 <template>
   <div class="container mx-auto my-10 px-4 max-w-5xl">
-    <h1 class="text-3xl font-bold mb-6">Prescription submissions</h1>
+    <!-- Generic until signed in: an anonymous visitor should not learn what
+         this page holds, only that it needs a password. -->
+    <h1 class="text-3xl font-bold mb-6">{{ heading }}</h1>
 
     <!-- Not configured: say so plainly rather than failing in a confusing way. -->
     <div
       v-if="session && !session.configured"
       class="rounded border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900"
     >
-      <p class="font-medium">This area is not set up yet.</p>
-      <p class="mt-1 font-light">
-        Set <code>ADMIN_PASSWORD_HASH</code> on the server, then reload. Generate one
-        with <code>node scripts/hash-admin-password.mjs</code>.
+      <p class="font-medium">This area is not available.</p>
+      <!-- The setup hint is useful to whoever is configuring the box and useless
+           to everyone else, so it only appears in development. -->
+      <p v-if="isDev" class="mt-1 font-light">
+        Set <code>ADMIN_PASSWORD_HASH</code> in <code>.env</code>, then restart.
+        Generate one with <code>node scripts/hash-admin-password.mjs</code>.
       </p>
     </div>
 
@@ -143,12 +147,13 @@ import type { SubmissionDetailDTO, SubmissionSummaryDTO } from "~~/shared/submis
 // data should only ever arrive via an authenticated fetch.
 definePageMeta({ layout: "default" });
 useHead({ meta: [{ name: "robots", content: "noindex, nofollow" }] });
-useSeoMeta({ title: "Prescription submissions | Garibaldi Pharmacy" });
 
 interface Session {
   configured: boolean;
   authenticated: boolean;
 }
+
+const isDev = import.meta.dev;
 
 const session = ref<Session | null>(null);
 const submissions = ref<SubmissionSummaryDTO[]>([]);
@@ -215,6 +220,13 @@ async function toggle(id: string) {
     detailError.value = "Could not load that submission.";
   }
 }
+
+// Nothing in the document gives away what this page is for until there is a
+// session. The title is reactive, so it changes only after signing in.
+const heading = computed(() =>
+  session.value?.authenticated ? "Prescription submissions" : "Staff sign in",
+);
+useSeoMeta({ title: () => `${heading.value} | Garibaldi Pharmacy` });
 
 function formatWhen(iso: string): string {
   return new Date(iso).toLocaleString("en-CA", {

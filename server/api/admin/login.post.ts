@@ -8,8 +8,9 @@ export default defineEventHandler(async (event) => {
   if (!adminConfigured()) {
     throw createError({
       statusCode: 503,
-      statusMessage:
-        "The submissions area is not configured. Set ADMIN_PASSWORD_HASH on the server.",
+      // Deliberately vague: the detail goes to the server log, not to whoever
+      // happens to be asking.
+      statusMessage: "This area is not available.",
     });
   }
 

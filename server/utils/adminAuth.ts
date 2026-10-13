@@ -115,10 +115,14 @@ export function clearSessionCookie(event: H3Event): void {
 /** Call first in every admin route, including file downloads. */
 export function requireAdmin(event: H3Event): void {
   if (!adminConfigured()) {
+    console.warn(
+      "[admin] blocked: ADMIN_PASSWORD_HASH is not set, so the submissions area is disabled",
+    );
     throw createError({
       statusCode: 503,
-      statusMessage:
-        "The submissions area is not configured. Set ADMIN_PASSWORD_HASH on the server.",
+      // Deliberately vague: the detail goes to the server log, not to whoever
+      // happens to be asking.
+      statusMessage: "This area is not available.",
     });
   }
   if (!tokenValid(getCookie(event, SESSION_COOKIE))) {

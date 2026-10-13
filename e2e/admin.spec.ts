@@ -57,6 +57,25 @@ test.describe("admin access control", () => {
     await expect(page.getByRole("button", { name: /sign out/i })).toHaveCount(0);
   });
 
+  test("gives nothing away before sign-in", async ({ page }) => {
+    await page.goto("/admin");
+
+    // An anonymous visitor should learn that a password is needed, and nothing
+    // about what is behind it.
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText(/staff sign in/i);
+    await expect(page).toHaveTitle(/staff sign in/i);
+
+    const html = await page.content();
+    expect(html.toLowerCase()).not.toContain("prescription submissions");
+  });
+
+  test("names the heading only once signed in", async ({ page }) => {
+    await signIn(page);
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+      /prescription submissions/i,
+    );
+  });
+
   test("is not indexable", async ({ page }) => {
     await page.goto("/admin");
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
