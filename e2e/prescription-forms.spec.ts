@@ -39,7 +39,9 @@ test.describe("refill", () => {
     await page.getByRole("button", { name: /send refill request/i }).click();
 
     await expect(page).toHaveURL(/\/success\/refill/);
-    await expect(page.getByRole("heading", { level: 2 })).toContainText(/thank you/i);
+    await expect(page.getByRole("heading", { level: 2 }).first()).toContainText(
+      /thank you/i,
+    );
   });
 
   test("blocks an empty medication list and keeps what was typed", async ({ page }) => {
@@ -68,8 +70,13 @@ test.describe("refill", () => {
     await page.goto("/prescriptions/refill/");
     await fillCommonFields(page);
     await page.fill("#medications", "Ramipril 10mg capsules");
-    // A human cannot reach this field; a bot fills everything it finds.
-    await page.locator("#bot-field").fill("http://spam.example");
+    // Playwright refuses to fill it, because it is genuinely invisible, which is
+    // the point. Set it the way a scripted bot would instead.
+    await page.evaluate(() => {
+      const el = document.querySelector("#bot-field") as HTMLInputElement;
+      el.value = "http://spam.example";
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+    });
 
     await page.getByRole("button", { name: /send refill request/i }).click();
     await expect(page).toHaveURL(/\/success\/refill/);

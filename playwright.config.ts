@@ -28,6 +28,9 @@ export default defineConfig({
           PORT: "3000",
           // Isolated store so a test run never touches real submissions.
           DATA_DIR: ".data/e2e",
+          // The suite makes more submissions from one IP than a real patient ever
+          // would. Rate limiting itself is covered by the unit tests.
+          SUBMIT_RATE_LIMIT: "1000",
         },
       },
 });
