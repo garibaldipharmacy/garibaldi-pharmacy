@@ -33,6 +33,8 @@ export default defineNuxtConfig({
     "/success/**": { robots: "noindex, nofollow" },
     // Patient data must never be cached by a browser or an intermediary.
     "/api/**": { headers: { "cache-control": "no-store" } },
+    // The submissions view is for staff, never for search engines.
+    "/admin/**": { robots: "noindex, nofollow", headers: { "cache-control": "no-store" } },
   },
   site: {
     // Overridden at runtime by NUXT_SITE_URL, which is how staging advertises

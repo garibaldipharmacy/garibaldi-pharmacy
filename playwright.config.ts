@@ -31,6 +31,10 @@ export default defineConfig({
           // The suite makes more submissions from one IP than a real patient ever
           // would. Rate limiting itself is covered by the unit tests.
           SUBMIT_RATE_LIMIT: "1000",
+          // Known-good credentials for the admin tests. This hash exists only
+          // in CI and corresponds to a password that guards nothing real.
+          ADMIN_PASSWORD_HASH: "scrypt$53b7dab4e46a01b1c3a2101174c2d623$c5043707401f2af457367ae71c368839dcb9e22632e450a71dca9be18bac25a73dce5c0177f91b352814cda7c7f30a11bb1fbdf19ee4e6111635b02f3fbd16b7",
+          ADMIN_SESSION_SECRET: "e2e-session-secret",
         },
       },
 });

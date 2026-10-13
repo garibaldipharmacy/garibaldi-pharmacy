@@ -102,7 +102,7 @@ export function staffNotification(args: {
       `Reference: ${args.reference}`,
       args.flagged ? `This one is flagged for review.` : ``,
       ``,
-      `Open the dashboard to view it: ${siteUrl()}/admin/submissions`,
+      `Open the dashboard to view it: ${siteUrl()}/admin`,
       ``,
       `No patient details are included in this email by design.`,
     ]
