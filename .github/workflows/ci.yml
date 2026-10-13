@@ -87,9 +87,13 @@ jobs:
   deploy:
     name: Deploy
     needs: test
-    # Pushes only. A pull_request event must never reach this job, so that
-    # deploy credentials are unreachable from a fork.
-    if: github.event_name == 'push'
+    # Pushes only: a pull_request event must never reach this job, so that deploy
+    # credentials are unreachable from a fork.
+    #
+    # Also skipped until the droplet exists. Set the DEPLOY_PATH variable on the
+    # staging and production GitHub Environments to switch deployment on; until
+    # then the test job alone decides whether the branch is green.
+    if: github.event_name == 'push' && vars.DEPLOY_PATH != ''
     runs-on: ubuntu-24.04
     timeout-minutes: 15
 
