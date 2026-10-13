@@ -189,11 +189,11 @@
 
         <FormFileRepeater
           v-model="insurance"
-          legend="Insurance plan cards"
-          hint="Optional. Only needed if your coverage is new or has changed."
+          legend="Insurance plan cards (optional)"
+          hint="Only if you have coverage and it is new or has changed. Having insurance is not required to send us a prescription."
           item-label="Insurance card"
           plural-label="insurance cards"
-          add-label="Add another insurance card"
+          add-label="Add an insurance card"
           error-prefix="insurance"
           :errors="errors"
           :fields="insuranceFields"
@@ -263,7 +263,7 @@ const summary = ref(null);
 
 const prescriptionFields = [{ key: "file", label: "Prescription", required: true }];
 const insuranceFields = [
-  { key: "front", label: "Front of card", required: true },
+  { key: "front", label: "Front of card" },
   {
     key: "back",
     label: "Back of card",

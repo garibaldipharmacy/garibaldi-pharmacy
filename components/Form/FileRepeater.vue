@@ -150,7 +150,8 @@ function addRow() {
 
 function removeRow(index: number) {
   const next = rows.value.filter((_, i) => i !== index);
-  emit("update:modelValue", next.length ? next : [emptyRow()]);
+  // An optional group (minRows 0) may go back to showing nothing at all.
+  emit("update:modelValue", next.length >= props.minRows ? next : [emptyRow()]);
 }
 
 function onSelect(index: number, key: string, event: Event) {
@@ -179,8 +180,10 @@ function humanSize(bytes: number): string {
   return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
 }
 
-// Always render at least one row so the form never looks empty.
+// Required groups open with a row so the form does not look empty. Optional
+// groups open with none, so the add button is the only thing on screen and the
+// group reads as "only if you have one".
 onMounted(() => {
-  if (rows.value.length === 0) emit("update:modelValue", [emptyRow()]);
+  if (rows.value.length < props.minRows) emit("update:modelValue", [emptyRow()]);
 });
 </script>

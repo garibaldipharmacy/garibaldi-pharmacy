@@ -114,6 +114,27 @@ test.describe("send, with the dynamic repeaters", () => {
   test("starts with one prescription row and no insurance rows", async ({ page }) => {
     await page.goto("/prescriptions/send/");
     await expect(page.locator('input[id^="prescriptions-"][type="file"]')).toHaveCount(1);
+    // Having insurance at all is optional, so the group opens empty and the add
+    // button is the only thing on screen.
+    await expect(page.locator('input[id^="insurance-"][type="file"]')).toHaveCount(0);
+  });
+
+  test("submits with no insurance card at all", async ({ page }) => {
+    await page.goto("/prescriptions/send/");
+    await fillCommonFields(page);
+    await page.locator("#prescriptions-0-file").setInputFiles(pngFixture());
+
+    await page.getByRole("button", { name: /send prescription/i }).click();
+    await expect(page).toHaveURL(/\/success\/send/, { timeout: 30_000 });
+  });
+
+  test("an added insurance card can be removed again", async ({ page }) => {
+    await page.goto("/prescriptions/send/");
+    await page.getByRole("button", { name: /add an insurance card/i }).click();
+    await expect(page.locator('input[id^="insurance-"][type="file"]')).toHaveCount(2);
+
+    await page.locator("#insurance-0-front").locator("xpath=ancestor::li").getByRole("button", { name: /remove/i }).click();
+    await expect(page.locator('input[id^="insurance-"][type="file"]')).toHaveCount(0);
   });
 
   test("adds prescriptions up to the maximum, then explains why it stops", async ({
@@ -150,7 +171,7 @@ test.describe("send, with the dynamic repeaters", () => {
       await page.locator(`#prescriptions-${i}-file`).setInputFiles(pngFixture(`rx${i}.png`));
     }
 
-    const addCard = page.getByRole("button", { name: /add another insurance card/i });
+    const addCard = page.getByRole("button", { name: /add an insurance card/i });
     await addCard.click();
     await addCard.click();
     await page.locator("#insurance-0-front").setInputFiles(pngFixture("front0.png"));
