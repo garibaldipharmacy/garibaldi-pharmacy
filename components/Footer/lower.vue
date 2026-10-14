@@ -1,21 +1,23 @@
 <template>
   <div
-    class="flex flex-wrap items-center justify-center gap-5 py-4 pb-1 border-t border-primary-800 mt-5 text-sm"
+    class="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-6 text-sm"
   >
-    <span class="font-light">&copy; {{ year }} Goodfella's Pharmacy Ltd.</span>
-    <ul class="flex gap-3">
-      <li
-        v-for="social in socials"
-        :key="social.name"
-        class="hover:opacity-50 transition-opacity"
-      >
-        <NuxtLink :href="social.link" :title="social.name">
+    <span class="font-light text-primary-200"
+      >&copy; {{ year }} Goodfella's Pharmacy Ltd.</span
+    >
+    <ul class="flex gap-2">
+      <li v-for="social in socials" :key="social.name">
+        <NuxtLink
+          :href="social.link"
+          :title="social.name"
+          class="flex h-9 w-9 items-center justify-center rounded-full bg-white/5 text-primary-200 transition-colors hover:bg-white/20 hover:text-white"
+        >
           <Icon :name="social.icon" />
         </NuxtLink>
       </li>
     </ul>
 
-    <ul class="ml-auto font-extralight opacity-75 flex gap-5">
+    <ul class="hidden">
       <!-- <li>
         <NuxtLink to="/sitemap/" class="hover:opacity-50 transition-opacity"
           >Sitemap</NuxtLink

@@ -21,7 +21,7 @@
                The close button lives inside the panel so tapping it can't
                also register as an outside click and reopen the menu. -->
           <div
-            class="flex flex-wrap items-center gap-5 p-5 shadow-lg shrink-0"
+            class="flex shrink-0 items-center gap-5 border-b border-primary-900/10 px-4 py-3 sm:px-6"
           >
             <div class="logo w-1/3 sm:w-auto">
               <NuxtLink to="/" @click="close">

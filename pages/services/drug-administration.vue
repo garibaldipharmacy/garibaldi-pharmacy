@@ -1,47 +1,39 @@
 <template>
-  <!-- Hero Section -->
-  <section class="mx-auto">
-    <div class="relative">
-      <img
-        class="w-full"
-        src="@/assets/images/squamish-drug-administration-1440.webp"
-        srcset="
-          @/assets/images/squamish-drug-administration-800.webp 800w,
-          @/assets/images/squamish-drug-administration-1440.webp 1440w,
-          @/assets/images/squamish-drug-administration-2400.webp 2400w
-        "
-        sizes="100vw"
-        width="1440"
-        height="960"
-        fetchpriority="high"
-        alt="Woman taking pills from a jar on hand"
-      />
-      <div
-        class="hero-over-text px-5 my-10 text-primary-900 bg-white sm:shadow-lg rounded-xl"
+  <PageIntro title="Drug Administration">
+    <p>
+      Do you have a medication that you need help administered? Pharmacists can
+      administer them for you and the fee is sometimes covered by the
+      government. Give us a call at
+      <NuxtLink
+        :href="`tel:${phoneMain}`"
+        class="font-normal text-primary-700 underline underline-offset-4 hover:no-underline"
+        >{{ phoneMain }}</NuxtLink
       >
-        <h1 class="text-4xl font-bold">
-          <span>Drug Administration</span>
-        </h1>
-        <p class="font-light mt-5 opacity-75 sm:opacity-100">
-          Do you have a medication that you need help administered? Pharmacists
-          can administer them for you and the fee is sometimes covered by the
-          government. Give us a call at
-          <NuxtLink
-            :href="`tel:${phoneMain}`"
-            class="underline hover:no-underline hover:opacity-75 transition-opacity"
-            >{{ phoneMain }}</NuxtLink
-          >
-          or email
-          <NuxtLink
-            :href="`mailto:${email}`"
-            class="underline hover:no-underline hover:opacity-75 transition-opacity"
-            >{{ email }}</NuxtLink
-          >
-          if you would like to know more.
-        </p>
-      </div>
-    </div>
-  </section>
+      or email
+      <NuxtLink
+        :href="`mailto:${email}`"
+        class="break-words font-normal text-primary-700 underline underline-offset-4 hover:no-underline"
+        >{{ email }}</NuxtLink
+      >
+      if you would like to know more.
+    </p>
+  </PageIntro>
+
+  <PagePhoto class="pb-20 lg:pb-24">
+    <img
+      src="@/assets/images/squamish-drug-administration-1440.webp"
+      srcset="
+        @/assets/images/squamish-drug-administration-800.webp 800w,
+        @/assets/images/squamish-drug-administration-1440.webp 1440w,
+        @/assets/images/squamish-drug-administration-2400.webp 2400w
+      "
+      sizes="(min-width: 1152px) 1104px, calc(100vw - 2rem)"
+      width="1440"
+      height="960"
+      fetchpriority="high"
+      alt="Woman taking pills from a jar on hand"
+    />
+  </PagePhoto>
 </template>
 
 <script lang="ts" setup>
@@ -83,18 +75,3 @@ useHead({
   ],
 });
 </script>
-
-<style scoped>
-@media screen and (min-width: 640px) {
-  .hero-over-text {
-    position: absolute;
-    top: 50%;
-    left: 4rem;
-    transform: translateY(-50%);
-    width: 500px;
-    max-width: calc(100% - 40px);
-    padding: 2rem;
-    margin-top: 0;
-  }
-}
-</style>

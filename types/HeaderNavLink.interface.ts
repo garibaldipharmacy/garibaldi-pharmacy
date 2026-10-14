@@ -9,7 +9,7 @@ export interface HeaderNavLink {
   // Desktop renders this as the pill button after the links; mobile shows it
   // as a normal row
   variant?: "button";
-  // Icon colour scheme, matching ButtonPill themes
+  // Icon colour scheme, matching ActionTile themes
   theme?: "primary" | "secondary";
   // Short summary shown under the title in the desktop dropdown
   description?: string;

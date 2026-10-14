@@ -30,6 +30,17 @@ function pngFixture(name = "prescription.png") {
   };
 }
 
+/**
+ * Attaches a photo. Photos open a review step straight away, as in a scanner
+ * app; accept it as it is, the way most patients will
+ */
+async function attachPhoto(page: Page, selector: string, file = pngFixture()) {
+  await page.locator(selector).setInputFiles(file);
+  const editor = page.getByRole("dialog");
+  await editor.getByRole("button", { name: "Use photo" }).click();
+  await expect(editor).toBeHidden();
+}
+
 test.describe("refill", () => {
   test("submits and lands on the success page", async ({ page }) => {
     await page.goto("/prescriptions/refill/");
@@ -122,7 +133,7 @@ test.describe("send, with the dynamic repeaters", () => {
   test("submits with no insurance card at all", async ({ page }) => {
     await page.goto("/prescriptions/send/");
     await fillCommonFields(page);
-    await page.locator("#prescriptions-0-file").setInputFiles(pngFixture());
+    await attachPhoto(page, "#prescriptions-0-file");
 
     await page.getByRole("button", { name: /send prescription/i }).click();
     await expect(page).toHaveURL(/\/success\/send/, { timeout: 30_000 });
@@ -168,16 +179,16 @@ test.describe("send, with the dynamic repeaters", () => {
     await addRx.click();
     await addRx.click();
     for (let i = 0; i < 3; i++) {
-      await page.locator(`#prescriptions-${i}-file`).setInputFiles(pngFixture(`rx${i}.png`));
+      await attachPhoto(page, `#prescriptions-${i}-file`, pngFixture(`rx${i}.png`));
     }
 
     const addCard = page.getByRole("button", { name: /add an insurance card/i });
     await addCard.click();
     await addCard.click();
-    await page.locator("#insurance-0-front").setInputFiles(pngFixture("front0.png"));
-    await page.locator("#insurance-0-back").setInputFiles(pngFixture("back0.png"));
+    await attachPhoto(page, "#insurance-0-front", pngFixture("front0.png"));
+    await attachPhoto(page, "#insurance-0-back", pngFixture("back0.png"));
     // Second card deliberately has no back: some cards have nothing on them.
-    await page.locator("#insurance-1-front").setInputFiles(pngFixture("front1.png"));
+    await attachPhoto(page, "#insurance-1-front", pngFixture("front1.png"));
 
     await page.getByRole("button", { name: /send prescription/i }).click();
     await expect(page).toHaveURL(/\/success\/send/, { timeout: 30_000 });

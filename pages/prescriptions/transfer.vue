@@ -1,295 +1,252 @@
 <template>
-  <PrescriptionFormSelector />
-  <PrescriptionHeader />
-  <div class="container mx-auto mt-10 mb-10">
-    <form class="mt-10" novalidate @submit.prevent="onSubmit">
-      <div
-        class="grid gap-6 mb-6 md:grid-cols-2 shadow-lg border border-primary-100 rounded py-5 px-2"
-      >
-        <!-- Honeypot. Hidden from people, irresistible to bots. -->
-        <div class="hidden" aria-hidden="true">
-          <label for="bot-field">Do not fill this in</label>
-          <input
-            id="bot-field"
-            v-model="botField"
-            type="text"
-            name="bot-field"
-            tabindex="-1"
-            autocomplete="off"
-          />
-        </div>
+  <div class="mx-auto max-w-3xl px-4 pt-10 pb-20 sm:px-6 lg:pt-14 lg:pb-24">
+    <PrescriptionFormSelector />
+    <PrescriptionHeader />
 
-        <FormErrorSummary ref="summary" :message="error" :errors="errors" />
+    <form
+      class="mt-10 space-y-8 rounded-3xl bg-primary-50 p-6 sm:p-10"
+      novalidate
+      @submit.prevent="onSubmit"
+    >
+      <FormErrorSummary ref="summary" :message="error" :errors="errors" />
 
-        <!-- Legal First Name -->
-        <div class="col-span-2 px-5 sm:col-auto">
-          <label for="first_name" class="flex mb-2 text-sm font-medium text-gray-900"
-            >Legal First Name
-            <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
-          /></label>
+      <p class="text-sm font-light text-slate-600">
+        All fields are required unless marked optional.
+      </p>
+
+      <FormSection :step="1" title="About you">
+        <FormField
+          id="first_name"
+          label="Legal First Name"
+          :error="fieldError('patient.firstName')"
+          v-slot="{ field }"
+        >
           <input
-            id="first_name"
+            v-bind="field"
             v-model="patient.firstName"
             type="text"
             name="first_name"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-            placeholder="Johnathon"
+            class="form-input"
             autocomplete="given-name"
             required
           />
-          <FieldError :message="fieldError('patient.firstName')" />
-        </div>
+        </FormField>
 
-        <!-- Legal Last Name -->
-        <div class="col-span-2 px-5 sm:col-span-1">
-          <label for="last_name" class="flex mb-2 text-sm font-medium text-gray-900"
-            >Legal Last Name
-            <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
-          /></label>
+        <FormField
+          id="last_name"
+          label="Legal Last Name"
+          :error="fieldError('patient.lastName')"
+          v-slot="{ field }"
+        >
           <input
-            id="last_name"
+            v-bind="field"
             v-model="patient.lastName"
             type="text"
             name="last_name"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-            placeholder="Doe"
+            class="form-input"
             autocomplete="family-name"
             required
           />
-          <FieldError :message="fieldError('patient.lastName')" />
-        </div>
+        </FormField>
 
-        <!-- Sex -->
-        <div class="col-span-2 px-5 sm:col-span-1">
-          <label for="sex" class="block mb-2 text-sm font-medium text-gray-900"
-            >Sex</label
-          >
+        <FormField
+          id="date_of_birth"
+          label="Date of Birth"
+          :error="fieldError('patient.dateOfBirth')"
+          v-slot="{ field }"
+        >
+          <input
+            v-bind="field"
+            v-model="patient.dateOfBirth"
+            type="date"
+            name="date_of_birth"
+            class="form-input"
+            autocomplete="bday"
+            required
+          />
+        </FormField>
+
+        <FormField
+          id="sex"
+          label="Sex"
+          optional
+          :error="fieldError('patient.sex')"
+          v-slot="{ field }"
+        >
           <select
-            id="sex"
+            v-bind="field"
             v-model="patient.sex"
             name="sex"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
+            class="form-input"
           >
             <option :value="undefined" disabled>Select Sex</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
           </select>
-          <FieldError :message="fieldError('patient.sex')" />
-        </div>
+        </FormField>
 
-        <!-- Date of Birth -->
-        <div class="col-span-2 px-5 sm:col-span-1">
-          <label
-            for="date_of_birth"
-            class="flex mb-2 text-sm font-medium text-gray-900"
-            >Date of Birth
-            <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
-          /></label>
+        <FormField
+          id="personal_health_number"
+          label="Personal Health Number"
+          hint="On the back of your BC Services Card, driver's licence or CareCard."
+          optional
+          :error="fieldError('patient.phn')"
+          v-slot="{ field }"
+        >
           <input
-            id="date_of_birth"
-            v-model="patient.dateOfBirth"
-            type="date"
-            name="date_of_birth"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-            placeholder="Select date"
-            autocomplete="bday"
-            required
-          />
-          <FieldError :message="fieldError('patient.dateOfBirth')" />
-        </div>
-
-        <!-- Personal Health Number -->
-        <div class="col-span-2 px-5 sm:col-span-1">
-          <label
-            for="personal_health_number"
-            class="block mb-2 text-sm font-medium text-gray-900"
-            >Personal Health Number</label
-          >
-          <input
-            id="personal_health_number"
+            v-bind="field"
             v-model="patient.phn"
             v-maska
             type="text"
             name="personal_health_number"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
+            class="form-input"
             placeholder="9123-456-789"
             data-maska="####-###-###"
           />
-          <FieldError :message="fieldError('patient.phn')" />
-        </div>
+        </FormField>
+      </FormSection>
 
-        <!-- Cell Phone Number -->
-        <div class="col-span-2 px-5 sm:col-span-1">
-          <label
-            for="cell_phone_number"
-            class="flex mb-2 text-sm font-medium text-gray-900"
-            >Cell Phone Number
-            <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
-          /></label>
+      <FormSection :step="2" title="How we can reach you">
+        <FormField
+          id="cell_phone_number"
+          label="Cell Phone Number"
+          :error="fieldError('patient.phone')"
+          v-slot="{ field }"
+        >
           <input
-            id="cell_phone_number"
+            v-bind="field"
             v-model="patient.phone"
             v-maska
             type="tel"
             name="cell_phone_number"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
+            class="form-input"
             placeholder="(604) 123-4567"
             data-maska="(###) ###-####"
             autocomplete="tel"
             required
           />
-          <FieldError :message="fieldError('patient.phone')" />
-        </div>
+        </FormField>
 
-        <!-- Email -->
-        <div class="col-span-2 px-5 sm:col-span-1">
-          <label for="email" class="flex mb-2 text-sm font-medium text-gray-900"
-            >Email
-            <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
-          /></label>
+        <FormField
+          id="email"
+          label="Email"
+          :error="fieldError('patient.email')"
+          v-slot="{ field }"
+        >
           <input
-            id="email"
+            v-bind="field"
             v-model="patient.email"
             type="email"
             name="email"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-            placeholder="john@example.com"
+            class="form-input"
             autocomplete="email"
             required
           />
-          <FieldError :message="fieldError('patient.email')" />
-        </div>
+        </FormField>
+      </FormSection>
 
-        <!-- Pharmacy Name -->
-        <div class="col-span-2 px-5 sm:col-span-1">
-          <label
-            for="pharmacy_name"
-            class="flex mb-2 text-sm font-medium text-gray-900"
-            >Pharmacy Name
-            <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
-          /></label>
+      <FormSection :step="3" title="Your current pharmacy">
+        <FormField
+          id="pharmacy_name"
+          label="Pharmacy Name"
+          :error="fieldError('fromPharmacyName')"
+          v-slot="{ field }"
+        >
           <input
-            id="pharmacy_name"
+            v-bind="field"
             v-model="fromPharmacyName"
             type="text"
             name="pharmacy_name"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-            placeholder="ABC Pharmacy"
+            class="form-input"
+            autocomplete="organization"
             required
           />
-          <FieldError :message="fieldError('fromPharmacyName')" />
-        </div>
+        </FormField>
 
-        <!-- Pharmacy Phone Number -->
-        <div class="col-span-2 px-5 sm:col-span-1">
-          <label
-            for="pharmacy_phone_number"
-            class="flex mb-2 text-sm font-medium text-gray-900"
-            >Pharmacy Phone Number
-            <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
-          /></label>
+        <FormField
+          id="pharmacy_phone_number"
+          label="Pharmacy Phone Number"
+          :error="fieldError('fromPharmacyPhone')"
+          v-slot="{ field }"
+        >
           <input
-            id="pharmacy_phone_number"
+            v-bind="field"
             v-model="fromPharmacyPhone"
             v-maska
             type="tel"
             name="pharmacy_phone_number"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
+            class="form-input"
             placeholder="(604) 123-4567"
             data-maska="(###) ###-####"
             required
           />
-          <FieldError :message="fieldError('fromPharmacyPhone')" />
-        </div>
+        </FormField>
 
-        <!-- Transfer all eligible prescriptions? -->
-        <div>
-          <RadioGroup v-model="transferAll" class="col-span-2 px-5 sm:col-span-1">
-            <RadioGroupLabel as="span">
-              Transfer all eligible prescriptions?
-            </RadioGroupLabel>
-            <RadioGroupOption
-              v-for="option in transferOptions"
-              :key="String(option.value)"
-              v-slot="{ checked }"
-              :value="option.value"
-            >
-              <span
-                class="font-light cursor-pointer hover:text-secondary-900 transition-colors"
-              >
-                <Icon
-                  v-if="checked"
-                  name="fa6-solid:circle-check"
-                  class="text-secondary-900 mr-3"
-                />
-                <Icon v-else name="fa6-regular:circle" class="mr-3" />
-                {{ option.label }}
-              </span>
-            </RadioGroupOption>
-          </RadioGroup>
+        <FormChoice
+          v-model="transferAll"
+          label="Transfer all eligible prescriptions?"
+          :options="transferOptions"
+          class="sm:col-span-2"
+        />
 
-          <!-- Only needed when the patient is not transferring everything. -->
-          <div v-if="!transferAll" class="col-span-2 px-5 sm:col-span-1 mt-5">
-            <label
-              for="medications"
-              class="flex mb-2 text-sm font-medium text-gray-900"
-            >
-              <span
-                >Please list medications you would like transferred by name and
-                strength. For example: Ramipril 10mg capsules</span
-              >
-              <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1" />
-            </label>
-            <textarea
-              id="medications"
-              v-model="medications"
-              placeholder="Ramipril 10mg capsules"
-              name="medications"
-              cols="30"
-              rows="10"
-              class="border border-gray-300 bg-gray-50 rounded w-full font-light p-3 text-sm"
-            ></textarea>
-            <FieldError :message="fieldError('medications')" />
-          </div>
-        </div>
-
-        <!-- Notes for the Pharmacist -->
-        <div class="col-span-2 px-5 sm:col-span-1">
-          <label for="notes" class="block mb-2 text-sm font-medium text-gray-900"
-            >Notes for the Pharmacist</label
-          >
+        <!-- Only needed when the patient is not transferring everything. -->
+        <FormField
+          v-if="!transferAll"
+          id="medications"
+          label="Medications to transfer"
+          hint="List each by name and strength. For example: Ramipril 10mg capsules"
+          :error="fieldError('medications')"
+          class="sm:col-span-2"
+          v-slot="{ field }"
+        >
           <textarea
-            id="notes"
-            v-model="notes"
-            placeholder="Enter notes here..."
-            name="notes"
-            cols="30"
-            rows="10"
-            class="border border-gray-300 bg-gray-50 rounded w-full font-light p-3 text-sm"
+            v-bind="field"
+            v-model="medications"
+            name="medications"
+            rows="4"
+            class="form-input"
+            required
           ></textarea>
-          <FieldError :message="fieldError('notes')" />
-        </div>
+        </FormField>
+      </FormSection>
 
-        <div class="mx-5 col-span-2 bg-slate-200 flex-100 font-light p-5 rounded">
-          <p>
-            Note: If you do not receive a confirmation e-mail within 24 hours, please
-            call {{ phoneMain }} for assistance.
-          </p>
-        </div>
+      <FormSection :step="4" title="Anything else?">
+        <FormField
+          id="notes"
+          label="Notes for the Pharmacist"
+          optional
+          :error="fieldError('notes')"
+          class="sm:col-span-2"
+          v-slot="{ field }"
+        >
+          <textarea
+            v-bind="field"
+            v-model="notes"
+            name="notes"
+            rows="4"
+            class="form-input"
+          ></textarea>
+        </FormField>
+      </FormSection>
 
-        <div class="px-5 col-span-2">
-          <FormTurnstile />
-        </div>
+      <FormSubmit
+        label="Send Transfer Request"
+        :pending="pending"
+        icon="fa6-solid:paper-plane"
+      />
 
-        <div class="col-span-2 px-5 sm:col-span-2">
-          <button
-            type="submit"
-            :disabled="pending"
-            class="bg-primary-900 text-white rounded py-2 px-5 hover:bg-primary-800 transition-colors w-full sm:w-auto disabled:opacity-60 disabled:cursor-not-allowed"
-          >
-            {{ pending ? "Sending..." : "Send Transfer Request" }}
-          </button>
-        </div>
+      <!-- Honeypot. Hidden from people, irresistible to bots. Last in the form so
+           its hidden box adds no spacing above anything -->
+      <div class="hidden" aria-hidden="true">
+        <label for="bot-field">Do not fill this in</label>
+        <input
+          id="bot-field"
+          v-model="botField"
+          type="text"
+          name="bot-field"
+          tabindex="-1"
+          autocomplete="off"
+        />
       </div>
     </form>
   </div>
@@ -299,8 +256,6 @@
 // Registered here rather than globally so only the form pages load it
 import { vMaska } from "maska";
 import { reactive, ref } from "vue";
-import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue";
-import { businessInfo } from "~/constants/business";
 
 useSeoMeta({
   title: "Transfer Prescriptions in Squamish | Garibaldi Pharmacy",
@@ -323,8 +278,6 @@ useHead({
   htmlAttrs: { lang: "en" },
   link: [{ rel: "icon", type: "image/png", href: "/favicon/favicon-32x32.png" }],
 });
-
-const phoneMain = businessInfo.contact.phone.main;
 
 const { pending, error, errors, errorRegion, botField, fieldError, submit } =
   useRequestForm("/success/transfer");

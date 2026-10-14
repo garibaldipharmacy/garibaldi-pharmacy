@@ -1,41 +1,30 @@
 <template>
-  <nav>
-    <!-- Mobile: segmented control so all three forms fit on one row -->
-    <ul class="grid grid-cols-3 gap-1 bg-primary-100 p-2 md:hidden">
+  <!-- Switches between the three forms: a pill toggle with the current form
+       raised, short labels on phones and full ones from tablet up -->
+  <nav aria-label="Prescription forms">
+    <ul class="grid grid-cols-3 gap-1 rounded-2xl bg-primary-50 p-1.5">
       <li v-for="action in prescriptionActions" :key="action.link">
         <NuxtLink
           :to="action.link"
+          :aria-current="isActive(action.link) ? 'page' : undefined"
           :class="[
-            'flex flex-col items-center gap-1 rounded-lg px-2 py-3 text-sm transition-colors',
+            'group flex h-full flex-col items-center justify-center gap-1 rounded-xl px-2 py-3 text-sm font-medium transition sm:flex-row sm:gap-2.5 sm:text-base',
             isActive(action.link)
-              ? 'bg-white text-primary-900 shadow-sm'
-              : 'text-primary-700 hover:bg-primary-200',
+              ? 'bg-white text-primary-900 shadow'
+              : 'text-slate-600 hover:bg-white/60 hover:text-primary-900',
           ]"
         >
-          <Icon :name="action.icon" class="text-lg" />
-          <span>{{ action.shortTitle }}</span>
-        </NuxtLink>
-      </li>
-    </ul>
-
-    <ul
-      class="hidden md:flex bg-primary-100 px-5 text-primary-900 border-b-2 flex-wrap"
-    >
-      <li v-for="action in prescriptionActions" :key="action.link">
-        <NuxtLink
-          :class="[
-            'flex',
-            'items-center',
-            'p-5',
-            'hover:border-primary-400',
-            'hover:border-b-4',
-            'hover-bg-primary-200',
-            { 'border-primary-900 bg-primary-200 border-b-4': isActive(action.link) },
-          ]"
-          :to="action.link"
-        >
-          <Icon class="mr-3" :name="action.icon" />
-          <span>{{ action.title }}</span>
+          <span
+            :class="[
+              'inline-flex overflow-hidden text-lg sm:text-base',
+              action.theme === 'secondary' ? 'text-secondary-800' : '',
+              iconMotion(action.icon),
+            ]"
+          >
+            <Icon :name="action.icon" aria-hidden="true" />
+          </span>
+          <span class="md:hidden">{{ action.shortTitle }}</span>
+          <span class="hidden md:inline">{{ action.title }}</span>
         </NuxtLink>
       </li>
     </ul>
@@ -45,6 +34,7 @@
 <script lang="ts" setup>
 import { useRoute } from "vue-router"; // required since we are using outside of <NuxtPage />
 import { prescriptionActions } from "~/constants/prescriptionActions";
+import { iconMotion } from "~/constants/iconMotions";
 
 const route = useRoute();
 

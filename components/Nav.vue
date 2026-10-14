@@ -57,7 +57,7 @@
                       :to="child.link"
                       @click="closeMenu()"
                       :class="[
-                        'group flex gap-3 rounded-lg p-3 transition-colors hover:bg-primary-50',
+                        'group flex h-full gap-3 rounded-lg p-3 transition-colors hover:bg-primary-50',
                         { 'bg-primary-50': isActive(child.link) },
                       ]"
                     >
@@ -117,7 +117,7 @@
       v-for="button in buttonLinks"
       :key="button.title"
       :to="button.link"
-      class="group ml-4 inline-flex items-center gap-2 rounded-full bg-primary-900 px-5 py-3 font-normal text-white transition-colors hover:bg-primary-800"
+      class="group ml-4 inline-flex items-center gap-2 rounded-full bg-primary-900 px-5 py-2.5 text-[15px] font-normal text-white shadow-sm shadow-primary-900/20 transition-colors hover:bg-primary-700"
     >
       {{ button.title }}
       <Icon
@@ -168,8 +168,8 @@ const isSectionActive = (link: HeaderNavLink) =>
   !!link.children?.some((child) => isActive(child.link));
 
 const itemClass = (active: boolean) => [
-  "flex items-center rounded-full px-3 py-2 transition-colors hover:bg-primary-50",
-  active ? "font-normal" : "font-light",
+  "flex items-center rounded-full px-3.5 py-2 text-[15px] transition-colors hover:bg-primary-50 hover:text-primary-900",
+  active ? "font-normal text-primary-900" : "font-light text-primary-900/75",
 ];
 
 const cancelClose = () => clearTimeout(closeTimer);

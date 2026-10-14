@@ -1,233 +1,177 @@
 <template>
-  <PrescriptionFormSelector />
-  <PrescriptionHeader />
-  <div class="container mx-auto mt-10 mb-10">
-    <form class="mt-10" novalidate @submit.prevent="onSubmit">
-      <div
-        class="grid gap-6 mb-6 md:grid-cols-2 shadow-lg border border-primary-100 rounded py-5 px-2"
-      >
-        <!-- Honeypot. Hidden from people, irresistible to bots. -->
-        <div class="hidden" aria-hidden="true">
-          <label for="bot-field">Do not fill this in</label>
-          <input
-            id="bot-field"
-            v-model="botField"
-            type="text"
-            name="bot-field"
-            tabindex="-1"
-            autocomplete="off"
-          />
-        </div>
+  <div class="mx-auto max-w-3xl px-4 pt-10 pb-20 sm:px-6 lg:pt-14 lg:pb-24">
+    <PrescriptionFormSelector />
+    <PrescriptionHeader />
 
-        <FormErrorSummary
-          ref="summary"
-          :message="error"
-          :errors="errors"
-        />
+    <form
+      class="mt-10 space-y-8 rounded-3xl bg-primary-50 p-6 sm:p-10"
+      novalidate
+      @submit.prevent="onSubmit"
+    >
+      <FormErrorSummary ref="summary" :message="error" :errors="errors" />
 
-        <!-- Legal First Name -->
-        <div class="col-span-2 px-5 sm:col-auto">
-          <label for="first_name" class="flex mb-2 text-sm font-medium text-gray-900"
-            >Legal First Name
-            <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
-          /></label>
+      <p class="text-sm font-light text-slate-600">
+        All fields are required unless marked optional.
+      </p>
+
+      <FormSection :step="1" title="About you">
+        <FormField
+          id="first_name"
+          label="Legal First Name"
+          :error="fieldError('patient.firstName')"
+          v-slot="{ field }"
+        >
           <input
-            id="first_name"
+            v-bind="field"
             v-model="patient.firstName"
             type="text"
             name="first_name"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-            placeholder="Johnathon"
+            class="form-input"
             autocomplete="given-name"
             required
           />
-          <FieldError :message="fieldError('patient.firstName')" />
-        </div>
+        </FormField>
 
-        <!-- Legal Last Name -->
-        <div class="col-span-2 px-5 sm:col-span-1">
-          <label for="last_name" class="flex mb-2 text-sm font-medium text-gray-900"
-            >Legal Last Name
-            <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
-          /></label>
+        <FormField
+          id="last_name"
+          label="Legal Last Name"
+          :error="fieldError('patient.lastName')"
+          v-slot="{ field }"
+        >
           <input
-            id="last_name"
+            v-bind="field"
             v-model="patient.lastName"
             type="text"
             name="last_name"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-            placeholder="Doe"
+            class="form-input"
             autocomplete="family-name"
             required
           />
-          <FieldError :message="fieldError('patient.lastName')" />
-        </div>
+        </FormField>
 
-        <div class="flex gap-5 w-full items-center col-span-2 px-5 sm:col-span-1">
-          <!-- Date of Birth -->
-          <div class="w-full">
-            <label
-              for="date_of_birth"
-              class="flex mb-2 text-sm font-medium text-gray-900"
-              >Date of Birth
-              <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
-            /></label>
-            <!-- Previously showed a required asterisk with no `required` attribute. -->
-            <input
-              id="date_of_birth"
-              v-model="patient.dateOfBirth"
-              type="date"
-              name="date_of_birth"
-              class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-              placeholder="Select date"
-              autocomplete="bday"
-              required
-            />
-            <FieldError :message="fieldError('patient.dateOfBirth')" />
-          </div>
-        </div>
-
-        <!-- Cell Phone Number -->
-        <div class="col-span-2 px-5 sm:col-span-1">
-          <label
-            for="cell_phone_number"
-            class="flex mb-2 text-sm font-medium text-gray-900"
-            >Cell Phone Number
-            <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
-          /></label>
+        <FormField
+          id="date_of_birth"
+          label="Date of Birth"
+          :error="fieldError('patient.dateOfBirth')"
+          v-slot="{ field }"
+        >
           <input
-            id="cell_phone_number"
+            v-bind="field"
+            v-model="patient.dateOfBirth"
+            type="date"
+            name="date_of_birth"
+            class="form-input"
+            autocomplete="bday"
+            required
+          />
+        </FormField>
+      </FormSection>
+
+      <FormSection :step="2" title="How we can reach you">
+        <FormField
+          id="cell_phone_number"
+          label="Cell Phone Number"
+          :error="fieldError('patient.phone')"
+          v-slot="{ field }"
+        >
+          <input
+            v-bind="field"
             v-model="patient.phone"
             v-maska
             type="tel"
             name="cell_phone_number"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
+            class="form-input"
             placeholder="(604) 123-4567"
             data-maska="(###) ###-####"
             autocomplete="tel"
             required
           />
-          <FieldError :message="fieldError('patient.phone')" />
-        </div>
+        </FormField>
 
-        <!-- Email -->
-        <div class="col-span-2 px-5 sm:col-span-1">
-          <label for="email" class="flex mb-2 text-sm font-medium text-gray-900"
-            >Email
-            <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
-          /></label>
+        <FormField
+          id="email"
+          label="Email"
+          :error="fieldError('patient.email')"
+          v-slot="{ field }"
+        >
           <input
-            id="email"
+            v-bind="field"
             v-model="patient.email"
             type="email"
             name="email"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-            placeholder="john@example.com"
+            class="form-input"
             autocomplete="email"
             required
           />
-          <FieldError :message="fieldError('patient.email')" />
-        </div>
+        </FormField>
+      </FormSection>
 
-        <!-- Medications to be refilled -->
-        <div class="col-span-2 px-5 sm:col-span-1">
-          <label
-            for="medications"
-            class="flex mb-2 text-sm font-medium text-gray-900"
-          >
-            <span
-              >Please list the medications you would like refilled by the most recent
-              prescription number <strong>OR</strong> provide the name or description
-              of the medication.</span
-            >
-            <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1" />
-          </label>
+      <FormSection :step="3" title="Your refill">
+        <FormField
+          id="medications"
+          label="Medications to refill"
+          hint="List them by the most recent prescription number, or give the name or description of the medication."
+          :error="fieldError('medications')"
+          class="sm:col-span-2"
+          v-slot="{ field }"
+        >
           <!-- Previously optional, so a refill could be submitted listing nothing. -->
           <textarea
-            id="medications"
+            v-bind="field"
             v-model="medications"
-            placeholder="Enter medications here..."
             name="medications"
-            cols="30"
-            rows="10"
-            class="border border-gray-300 bg-gray-50 rounded w-full font-light p-3 text-sm"
+            rows="4"
+            class="form-input"
             required
           ></textarea>
-          <FieldError :message="fieldError('medications')" />
-        </div>
+        </FormField>
 
-        <!-- Pickup or delivery -->
-        <div>
-          <RadioGroup
-            v-model="retrievalMethod"
-            class="col-span-2 px-5 sm:col-span-1"
-          >
-            <RadioGroupLabel as="span">Medication Retrieval</RadioGroupLabel>
-            <RadioGroupOption
-              v-for="(label, value) in RETRIEVAL_METHODS"
-              :key="value"
-              v-slot="{ checked }"
-              :value="value"
-            >
-              <span
-                class="font-light cursor-pointer hover:text-secondary-900 transition-colors"
-              >
-                <Icon
-                  v-if="checked"
-                  name="fa6-solid:circle-check"
-                  class="text-secondary-900 mr-3"
-                />
-                <Icon v-else name="fa6-regular:circle" class="mr-3" />
-                {{ label }}
-              </span>
-            </RadioGroupOption>
-          </RadioGroup>
-        </div>
+        <FormChoice
+          v-model="retrievalMethod"
+          label="Medication Retrieval"
+          :options="retrievalOptions"
+          class="sm:col-span-2"
+        />
+      </FormSection>
 
-        <!-- Special Instructions -->
-        <div class="col-span-2 px-5 sm:col-span-1">
-          <label
-            for="special-instructions"
-            class="block mb-3 text-sm font-medium text-gray-900"
-            >Special Instructions</label
-          >
-          <span class="text-sm font-light"
-            >Please add any extra details that you think we may need to know when
-            filling your prescription.</span
-          >
+      <FormSection :step="4" title="Anything else?">
+        <FormField
+          id="special-instructions"
+          label="Special Instructions"
+          hint="Please add any extra details that you think we may need to know when filling your prescription."
+          optional
+          :error="fieldError('specialInstructions')"
+          class="sm:col-span-2"
+          v-slot="{ field }"
+        >
           <textarea
-            id="special-instructions"
+            v-bind="field"
             v-model="specialInstructions"
-            placeholder="Enter notes here..."
             name="special-instructions"
-            cols="30"
-            rows="10"
-            class="border border-gray-300 bg-gray-50 rounded w-full font-light p-3 text-sm mt-3"
+            rows="4"
+            class="form-input"
           ></textarea>
-          <FieldError :message="fieldError('specialInstructions')" />
-        </div>
+        </FormField>
+      </FormSection>
 
-        <div class="mx-5 col-span-2 bg-slate-200 flex-100 font-light p-5 rounded">
-          <p>
-            Note: If you do not receive a confirmation e-mail within 24 hours, please
-            call {{ phoneMain }} for assistance.
-          </p>
-        </div>
+      <FormSubmit
+        label="Send Refill Request"
+        :pending="pending"
+        icon="fa6-solid:prescription-bottle"
+      />
 
-        <!-- Cloudflare Turnstile replaces Netlify's reCAPTCHA. -->
-        <div class="px-5 col-span-2">
-          <FormTurnstile />
-        </div>
-
-        <div class="col-span-2 px-5 sm:col-span-2">
-          <button
-            type="submit"
-            :disabled="pending"
-            class="bg-primary-900 text-white rounded py-2 px-5 hover:bg-primary-800 transition-colors w-full sm:w-auto disabled:opacity-60 disabled:cursor-not-allowed"
-          >
-            {{ pending ? "Sending..." : "Send Refill Request" }}
-          </button>
-        </div>
+      <!-- Honeypot. Hidden from people, irresistible to bots. Last in the form so
+           its hidden box adds no spacing above anything -->
+      <div class="hidden" aria-hidden="true">
+        <label for="bot-field">Do not fill this in</label>
+        <input
+          id="bot-field"
+          v-model="botField"
+          type="text"
+          name="bot-field"
+          tabindex="-1"
+          autocomplete="off"
+        />
       </div>
     </form>
   </div>
@@ -237,8 +181,6 @@
 // Registered here rather than globally so only the form pages load it
 import { vMaska } from "maska";
 import { reactive, ref } from "vue";
-import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue";
-import { businessInfo } from "~/constants/business";
 import { RETRIEVAL_METHODS } from "~~/shared/forms";
 
 useSeoMeta({
@@ -264,8 +206,6 @@ useHead({
   link: [{ rel: "icon", type: "image/png", href: "/favicon/favicon-32x32.png" }],
 });
 
-const phoneMain = businessInfo.contact.phone.main;
-
 const { pending, error, errors, errorRegion, botField, fieldError, submit } =
   useRequestForm("/success/refill");
 const summary = ref(null);
@@ -279,6 +219,23 @@ const patient = reactive({
 });
 const medications = ref("");
 const retrievalMethod = ref("pickup");
+
+// Short titles, with the original wording kept as each option's description.
+// The key (pickup or delivery) is what gets submitted
+const retrievalOptions = [
+  {
+    value: "pickup",
+    label: "Pickup",
+    icon: "fa6-solid:store",
+    description: RETRIEVAL_METHODS.pickup,
+  },
+  {
+    value: "delivery",
+    label: "Delivery",
+    icon: "fa6-solid:truck",
+    description: RETRIEVAL_METHODS.delivery,
+  },
+];
 const specialInstructions = ref("");
 
 // Point the composable at the summary so a failed submit moves focus there.
