@@ -1,6 +1,7 @@
 # .github/workflows/ci.yml
 #
-# Garibaldi Pharmacy site: test on every PR, deploy on push.
+# Garibaldi Pharmacy site: test and check Lighthouse scores on every PR,
+# deploy on push.
 #
 # Branch -> environment mapping:
 #   feat/do-migration -> staging   (port 3001, /srv/garibaldi-staging)
@@ -84,9 +85,53 @@ jobs:
           retention-days: 3
 
   # ---------------------------------------------------------------------------
+  # Fails the run if a key page's Lighthouse scores drop. Accessibility, best
+  # practices and SEO must stay at 100. Performance has a margin under today's
+  # scores (100 desktop, 91-96 mobile) because CI machines are noisier, and is
+  # judged on the median of three runs. Configs live in lighthouse/.
+  lighthouse:
+    name: Lighthouse
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - run: npm ci
+
+      # Indexable, unlike the e2e build: a noindex page fails Lighthouse's SEO
+      # audit, and this run should score what production serves.
+      - name: Build
+        run: npm run build
+        env:
+          NUXT_SITE_URL: http://127.0.0.1:3000
+          NUXT_SITE_INDEXABLE: "true"
+
+      # Both always run, so one failing doesn't hide the other's results.
+      - name: Mobile
+        run: npx -y @lhci/cli@0.14.0 autorun --config=lighthouse/mobile.json
+
+      - name: Desktop
+        if: success() || failure()
+        run: npx -y @lhci/cli@0.14.0 autorun --config=lighthouse/desktop.json
+
+      - name: Upload Lighthouse reports
+        if: success() || failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: lighthouse-reports/
+          retention-days: 14
+
+  # ---------------------------------------------------------------------------
   deploy:
     name: Deploy
-    needs: test
+    needs: [test, lighthouse]
     # Pushes only: a pull_request event must never reach this job, so that deploy
     # credentials are unreachable from a fork.
     #
