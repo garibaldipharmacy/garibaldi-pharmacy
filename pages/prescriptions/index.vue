@@ -67,14 +67,12 @@ useSeoMeta({
   ogTitle: "Prescriptions in Squamish | Garibaldi Pharmacy & Compounding Lab",
   ogDescription:
     "Easily transfer, refill, or send prescriptions at Garibaldi Pharmacy in Squamish. Our expert pharmacists provide fast, convenient, and personalized prescription services.",
-  ogImage: "/favicon/android-chrome-512x512.png",
+  ...shareImages.dog,
   ogUrl: "https://garibaldipharmacy.com/prescriptions/",
   twitterTitle:
     "Prescriptions in Squamish | Garibaldi Pharmacy & Compounding Lab",
   twitterDescription:
     "Easily transfer, refill, or send prescriptions at Garibaldi Pharmacy in Squamish. Our expert pharmacists provide fast, convenient, and personalized prescription services.",
-  twitterImage: "/favicon/android-chrome-512x512.png",
-  twitterCard: "summary",
 });
 
 useHead({

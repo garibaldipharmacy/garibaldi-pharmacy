@@ -190,12 +190,10 @@ useSeoMeta({
   ogTitle: "Refill Prescriptions in Squamish | Garibaldi Pharmacy",
   ogDescription:
     "Refill your prescriptions quickly at Garibaldi Pharmacy in Squamish. Our expert pharmacists ensure your medications are ready when you need them.",
-  ogImage: "/favicon/android-chrome-512x512.png",
+  ...shareImages.dog,
   twitterTitle: "Refill Prescriptions in Squamish | Garibaldi Pharmacy",
   twitterDescription:
     "Refill your prescriptions quickly at Garibaldi Pharmacy in Squamish. Our expert pharmacists ensure your medications are ready when you need them.",
-  twitterImage: "/favicon/android-chrome-512x512.png",
-  twitterCard: "summary",
 });
 
 // Canonical and ogUrl are generated from `site.url` by nuxt-site-config. They used

@@ -14,7 +14,7 @@
       width="900"
       height="600"
       fetchpriority="high"
-      alt="The Squamish storefront of Garibaldi Pharmacy and Terra Nova Medical clinic"
+      alt="The reception area of Terra Nova Squamish Clinic, inside Garibaldi Pharmacy in Squamish"
     />
   </PagePhoto>
 
@@ -48,7 +48,7 @@
         >
           <img
             src="@/assets/images/logostyles/terranova-logo.svg"
-            alt="Terranova Medical Clinic Logo"
+            alt="Terra Nova Medical Group logo"
             width="150"
             height="91"
             loading="lazy"
@@ -187,14 +187,12 @@ useSeoMeta({
     "Medical Clinic in Squamish | Garibaldi Pharmacy & Terra Nova Clinic",
   ogDescription:
     "Garibaldi Pharmacy in Squamish offers an in-house medical clinic, managed by Terra Nova Medical Group. Get family healthcare, prescriptions, minor ailment care, and vaccinations conveniently on-site.",
-  ogImage: "/favicon/android-chrome-512x512.png",
+  ...shareImages.dog,
   ogUrl: "https://garibaldipharmacy.com/medical-clinic/",
   twitterTitle:
     "Medical Clinic in Squamish | Garibaldi Pharmacy & Terra Nova Clinic",
   twitterDescription:
     "Garibaldi Pharmacy in Squamish offers an in-house medical clinic, managed by Terra Nova Medical Group. Get family healthcare, prescriptions, minor ailment care, and vaccinations conveniently on-site.",
-  twitterImage: "/favicon/android-chrome-512x512.png",
-  twitterCard: "summary",
 });
 
 useHead({

@@ -31,7 +31,7 @@
       width="1440"
       height="960"
       fetchpriority="high"
-      alt="Woman taking pills from a jar on hand"
+      alt="A person pouring tablets from a prescription bottle into their hand"
     />
   </PagePhoto>
 </template>
@@ -49,13 +49,11 @@ useSeoMeta({
   ogTitle: "Drug Administration in Squamish | Garibaldi Pharmacy",
   ogDescription:
     "Garibaldi Pharmacy in Squamish offers professional drug administration services. Our pharmacists can safely administer your medications with personalized care.",
-  ogImage: "/favicon/android-chrome-512x512.png",
+  ...shareImages.dog,
   ogUrl: "https://garibaldipharmacy.com/services/drug-administration/",
   twitterTitle: "Drug Administration in Squamish | Garibaldi Pharmacy",
   twitterDescription:
     "Garibaldi Pharmacy in Squamish offers professional drug administration services. Our pharmacists can safely administer your medications with personalized care.",
-  twitterImage: "/favicon/android-chrome-512x512.png",
-  twitterCard: "summary",
 });
 
 useHead({

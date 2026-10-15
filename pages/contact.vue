@@ -4,19 +4,29 @@
   </PageIntro>
 
   <PagePhoto>
-    <img
-      src="@/assets/images/squamish-pharmacy-front-1440.webp"
-      srcset="
-        @/assets/images/squamish-pharmacy-front-800.webp   800w,
-        @/assets/images/squamish-pharmacy-front-1440.webp 1440w,
-        @/assets/images/squamish-pharmacy-front-2400.webp 2400w
-      "
-      sizes="(min-width: 1152px) 1104px, calc(100vw - 2rem)"
-      width="1440"
-      height="1080"
-      fetchpriority="high"
-      alt="The Squamish storefront of Garibaldi Pharmacy and Terra Nova Medical clinic"
-    />
+    <!-- Cropped to the panel's shapes, so no hidden part of the photo is
+         downloaded: wide for larger screens, about 3:2 for phones -->
+    <picture>
+      <source
+        media="(max-width: 639px)"
+        srcset="@/assets/images/squamish-pharmacy-front-phone.webp"
+        width="824"
+        height="550"
+      />
+      <img
+        src="@/assets/images/squamish-pharmacy-front-1440.webp"
+        srcset="
+          @/assets/images/squamish-pharmacy-front-800.webp   800w,
+          @/assets/images/squamish-pharmacy-front-1440.webp 1440w,
+          @/assets/images/squamish-pharmacy-front-2400.webp 2400w
+        "
+        sizes="(min-width: 1152px) 1104px, calc(100vw - 2rem)"
+        width="1440"
+        height="618"
+        fetchpriority="high"
+        alt="The storefront of Garibaldi Pharmacy and Terra Nova Squamish Clinic at 1870 Dowad Drive in Squamish"
+      />
+    </picture>
   </PagePhoto>
 
   <section class="mx-auto max-w-6xl px-4 pt-10 sm:px-6">
@@ -170,14 +180,12 @@ useSeoMeta({
   ogTitle: "Contact Garibaldi Pharmacy | Squamish Pharmacy & Compounding Lab",
   ogDescription:
     "Get in touch with Garibaldi Pharmacy in Squamish. Reach us by phone, email, or visit our location for prescriptions, compounding, vaccinations, and healthcare services.",
-  ogImage: "/favicon/android-chrome-512x512.png",
+  ...shareImages.storefront,
   ogUrl: "https://garibaldipharmacy.com/contact/",
   twitterTitle:
     "Contact Garibaldi Pharmacy | Squamish Pharmacy & Compounding Lab",
   twitterDescription:
     "Get in touch with Garibaldi Pharmacy in Squamish. Reach us by phone, email, or visit our location for prescriptions, compounding, vaccinations, and healthcare services.",
-  twitterImage: "/favicon/android-chrome-512x512.png",
-  twitterCard: "summary",
 });
 
 useHead({

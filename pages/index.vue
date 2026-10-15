@@ -26,7 +26,7 @@
       />
       <img
         :src="heroImage"
-        alt="A cream-colored toy poodle holding a Garibaldi Pharmacy paper bag at a Squamish lookout"
+        alt="A toy poodle holding a prescription bag on top of Garibaldi Lake overlooking Garibaldi Mountain in Squamish"
         width="1920"
         height="873"
         fetchpriority="high"
@@ -130,9 +130,9 @@
 </template>
 
 <script setup lang="ts">
-import heroImage from "~/assets/images/hero-garibaldi-dog.webp";
-import heroImage1440 from "~/assets/images/hero-garibaldi-dog-1440.webp";
-import heroImagePortrait from "~/assets/images/hero-garibaldi-dog-portrait.webp";
+import heroImage from "~/assets/images/dog-hero-garibaldi-mountain-in-squamish.webp";
+import heroImage1440 from "~/assets/images/dog-hero-garibaldi-mountain-in-squamish-1440.webp";
+import heroImagePortrait from "~/assets/images/dog-hero-garibaldi-mountain-in-squamish-portrait.webp";
 import { prescriptionActions } from "~/constants/prescriptionActions";
 import { ref } from "vue";
 
@@ -144,14 +144,12 @@ useSeoMeta({
     "Garibaldi Pharmacy | Your Local Squamish Pharmacy & Compounding Lab",
   ogDescription:
     "Garibaldi Pharmacy is your trusted pharmacy in Squamish, offering personalized medicine, compounding services, and accessible healthcare to improve your health and wellness.",
-  ogImage: "/favicon/android-chrome-512x512.png",
+  ...shareImages.dog,
   ogUrl: "https://garibaldipharmacy.com/",
   twitterTitle:
     "Garibaldi Pharmacy | Your Local Squamish Pharmacy & Compounding Lab",
   twitterDescription:
     "Garibaldi Pharmacy is your trusted pharmacy in Squamish, offering personalized medicine, compounding services, and accessible healthcare to improve your health and wellness.",
-  twitterImage: "/favicon/android-chrome-512x512.png",
-  twitterCard: "summary",
 });
 
 useHead({

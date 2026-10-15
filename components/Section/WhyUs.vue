@@ -48,16 +48,16 @@
       </div>
       <div class="overflow-hidden">
         <img
-          src="@/assets/images/doctor-patient-720.webp"
+          src="@/assets/images/doctor-patient-consultation-squamish-720.webp"
           srcset="
-            @/assets/images/doctor-patient-480.webp 480w,
-            @/assets/images/doctor-patient-720.webp 720w
+            @/assets/images/doctor-patient-consultation-squamish-480.webp 480w,
+            @/assets/images/doctor-patient-consultation-squamish-720.webp 720w
           "
           sizes="(min-width: 768px) 50vw, 100vw"
           width="720"
           height="639"
           loading="lazy"
-          alt="A doctor showing information on a clipboard to their patient while sitting inside an exam room."
+          alt="A doctor going over notes with a patient during a consultation in an exam room"
           class="h-full w-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105 motion-reduce:transition-none"
         />
       </div>

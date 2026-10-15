@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import { resolve } from "path";
 import { defineLocalBusiness } from "nuxt-schema-org/schema";
+import { businessInfo } from "./constants/business";
 
 export default defineNuxtConfig({
   compatibilityDate: "2025-08-20",
@@ -132,7 +133,18 @@ export default defineNuxtConfig({
         latitude: 49.75354791456258,
         longitude: -123.13403029997691,
       },
-      image: "https://garibaldipharmacy.com/favicon/android-chrome-512x512.png",
+      // Photos of the storefront in the three shapes Google asks for. They
+      // live in public/ so their addresses never change between builds
+      image: ["16x9", "4x3", "1x1"].map(
+        (shape) =>
+          `https://garibaldipharmacy.com/images/garibaldi-pharmacy-storefront-squamish-${shape}.jpg`,
+      ),
+      // The neighbourhoods and towns we serve, for local search
+      areaServed: [
+        "Squamish",
+        ...businessInfo.service_area.neighbourhoods,
+        ...businessInfo.service_area.communities,
+      ].map((name) => ({ "@type": "Place", name })),
       sameAs: [
         "https://www.facebook.com/garibaldipharmacy",
         "https://www.instagram.com/garibaldipharmacy",

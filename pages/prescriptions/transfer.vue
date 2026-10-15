@@ -264,12 +264,10 @@ useSeoMeta({
   ogTitle: "Transfer Prescriptions in Squamish | Garibaldi Pharmacy",
   ogDescription:
     "Easily transfer your prescriptions to Garibaldi Pharmacy in Squamish. Our pharmacists handle the process quickly and safely, ensuring your medications are ready when you need them.",
-  ogImage: "/favicon/android-chrome-512x512.png",
+  ...shareImages.dog,
   twitterTitle: "Transfer Prescriptions in Squamish | Garibaldi Pharmacy",
   twitterDescription:
     "Easily transfer your prescriptions to Garibaldi Pharmacy in Squamish. Our pharmacists handle the process quickly and safely, ensuring your medications are ready when you need them.",
-  twitterImage: "/favicon/android-chrome-512x512.png",
-  twitterCard: "summary",
 });
 
 // Canonical and ogUrl come from `site.url` via nuxt-site-config rather than being

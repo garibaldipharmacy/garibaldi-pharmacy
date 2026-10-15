@@ -31,6 +31,25 @@ export const businessInfo = {
     linkedin: "https://ca.linkedin.com/company/garibaldi-pharmacy",
     patient_register: "https://register.garibaldipharmacy.com",
   },
+  // Where our patients come from: listed on the Squamish landing page and in
+  // the structured data search engines read (areaServed in nuxt.config.ts)
+  service_area: {
+    neighbourhoods: [
+      "Downtown Squamish",
+      "Dentville",
+      "Valleycliffe",
+      "Hospital Hill",
+      "Northyards",
+      "Garibaldi Estates",
+      "Garibaldi Highlands",
+      "Brackendale",
+      "Tantalus",
+      "Crumpit Woods",
+      "University Heights",
+      "Paradise Valley",
+    ],
+    communities: ["Britannia Beach", "Furry Creek", "Whistler", "Pemberton"],
+  },
   business_hours: {
     full_week: {
       monday: "9:00 AM - 6:00 PM",

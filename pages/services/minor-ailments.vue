@@ -19,7 +19,7 @@
       width="1440"
       height="572"
       fetchpriority="high"
-      alt="A healthcare professional in a white coat and gloves is using a stethoscope to check the heart or lungs of a smiling young man wearing a denim jacket in a clinical setting."
+      alt="A healthcare professional listening to a smiling patient's chest with a stethoscope"
     />
   </PagePhoto>
 
@@ -164,13 +164,11 @@ useSeoMeta({
   ogTitle: "Garibaldi Pharmacy | Minor Ailment Pharmacy in Squamish",
   ogDescription:
     "Get fast treatment for minor ailments at Garibaldi Pharmacy in Squamish. Our expert pharmacists provide accessible care, helping you feel better without waiting to see a doctor.",
-  ogImage: "/favicon/android-chrome-512x512.png",
+  ...shareImages.dog,
   ogUrl: "https://garibaldipharmacy.com/services/minor-ailments/",
   twitterTitle: "Garibaldi Pharmacy | Minor Ailment Pharmacy in Squamish",
   twitterDescription:
     "Get fast treatment for minor ailments at Garibaldi Pharmacy in Squamish. Our expert pharmacists provide accessible care, helping you feel better without waiting to see a doctor.",
-  twitterImage: "/favicon/android-chrome-512x512.png",
-  twitterCard: "summary",
 });
 
 useHead({

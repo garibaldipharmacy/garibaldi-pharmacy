@@ -63,13 +63,11 @@ useSeoMeta({
   ogTitle: "Point-of-Care Testing in Squamish | Garibaldi Pharmacy",
   ogDescription:
     "Quick health checks done right at Garibaldi Pharmacy in Squamish, with results ready during your visit. Call or email our pharmacists with any questions.",
-  ogImage: "/favicon/android-chrome-512x512.png",
+  ...shareImages.dog,
   ogUrl: "https://garibaldipharmacy.com/services/point-of-care-testing/",
   twitterTitle: "Point-of-Care Testing in Squamish | Garibaldi Pharmacy",
   twitterDescription:
     "Quick health checks done right at Garibaldi Pharmacy in Squamish, with results ready during your visit. Call or email our pharmacists with any questions.",
-  twitterImage: "/favicon/android-chrome-512x512.png",
-  twitterCard: "summary",
 });
 
 useHead({

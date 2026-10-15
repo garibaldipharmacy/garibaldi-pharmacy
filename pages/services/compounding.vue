@@ -17,7 +17,7 @@
       width="1440"
       height="549"
       fetchpriority="high"
-      alt="A stone mortar and pestle grinding dried herbs and spices on a wooden board."
+      alt="A stone mortar and pestle, the classic tool of pharmacy compounding, grinding dried herbs"
     />
   </PagePhoto>
 
@@ -182,13 +182,11 @@ useSeoMeta({
   ogTitle: "Garibaldi Pharmacy | Compounding Pharmacy in Squamish",
   ogDescription:
     "Garibaldi Pharmacy in Squamish offers professional compounding services. Our NAPRA-certified lab creates customized medications tailored to your exact needs with the highest quality standards.",
-  ogImage: "/favicon/android-chrome-512x512.png",
+  ...shareImages.dog,
   ogUrl: "https://garibaldipharmacy.com/services/compounding/",
   twitterTitle: "Garibaldi Pharmacy | Compounding Pharmacy in Squamish",
   twitterDescription:
     "Garibaldi Pharmacy in Squamish offers professional compounding services. Our NAPRA-certified lab creates customized medications tailored to your exact needs with the highest quality standards.",
-  twitterImage: "/favicon/android-chrome-512x512.png",
-  twitterCard: "summary",
 });
 
 useHead({

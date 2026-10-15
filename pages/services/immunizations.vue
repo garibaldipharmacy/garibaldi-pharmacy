@@ -107,13 +107,11 @@ useSeoMeta({
   ogTitle: "Immunizations & Flu Shots in Squamish | Garibaldi Pharmacy",
   ogDescription:
     "Get your flu shot, COVID-19, travel and other vaccines at Garibaldi Pharmacy in Squamish. B.C. pharmacists can vaccinate anyone 4 years and older.",
-  ogImage: "/favicon/android-chrome-512x512.png",
+  ...shareImages.dog,
   ogUrl: "https://garibaldipharmacy.com/services/immunizations/",
   twitterTitle: "Immunizations & Flu Shots in Squamish | Garibaldi Pharmacy",
   twitterDescription:
     "Get your flu shot, COVID-19, travel and other vaccines at Garibaldi Pharmacy in Squamish. B.C. pharmacists can vaccinate anyone 4 years and older.",
-  twitterImage: "/favicon/android-chrome-512x512.png",
-  twitterCard: "summary",
 });
 
 useHead({
