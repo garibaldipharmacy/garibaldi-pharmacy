@@ -25,6 +25,10 @@
       >
         {{ title }}
       </h2>
+      <!-- Optional line under the title -->
+      <p v-if="$slots.default" class="mt-3 font-light text-slate-600">
+        <slot />
+      </p>
       <nav class="mt-8 flex flex-wrap items-center justify-center gap-3">
         <NuxtLink
           v-for="button in [primaryButton, secondaryButton].filter(Boolean)"

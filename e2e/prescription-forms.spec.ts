@@ -231,7 +231,17 @@ test.describe("infrastructure", () => {
   test("a missing page returns a real 404, not a soft one", async ({ page }) => {
     const res = await page.goto("/this-page-does-not-exist/");
     expect(res?.status()).toBe(404);
-    await expect(page.getByRole("heading", { level: 1 })).toContainText(/doesn't exist/i);
+    await expect(page.getByRole("heading", { level: 1 })).toContainText(/can’t find that page/i);
+    await expect(page).toHaveTitle("Page Not Found | Garibaldi Pharmacy");
+  });
+
+  test("a missing page suggests the page whose name matches the address", async ({ page }) => {
+    await page.goto("/flu-shots/");
+    const suggestions = page.getByRole("heading", { name: /were you looking for/i }).locator("..");
+    await expect(suggestions.getByRole("link", { name: /immunizations/i })).toHaveAttribute(
+      "href",
+      "/services/immunizations/",
+    );
   });
 
   test("the API is not cacheable", async ({ request }) => {

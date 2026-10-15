@@ -2,9 +2,15 @@
   <div
     class="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-6 text-sm"
   >
-    <span class="font-light text-primary-200"
-      >&copy; {{ year }} Goodfella's Pharmacy Ltd.</span
-    >
+    <p class="flex flex-wrap items-baseline font-light text-primary-200">
+      <span>&copy; {{ year }} Goodfella's Pharmacy Ltd.</span>
+      <span aria-hidden="true" class="mx-3 text-primary-300/60">·</span>
+      <NuxtLink
+        to="/sitemap/"
+        class="text-xs text-primary-300 underline hover:no-underline"
+        >Sitemap</NuxtLink
+      >
+    </p>
     <ul class="flex gap-2">
       <li v-for="social in socials" :key="social.name">
         <NuxtLink
@@ -19,11 +25,6 @@
 
     <ul class="hidden">
       <!-- <li>
-        <NuxtLink to="/sitemap/" class="hover:opacity-50 transition-opacity"
-          >Sitemap</NuxtLink
-        >
-      </li>
-      <li>
         <NuxtLink to="/terms/" class="hover:opacity-50 transition-opacity"
           >Terms</NuxtLink
         >

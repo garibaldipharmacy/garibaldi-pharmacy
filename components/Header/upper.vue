@@ -1,8 +1,12 @@
 <template>
   <!-- Full-width background, with the items held to the same width as the
        navbar below and kept to the right, above the links and Contact
-       button, so the logo has clear space above it -->
-  <header class="hidden bg-primary-900 lg:block">
+       button, so the logo has clear space above it. A named section rather
+       than a second <header>, which would announce two page banners -->
+  <section
+    aria-label="Store information"
+    class="hidden bg-primary-900 lg:block"
+  >
     <ul
       class="header-upper mx-auto flex max-w-6xl flex-wrap items-center justify-end gap-x-6 px-4 py-0.5 sm:px-6 text-[13px] font-light text-white"
     >
@@ -85,7 +89,7 @@
         /></NuxtLink> -->
       </li>
     </ul>
-  </header>
+  </section>
 </template>
 
 <script lang="ts" setup>
