@@ -131,7 +131,8 @@ test.describe("viewing submissions", () => {
         "base64",
       ),
     });
-    // Photos open a review step; accept it as it is
+    // Photos open the editor; accept the photo as it is
+    await page.getByRole("dialog").getByRole("button", { name: "Next" }).click();
     await page.getByRole("dialog").getByRole("button", { name: "Use photo" }).click();
     await page.getByRole("button", { name: /send prescription/i }).click();
     await expect(page).toHaveURL(/\/success\/send/, { timeout: 30_000 });

@@ -37,6 +37,7 @@ function pngFixture(name = "prescription.png") {
 async function attachPhoto(page: Page, selector: string, file = pngFixture()) {
   await page.locator(selector).setInputFiles(file);
   const editor = page.getByRole("dialog");
+  await editor.getByRole("button", { name: "Next" }).click();
   await editor.getByRole("button", { name: "Use photo" }).click();
   await expect(editor).toBeHidden();
 }
