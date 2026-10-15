@@ -141,10 +141,14 @@ jobs:
     # Pushes only: a pull_request event must never reach this job, so that deploy
     # credentials are unreachable from a fork.
     #
-    # Also skipped until the droplet exists. Set the DEPLOY_PATH variable on the
-    # staging and production GitHub Environments to switch deployment on; until
-    # then the test job alone decides whether the branch is green.
-    if: github.event_name == 'push' && vars.DEPLOY_PATH != ''
+    # Gated on a REPOSITORY variable, deliberately. A job-level `if:` is evaluated
+    # before the environment is resolved, so `vars` here can only see repository
+    # and organization variables. Referring to an environment variable such as
+    # DEPLOY_PATH silently reads as empty and the job skips while the run still
+    # reports success, which is a miserable thing to debug.
+    #
+    # Set the repository variable DEPLOY_ENABLED to "true" once a server exists.
+    if: github.event_name == 'push' && vars.DEPLOY_ENABLED == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 15
 
@@ -160,6 +164,17 @@ jobs:
       cancel-in-progress: false
 
     steps:
+      # Inside the job the environment IS resolved, so this catches the case the
+      # gate above cannot: deployment switched on globally, but this particular
+      # environment never configured. Better a clear failure than an rsync into
+      # an empty path.
+      - name: Ensure this environment is configured
+        run: |
+          if [ -z "${{ vars.DEPLOY_PATH }}" ]; then
+            echo "::error::No DEPLOY_PATH set for this environment. Add the environment variables before deploying."
+            exit 1
+          fi
+
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
