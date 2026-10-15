@@ -10,7 +10,7 @@ import {
   randomBytes,
   randomUUID,
 } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { ACCEPTED_MIME_TYPES, LIMITS } from "~~/shared/forms";
 // Explicit rather than relying on Nitro auto-imports, so this module is testable
@@ -213,4 +213,13 @@ export function storeEncrypted(plain: Buffer): StoredFile {
 
 export function readEncrypted(relative: string): Buffer {
   return decryptBuffer(readFileSync(join(uploadsDir(), relative)));
+}
+
+/**
+ * Deletes a stored file. Used to clean up when a submission's files were
+ * written but its record never was, so nothing is left on disk unreferenced.
+ * A file that is already gone is fine.
+ */
+export function removeStored(relative: string): void {
+  rmSync(join(uploadsDir(), relative), { force: true });
 }

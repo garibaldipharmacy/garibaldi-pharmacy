@@ -8,6 +8,9 @@
 //     submission over a phone connection with no feedback feels broken.
 //   - Carries an idempotency key so a double-tapped submit button cannot create
 //     two prescription requests.
+//   - Gets a fresh Turnstile token after every failed attempt. Each token is
+//     good for one check, and the server has spent it even when it then
+//     rejects the form, so a retry with the old one would always fail.
 
 import type { SubmitResponse } from "~~/shared/forms";
 
@@ -78,6 +81,8 @@ export function useRequestForm(successPath: string) {
     error.value = null;
     errors.value = {};
 
+    const turnstileToken = await waitForTurnstileToken();
+
     const formData = new FormData();
     formData.append(
       "payload",
@@ -86,7 +91,7 @@ export function useRequestForm(successPath: string) {
         idempotencyKey: idempotencyKey.value,
         renderedAt,
         botField: botField.value,
-        turnstileToken: readTurnstileToken(),
+        turnstileToken,
       }),
     );
     for (const f of files) formData.append(f.key, f.file, f.file.name);
@@ -100,6 +105,7 @@ export function useRequestForm(successPath: string) {
         return;
       }
 
+      resetTurnstile();
       errors.value = body.errors ?? {};
       error.value =
         body.error ??
@@ -108,6 +114,8 @@ export function useRequestForm(successPath: string) {
           : "Something went wrong. Please try again, or call us at 604-848-7059.");
       await focusError();
     } catch {
+      // The request may have reached the server and spent the token
+      resetTurnstile();
       error.value =
         "We could not send that. Please check your connection and try again, or call us at 604-848-7059.";
       await focusError();
@@ -126,6 +134,25 @@ export function useRequestForm(successPath: string) {
       'input[name="cf-turnstile-response"]',
     );
     return input?.value ?? "";
+  }
+
+  /**
+   * The token, waiting a few seconds for one if the check is still running,
+   * e.g. just after a reset. Empty when Turnstile isn't on the page, and the
+   * server reports it if a token never arrives
+   */
+  async function waitForTurnstileToken(): Promise<string> {
+    if (typeof window === "undefined" || !window.turnstile) return readTurnstileToken();
+    for (let waited = 0; waited < 10_000; waited += 200) {
+      const token = readTurnstileToken();
+      if (token) return token;
+      await new Promise((resolve) => setTimeout(resolve, 200));
+    }
+    return "";
+  }
+
+  function resetTurnstile() {
+    if (typeof window !== "undefined") window.turnstile?.reset();
   }
 
   return {

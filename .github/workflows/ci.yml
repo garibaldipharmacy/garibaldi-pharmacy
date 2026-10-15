@@ -19,10 +19,10 @@ on:
     branches: [feat/do-migration, main]
   pull_request:
 
-# Never let two runs on the same ref overlap.
-concurrency:
-  group: ci-${{ github.ref }}
-  cancel-in-progress: true
+# A newer push cancels an older run's checks, which no longer matter. This is
+# set per job rather than for the whole workflow, because cancelling a
+# workflow also cancels its deploy, and a deploy stopped partway can leave the
+# server half-updated. The deploy job keeps its own, non-cancelling group.
 
 env:
   # Match the droplet exactly. This is what keeps native modules loadable.
@@ -34,6 +34,9 @@ jobs:
     name: Lint, unit, build, e2e
     runs-on: ubuntu-24.04
     timeout-minutes: 20
+    concurrency:
+      group: test-${{ github.ref }}
+      cancel-in-progress: true
 
     steps:
       - uses: actions/checkout@v4
@@ -93,6 +96,9 @@ jobs:
     name: Lighthouse
     runs-on: ubuntu-24.04
     timeout-minutes: 20
+    concurrency:
+      group: lighthouse-${{ github.ref }}
+      cancel-in-progress: true
 
     steps:
       - uses: actions/checkout@v4
@@ -147,7 +153,8 @@ jobs:
       url: ${{ vars.SITE_URL }}
 
     # Serialise deploys to a given environment. Never cancel mid-deploy: a
-    # cancelled symlink swap is how you get a half-deployed site.
+    # cancelled symlink swap is how you get a half-deployed site. A newer push
+    # waits here for the running deploy to finish, then deploys itself.
     concurrency:
       group: deploy-${{ github.ref }}
       cancel-in-progress: false

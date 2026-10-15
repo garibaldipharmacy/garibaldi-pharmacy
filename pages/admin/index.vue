@@ -56,9 +56,10 @@
     <!-- Signed in -->
     <div v-else-if="session">
       <div class="flex items-center justify-between mb-4">
-        <p class="text-sm font-light text-gray-600">
+        <p class="text-sm font-light text-gray-600" role="status" aria-live="polite">
           {{ submissions.length }}
           {{ submissions.length === 1 ? "submission" : "submissions" }}
+          <template v-if="searchedFor">matching “{{ searchedFor }}”</template>
         </p>
         <div class="flex gap-4">
           <button
@@ -78,12 +79,27 @@
         </div>
       </div>
 
+      <!-- Searches every stored submission, not just the ones listed -->
+      <div class="mb-4">
+        <label for="admin-search" class="mb-1 block text-sm font-medium text-gray-900">
+          Search
+        </label>
+        <input
+          id="admin-search"
+          v-model="search"
+          type="search"
+          autocomplete="off"
+          placeholder="Reference, name, phone, email, medication…"
+          class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm font-light text-gray-900"
+        />
+      </div>
+
       <p v-if="listError" role="status" class="mb-4 text-sm text-red-700">
         {{ listError }}
       </p>
 
       <p v-if="!submissions.length" class="font-light text-gray-600">
-        Nothing here yet.
+        {{ searchedFor ? "No submissions match that search." : "Nothing here yet." }}
       </p>
 
       <ul v-else class="space-y-3">
@@ -171,14 +187,39 @@ async function loadSession() {
   if (session.value.authenticated) await refresh();
 }
 
+const search = ref("");
+// The search the list currently shows, which lags the box while typing
+const searchedFor = ref("");
+
+// Only the newest list request may update the list, so results for an old
+// search can't land after the current one
+let listRequest = 0;
+
 async function refresh() {
+  const request = ++listRequest;
+  const query = search.value.trim();
   listError.value = null;
   try {
-    submissions.value = await $fetch<SubmissionSummaryDTO[]>("/api/admin/submissions");
+    const results = await $fetch<SubmissionSummaryDTO[]>("/api/admin/submissions", {
+      query: query ? { q: query } : {},
+    });
+    if (request !== listRequest) return;
+    submissions.value = results;
+    searchedFor.value = query;
   } catch {
-    listError.value = "Could not load submissions. Try refreshing.";
+    if (request === listRequest) {
+      listError.value = "Could not load submissions. Try refreshing.";
+    }
   }
 }
+
+// Searches once typing pauses
+let searchTimer: ReturnType<typeof setTimeout> | undefined;
+watch(search, () => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(refresh, 300);
+});
+onBeforeUnmount(() => clearTimeout(searchTimer));
 
 async function signIn() {
   signingIn.value = true;
@@ -214,10 +255,13 @@ async function toggle(id: string) {
   expanded.value = id;
   detail.value = null;
   detailError.value = null;
+  // A slower reply for a row opened earlier must never fill this one, or
+  // staff would see one patient's details under another's name
   try {
-    detail.value = await $fetch<SubmissionDetailDTO>(`/api/admin/submissions/${id}`);
+    const result = await $fetch<SubmissionDetailDTO>(`/api/admin/submissions/${id}`);
+    if (expanded.value === id) detail.value = result;
   } catch {
-    detailError.value = "Could not load that submission.";
+    if (expanded.value === id) detailError.value = "Could not load that submission.";
   }
 }
 

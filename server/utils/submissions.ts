@@ -77,6 +77,55 @@ export function listSubmissionSummaries(limit = 100): SubmissionSummaryDTO[] {
   );
 }
 
+/** Every text value in a payload, skipping the internal file references */
+function payloadText(value: unknown, out: string[] = []): string[] {
+  if (typeof value === "string") out.push(value);
+  else if (typeof value === "number") out.push(String(value));
+  else if (Array.isArray(value)) value.forEach((item) => payloadText(item, out));
+  else if (value && typeof value === "object") {
+    for (const [key, item] of Object.entries(value)) {
+      if (key !== "key") payloadText(item, out);
+    }
+  }
+  return out;
+}
+
+const digitsOnly = (text: string) => text.replace(/\D/g, "");
+
+/**
+ * Whether a submission matches every word of a staff search. Words are
+ * checked against the reference, the request type and everything the patient
+ * entered. A word with digits also matches ignoring punctuation and spaces,
+ * so "6048487059" finds "604-848-7059"
+ */
+export function submissionMatches(row: SubmissionRow, query: string): boolean {
+  const words = query.toLowerCase().split(/\s+/).filter(Boolean);
+  if (!words.length) return true;
+
+  const payload = parsePayload(row.payload);
+  const text = [row.reference, row.kind, ...payloadText(payload)]
+    .join("\n")
+    .toLowerCase();
+  const digits = digitsOnly(text);
+
+  return words.every((word) => {
+    if (text.includes(word)) return true;
+    const wordDigits = digitsOnly(word);
+    return wordDigits.length >= 3 && digits.includes(wordDigits);
+  });
+}
+
+/** Summaries of every stored submission matching a search, newest first */
+export function searchSubmissionSummaries(
+  query: string,
+  limit = 100,
+): SubmissionSummaryDTO[] {
+  return listSubmissions(-1)
+    .filter((row) => submissionMatches(row, query))
+    .slice(0, limit)
+    .map((row) => toSummary(row, getSubmissionFiles(row.id).length));
+}
+
 export function getSubmissionDetail(id: string): SubmissionDetailDTO | null {
   const row = getSubmission(id);
   if (!row) return null;

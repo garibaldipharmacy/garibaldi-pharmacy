@@ -25,14 +25,18 @@
       <h3 class="font-medium mb-2">Attachments</h3>
       <ul class="space-y-1 font-light">
         <li v-for="file in detail.files" :key="file.id">
+          <!-- Images open in a new tab; PDFs download, as the server sends them -->
           <a
             :href="`/api/admin/submissions/${detail.id}/files/${file.id}`"
-            target="_blank"
-            rel="noopener"
+            :target="file.mime === 'application/pdf' ? undefined : '_blank'"
+            :rel="file.mime === 'application/pdf' ? undefined : 'noopener'"
             class="text-primary-900 hover:underline"
           >
             {{ FILE_ROLE_LABELS[file.role] ?? file.role }} {{ file.position + 1 }}
           </a>
+          <span v-if="file.mime === 'application/pdf'" class="text-gray-600">
+            &middot; PDF, downloads
+          </span>
           <span class="text-gray-600"> &middot; {{ humanSize(file.bytes) }}</span>
         </li>
       </ul>

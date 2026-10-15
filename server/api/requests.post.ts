@@ -19,10 +19,16 @@ import {
   type SubmitResponse,
 } from "~~/shared/forms";
 
+/** The most a valid submission can be: every file plus room for the fields */
+const MAX_REQUEST_BYTES = LIMITS.maxTotalBytes + 1024 * 1024;
+
 interface PendingFile {
   role: "prescription" | "insurance_front" | "insurance_back";
   position: number;
   key: string;
+  // Where the form shows this file's errors, matching the client's own
+  // validation paths rather than the upload's part name
+  field: string;
 }
 
 /** Collects the file references a validated body expects, in a stable order. */
@@ -33,12 +39,23 @@ function expectedFiles(body: RequestBody): PendingFile[] {
     role: "prescription" as const,
     position: i,
     key: p.key,
+    field: `prescriptions.${i}.file`,
   }));
 
   body.insurance.forEach((card, i) => {
-    out.push({ role: "insurance_front", position: i, key: card.front.key });
+    out.push({
+      role: "insurance_front",
+      position: i,
+      key: card.front.key,
+      field: `insurance.${i}.front`,
+    });
     if (card.back) {
-      out.push({ role: "insurance_back", position: i, key: card.back.key });
+      out.push({
+        role: "insurance_back",
+        position: i,
+        key: card.back.key,
+        field: `insurance.${i}.back`,
+      });
     }
   });
 
@@ -61,6 +78,23 @@ export default defineEventHandler(async (event): Promise<SubmitResponse> => {
     return {
       ok: false,
       error: "Too many requests. Please wait a few minutes, or call us at 604-848-7059.",
+    };
+  }
+
+  // ---------------------------------------------------------------------
+  // Bound the body before reading it. readMultipartFormData buffers the whole
+  // request in memory, so the per-file limits below come too late to stop an
+  // oversized upload exhausting the server. Browsers always send a length
+  // for form uploads; the allowance covers the form fields and multipart
+  // boundaries on top of the files.
+  // ---------------------------------------------------------------------
+  const declaredBytes = Number(getRequestHeader(event, "content-length"));
+  if (!declaredBytes || declaredBytes > MAX_REQUEST_BYTES) {
+    setResponseStatus(event, 413);
+    const mb = Math.round(LIMITS.maxTotalBytes / 1024 / 1024);
+    return {
+      ok: false,
+      error: `Your attachments add up to more than ${mb} MB in total. Please remove one and try again.`,
     };
   }
 
@@ -110,7 +144,8 @@ export default defineEventHandler(async (event): Promise<SubmitResponse> => {
     setResponseStatus(event, 400);
     return {
       ok: false,
-      error: "We could not verify that you are human. Please reload and try again.",
+      error:
+        "We could not verify that you are human. Please try again, or call us at 604-848-7059.",
     };
   }
 
@@ -135,7 +170,42 @@ export default defineEventHandler(async (event): Promise<SubmitResponse> => {
     return { ok: false, error: "That is more files than we can accept." };
   }
 
+  // Every file is checked before any is written, so a rejected submission
+  // leaves nothing on disk
   const errors: Record<string, string> = {};
+  const accepted: { want: PendingFile; part: (typeof parts)[number]; mime: string }[] = [];
+  let totalBytes = 0;
+
+  for (const want of wanted) {
+    const part = parts.find((p) => p.name === want.key && p.filename);
+    if (!part) {
+      errors[want.field] = "That file did not upload. Please try again.";
+      continue;
+    }
+
+    const check = checkUpload(part.data);
+    if (!check.ok) {
+      errors[want.field] = check.message;
+      continue;
+    }
+
+    totalBytes += part.data.length;
+    if (totalBytes > LIMITS.maxTotalBytes) {
+      const mb = Math.round(LIMITS.maxTotalBytes / 1024 / 1024);
+      errors[want.field] = `Your attachments add up to more than ${mb} MB in total.`;
+      break;
+    }
+
+    accepted.push({ want, part, mime: check.mime });
+  }
+
+  if (Object.keys(errors).length > 0) {
+    setResponseStatus(event, 400);
+    return { ok: false, errors };
+  }
+
+  // Written only now, and removed again unless the record that points at
+  // them is saved
   const stored: {
     id: string;
     role: string;
@@ -146,45 +216,36 @@ export default defineEventHandler(async (event): Promise<SubmitResponse> => {
     sha256: string;
     path: string;
   }[] = [];
-  let totalBytes = 0;
+  const removeStoredFiles = () => {
+    for (const file of stored) removeStored(file.path);
+  };
 
-  for (const want of wanted) {
-    const part = parts.find((p) => p.name === want.key && p.filename);
-    if (!part) {
-      errors[want.key] = "That file did not upload. Please try again.";
-      continue;
+  try {
+    for (const { want, part, mime } of accepted) {
+      const file = storeEncrypted(part.data);
+      stored.push({
+        id: file.id,
+        role: want.role,
+        position: want.position,
+        // Kept as metadata only. Never used to build a path.
+        original_name: (part.filename ?? "upload").slice(0, 255),
+        mime,
+        bytes: file.bytes,
+        sha256: file.sha256,
+        path: file.path,
+      });
     }
-
-    const check = checkUpload(part.data);
-    if (!check.ok) {
-      errors[want.key] = check.message;
-      continue;
-    }
-
-    totalBytes += part.data.length;
-    if (totalBytes > LIMITS.maxTotalBytes) {
-      const mb = Math.round(LIMITS.maxTotalBytes / 1024 / 1024);
-      errors[want.key] = `Your attachments add up to more than ${mb} MB in total.`;
-      break;
-    }
-
-    const file = storeEncrypted(part.data);
-    stored.push({
-      id: file.id,
-      role: want.role,
-      position: want.position,
-      // Kept as metadata only. Never used to build a path.
-      original_name: (part.filename ?? "upload").slice(0, 255),
-      mime: check.mime,
-      bytes: file.bytes,
-      sha256: file.sha256,
-      path: file.path,
+  } catch (err) {
+    removeStoredFiles();
+    console.error("[requests] failed to store attachments", {
+      kind: body.kind,
+      error: (err as Error).message,
     });
-  }
-
-  if (Object.keys(errors).length > 0) {
-    setResponseStatus(event, 400);
-    return { ok: false, errors };
+    setResponseStatus(event, 503);
+    return {
+      ok: false,
+      error: "We could not save that. Please try again, or call us at 604-848-7059.",
+    };
   }
 
   // ---------------------------------------------------------------------
@@ -220,13 +281,16 @@ export default defineEventHandler(async (event): Promise<SubmitResponse> => {
     });
 
     // A retry or a double-tapped submit button is a no-op, not a second record.
+    // The first attempt's files are the ones on record, so this one's go.
     if (duplicate) {
+      removeStoredFiles();
       const existing = getDb()
         .prepare("SELECT reference FROM submissions WHERE idempotency_key = ?")
         .get(envelope.idempotencyKey) as unknown as { reference: string } | undefined;
       return { ok: true, reference: existing?.reference ?? reference };
     }
   } catch (err) {
+    removeStoredFiles();
     console.error("[requests] failed to persist submission", {
       kind: body.kind,
       error: (err as Error).message,

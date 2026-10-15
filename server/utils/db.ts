@@ -196,6 +196,7 @@ export function persistSubmission(args: PersistArgs): { duplicate: boolean } {
   }
 }
 
+/** Unacknowledged first, then newest. A limit of -1 returns every row */
 export function listSubmissions(limit = 100): SubmissionRow[] {
   return getDb()
     .prepare(

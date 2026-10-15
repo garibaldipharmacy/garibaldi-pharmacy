@@ -271,3 +271,35 @@
 textarea.form-input {
   @apply min-h-[7.5rem] leading-relaxed;
 }
+
+// Dropdowns too: iOS Safari's native one ignores the ring, so it showed no
+// border. Without it, the arrow is drawn here instead (in primary-900)
+select.form-input {
+  -webkit-appearance: none;
+  appearance: none;
+  @apply bg-no-repeat pr-11;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M6 8l4 4 4-4' stroke='%23141E39' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-position: right 1rem center;
+  background-size: 1.25rem;
+}
+
+// iOS Safari draws date fields natively: it ignores the ring (a shadow), gives
+// them a minimum width wider than a phone's form, and collapses them when
+// empty. Without its own styling the field matches the others, and tapping it
+// still opens the native date picker
+input.form-input[type="date"] {
+  -webkit-appearance: none;
+  appearance: none;
+  min-width: 0;
+  max-width: 100%;
+  min-height: 3rem;
+
+  &::-webkit-date-and-time-value {
+    min-height: 1.5rem;
+    text-align: left;
+  }
+
+  &::-webkit-datetime-edit {
+    padding: 0;
+  }
+}

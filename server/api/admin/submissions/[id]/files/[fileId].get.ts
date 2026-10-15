@@ -22,10 +22,18 @@ export default defineEventHandler((event) => {
 
   setResponseHeader(event, "Content-Type", file.mime);
   setResponseHeader(event, "Cache-Control", "no-store");
-  // `inline` so a pharmacist can glance at it without a download round trip.
+  // Images open `inline` so a pharmacist can glance at them without a
+  // download round trip. PDFs download instead: the sandbox below stops the
+  // browser's PDF viewer from running, so inline they'd show a blank tab.
   // The filename is quoted and stripped: it came from a patient's device.
-  const safeName = file.originalName.replace(/[^\w.\- ]+/g, "_").slice(0, 100);
-  setResponseHeader(event, "Content-Disposition", `inline; filename="${safeName}"`);
+  const isPdf = file.mime === "application/pdf";
+  let safeName = file.originalName.replace(/[^\w.\- ]+/g, "_").slice(0, 100);
+  if (isPdf && !/\.pdf$/i.test(safeName)) safeName += ".pdf";
+  setResponseHeader(
+    event,
+    "Content-Disposition",
+    `${isPdf ? "attachment" : "inline"}; filename="${safeName}"`,
+  );
   // Defence in depth: never let a crafted upload execute in our origin.
   setResponseHeader(event, "Content-Security-Policy", "default-src 'none'; sandbox");
   setResponseHeader(event, "X-Content-Type-Options", "nosniff");
