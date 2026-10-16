@@ -96,10 +96,6 @@ const links = ref<HeaderNavLink[]>([
     })),
   },
   {
-    title: "Medical Clinic",
-    link: "/medical-clinic/",
-  },
-  {
     title: "Contact",
     link: "/contact/",
     variant: "button",

@@ -52,6 +52,7 @@ const footerLinks = [
         href: "/services/point-of-care-testing/",
       },
       { title: "Covid Vaccine", href: "/services/immunizations/" },
+      { title: "Medical Clinic", href: "/medical-clinic/" },
     ],
   },
 ];
