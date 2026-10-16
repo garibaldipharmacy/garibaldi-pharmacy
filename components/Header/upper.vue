@@ -14,9 +14,22 @@
         <NuxtLink
           class="hover:opacity-75 transition-opacity flex items-center justify-center"
           :href="`tel:${phoneMain}`"
+          title="Main phone"
         >
           <Icon name="fa6-solid:phone" class="mr-2" />
           <span class="hidden sm:block">{{ phoneMain }}</span>
+        </NuxtLink>
+      </li>
+
+      <li class="py-2 text-2xl sm:text-[13px]">
+        <NuxtLink
+          class="hover:opacity-75 transition-opacity flex items-center justify-center"
+          :href="`tel:${phoneFax}`"
+          title="Fax"
+        >
+          <Icon name="fa6-solid:fax" class="mr-2" />
+          <span class="sr-only">Fax:</span>
+          <span class="hidden sm:block">{{ phoneFax }}</span>
         </NuxtLink>
       </li>
 
@@ -96,6 +109,7 @@
 import { businessInfo } from "~/constants/business";
 
 const phoneMain = businessInfo.contact.phone.main;
+const phoneFax = businessInfo.contact.phone.fax;
 const { hours: weekHours, today, isOpen, holiday } = useStoreHours();
 const location = businessInfo.address.short;
 const { links } = businessInfo;
