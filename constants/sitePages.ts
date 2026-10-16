@@ -54,6 +54,14 @@ export const sitePageGroups: SitePageGroup[] = [
         words: ["clinic", "doctor", "physician", "terra"],
       },
       {
+        title: "Blog",
+        link: "/blog/",
+        icon: "fa6-solid:newspaper",
+        description:
+          "News from the pharmacy, and advice on medications and staying well.",
+        words: ["blog", "news", "article", "announce", "post", "update"],
+      },
+      {
         title: "Contact Us",
         link: "/contact/",
         icon: "fa6-solid:phone",

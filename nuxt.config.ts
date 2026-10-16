@@ -75,6 +75,10 @@ export default defineNuxtConfig({
       Lexend: "200..700",
     },
   },
+  sitemap: {
+    // Posts are written after deploying, so the sitemap asks the database
+    sources: ["/api/__sitemap__/posts"],
+  },
   ssr: true,
   seo: {
     // This plugin titles error states "<statusCode> - <raw error message>",

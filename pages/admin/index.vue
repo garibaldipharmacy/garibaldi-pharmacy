@@ -55,28 +55,20 @@
 
     <!-- Signed in -->
     <div v-else-if="session">
+      <AdminNav />
       <div class="flex items-center justify-between mb-4">
         <p class="text-sm font-light text-gray-600" role="status" aria-live="polite">
           {{ submissions.length }}
           {{ submissions.length === 1 ? "submission" : "submissions" }}
           <template v-if="searchedFor">matching “{{ searchedFor }}”</template>
         </p>
-        <div class="flex gap-4">
-          <button
-            type="button"
-            class="text-sm text-primary-900 hover:underline"
-            @click="refresh"
-          >
-            Refresh
-          </button>
-          <button
-            type="button"
-            class="text-sm text-gray-600 hover:underline"
-            @click="signOut"
-          >
-            Sign out
-          </button>
-        </div>
+        <button
+          type="button"
+          class="text-sm text-primary-900 hover:underline"
+          @click="refresh"
+        >
+          Refresh
+        </button>
       </div>
 
       <!-- Searches every stored submission, not just the ones listed -->
@@ -170,6 +162,7 @@ interface Session {
 }
 
 const isDev = import.meta.dev;
+const route = useRoute();
 
 const session = ref<Session | null>(null);
 const submissions = ref<SubmissionSummaryDTO[]>([]);
@@ -182,9 +175,19 @@ const loginError = ref<string | null>(null);
 const listError = ref<string | null>(null);
 const detailError = ref<string | null>(null);
 
+// Where to go after signing in: back to the admin page that sent them here,
+// if any. Only admin paths, so a crafted link can't bounce them off the site
+function nextPath(): string | null {
+  const next = route.query.next;
+  return typeof next === "string" && next.startsWith("/admin/") ? next : null;
+}
+
 async function loadSession() {
   session.value = await $fetch<Session>("/api/admin/session");
-  if (session.value.authenticated) await refresh();
+  if (!session.value.authenticated) return;
+  const next = nextPath();
+  if (next) await navigateTo(next, { replace: true });
+  else await refresh();
 }
 
 const search = ref("");
@@ -237,14 +240,6 @@ async function signIn() {
   } finally {
     signingIn.value = false;
   }
-}
-
-async function signOut() {
-  await $fetch("/api/admin/logout", { method: "POST" });
-  submissions.value = [];
-  expanded.value = null;
-  detail.value = null;
-  await loadSession();
 }
 
 async function toggle(id: string) {

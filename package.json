@@ -31,6 +31,12 @@
   "dependencies": {
     "@headlessui/tailwindcss": "^0.2.0",
     "@nuxtjs/robots": "^5.5.0",
+    "@tiptap/extension-image": "^3.32.0",
+    "@tiptap/extension-youtube": "^3.32.0",
+    "@tiptap/html": "^3.32.0",
+    "@tiptap/pm": "^3.32.0",
+    "@tiptap/starter-kit": "^3.32.0",
+    "@tiptap/vue-3": "^3.32.0",
     "maska": "^2.1.11",
     "nuxt-link-checker": "^4.3.1",
     "nuxt-og-image": "^5.1.9",

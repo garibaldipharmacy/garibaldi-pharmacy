@@ -96,6 +96,10 @@ const links = ref<HeaderNavLink[]>([
     })),
   },
   {
+    title: "Blog",
+    link: "/blog/",
+  },
+  {
     title: "Contact",
     link: "/contact/",
     variant: "button",

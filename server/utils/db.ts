@@ -79,6 +79,54 @@ const MIGRATIONS = [
    );`,
   `CREATE INDEX IF NOT EXISTS outbox_pending_idx
      ON outbox (sent_at, next_attempt_at);`,
+  // Blog posts. The body is kept twice: the editor's JSON, which is what gets
+  // edited, and the HTML made from it when saved, which is what visitors get.
+  // An announcement is the three announcement_ columns, all set or all null.
+  `CREATE TABLE IF NOT EXISTS posts (
+     id                     TEXT PRIMARY KEY,
+     slug                   TEXT NOT NULL UNIQUE,
+     title                  TEXT NOT NULL,
+     excerpt                TEXT NOT NULL DEFAULT '',
+     summary                TEXT NOT NULL DEFAULT '',
+     cover_image            TEXT,
+     cover_alt              TEXT NOT NULL DEFAULT '',
+     body_json              TEXT NOT NULL,
+     body_html              TEXT NOT NULL,
+     status                 TEXT NOT NULL DEFAULT 'draft',
+     published_at           TEXT,
+     created_at             TEXT NOT NULL,
+     updated_at             TEXT NOT NULL,
+     announcement_snippet   TEXT,
+     announcement_starts_at TEXT,
+     announcement_ends_at   TEXT
+   );`,
+  `CREATE INDEX IF NOT EXISTS posts_published_idx
+     ON posts (status, published_at);`,
+  // Only one post may carry the announcement at a time. The code moves it
+  // rather than tripping this, which is here so that can never go wrong
+  `CREATE UNIQUE INDEX IF NOT EXISTS posts_one_announcement_idx
+     ON posts ((1)) WHERE announcement_snippet IS NOT NULL;`,
+  // Full-text search over posts, kept in step by server/utils/posts.ts in the
+  // same transaction as each save. Words are matched by how they start, so
+  // "vaccin" finds vaccine and vaccines; the prefix index keeps that fast.
+  `CREATE VIRTUAL TABLE IF NOT EXISTS posts_search USING fts5(
+     post_id UNINDEXED, title, summary, body,
+     tokenize = 'unicode61 remove_diacritics 2',
+     prefix = '2 3'
+   );`,
+];
+
+// Columns added to a table after it was first created. SQLite has no
+// ADD COLUMN IF NOT EXISTS, so each is added only when missing. New
+// databases get them here too, after the CREATE TABLE above
+const ADDED_COLUMNS = [
+  { table: "posts", column: "category", definition: "TEXT NOT NULL DEFAULT 'news'" },
+];
+
+const LATE_INDEXES = [
+  // The blog list, filtered by category, newest first
+  `CREATE INDEX IF NOT EXISTS posts_category_idx
+     ON posts (status, category, published_at);`,
 ];
 
 let db: SqliteDatabase | null = null;
@@ -99,6 +147,13 @@ export function getDb(): SqliteDatabase {
   db.exec("PRAGMA foreign_keys = ON;");
   db.exec("PRAGMA busy_timeout = 5000;");
   for (const sql of MIGRATIONS) db.exec(sql);
+  for (const { table, column, definition } of ADDED_COLUMNS) {
+    const columns = db.prepare(`PRAGMA table_info(${table})`).all() as { name: string }[];
+    if (!columns.some((c) => c.name === column)) {
+      db.exec(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition};`);
+    }
+  }
+  for (const sql of LATE_INDEXES) db.exec(sql);
 
   return db;
 }

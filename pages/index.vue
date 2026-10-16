@@ -40,6 +40,7 @@
       class="absolute inset-0 -z-10 bg-primary-950/50 md:bg-transparent md:bg-gradient-to-r md:from-primary-950/70 md:via-primary-950/25 md:to-transparent"
     />
     <div class="mx-auto w-full max-w-6xl px-4 text-white sm:px-6">
+      <AnnouncementPill />
       <h1
         class="motion-rise max-w-xl text-[2.25rem] font-bold leading-[1.1] tracking-tight sm:text-5xl lg:max-w-2xl lg:text-[3.5rem]"
       >
