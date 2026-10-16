@@ -21,6 +21,8 @@ export interface SubmissionRow {
   acknowledged_by: string | null;
   idempotency_key: string;
   payload: string;
+  delivered_at: string | null;
+  purge_after: string | null;
 }
 
 export interface SubmissionFileRow {
@@ -46,8 +48,17 @@ const MIGRATIONS = [
      acknowledged_at TEXT,
      acknowledged_by TEXT,
      idempotency_key TEXT NOT NULL UNIQUE,
-     payload         TEXT NOT NULL
+     payload         TEXT NOT NULL,
+     -- Sync bookkeeping. The droplet is a mailbox, not an archive: once the
+     -- pharmacy has acknowledged a submission it is purged after a short grace
+     -- period, so a breach here exposes days rather than years.
+     delivered_at    TEXT,
+     purge_after     TEXT
    );`,
+  `CREATE INDEX IF NOT EXISTS submissions_undelivered_idx
+     ON submissions (delivered_at, received_at);`,
+  `CREATE INDEX IF NOT EXISTS submissions_purge_idx
+     ON submissions (purge_after);`,
   `CREATE INDEX IF NOT EXISTS submissions_status_idx
      ON submissions (status, received_at);`,
   `CREATE TABLE IF NOT EXISTS submission_files (
