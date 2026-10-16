@@ -10,11 +10,15 @@ describe("pharmacy time", () => {
     expect(pharmacyLocalToIso("2026-07-01T09:00")).toBe("2026-07-01T16:00:00.000Z");
   });
 
-  it("gets the days daylight saving starts and ends right", () => {
-    // 2026: starts March 8, ends November 1, both at 2 a.m.
-    expect(pharmacyLocalToIso("2026-03-08T01:00")).toBe("2026-03-08T09:00:00.000Z");
-    expect(pharmacyLocalToIso("2026-03-08T03:00")).toBe("2026-03-08T10:00:00.000Z");
-    expect(pharmacyLocalToIso("2026-11-01T03:00")).toBe("2026-11-01T11:00:00.000Z");
+  it("gets the days the clocks change right", () => {
+    // 2025: forward March 9, back November 2, both at 2 a.m. Past changes,
+    // on purpose: B.C. stays on daylight time from November 2026, and only
+    // newer time zone data (2026c on) knows it. The code asks the runtime,
+    // so it follows whichever rules that has; the test mustn't hard-code a
+    // future that depends on the data version
+    expect(pharmacyLocalToIso("2025-03-09T01:00")).toBe("2025-03-09T09:00:00.000Z");
+    expect(pharmacyLocalToIso("2025-03-09T03:00")).toBe("2025-03-09T10:00:00.000Z");
+    expect(pharmacyLocalToIso("2025-11-02T03:00")).toBe("2025-11-02T11:00:00.000Z");
   });
 
   it("round-trips back to what was typed", () => {
