@@ -15,8 +15,10 @@
 name: CI
 
 on:
+  # Test every branch. A feature branch with no CI is a branch nobody knows is
+  # broken until it is merged.
   push:
-    branches: [feat/do-migration, main]
+    branches: ['**']
   pull_request:
 
 # A newer push cancels an older run's checks, which no longer matter. This is
@@ -148,7 +150,13 @@ jobs:
     # reports success, which is a miserable thing to debug.
     #
     # Set the repository variable DEPLOY_ENABLED to "true" once a server exists.
-    if: github.event_name == 'push' && vars.DEPLOY_ENABLED == 'true'
+    #
+    # Which branch goes where is named explicitly rather than inferred, so
+    # testing a new branch can never deploy it somewhere by accident.
+    if: >-
+      github.event_name == 'push' &&
+      vars.DEPLOY_ENABLED == 'true' &&
+      (github.ref_name == 'feat/do-migration' || github.ref_name == 'main')
     runs-on: ubuntu-24.04
     timeout-minutes: 15
 
