@@ -55,10 +55,6 @@ const MIGRATIONS = [
      delivered_at    TEXT,
      purge_after     TEXT
    );`,
-  `CREATE INDEX IF NOT EXISTS submissions_undelivered_idx
-     ON submissions (delivered_at, received_at);`,
-  `CREATE INDEX IF NOT EXISTS submissions_purge_idx
-     ON submissions (purge_after);`,
   `CREATE INDEX IF NOT EXISTS submissions_status_idx
      ON submissions (status, received_at);`,
   `CREATE TABLE IF NOT EXISTS submission_files (
@@ -132,9 +128,18 @@ const MIGRATIONS = [
 // databases get them here too, after the CREATE TABLE above
 const ADDED_COLUMNS = [
   { table: "posts", column: "category", definition: "TEXT NOT NULL DEFAULT 'news'" },
+  // Sync bookkeeping, added after staging already held submissions
+  { table: "submissions", column: "delivered_at", definition: "TEXT" },
+  { table: "submissions", column: "purge_after", definition: "TEXT" },
 ];
 
+// Indexes on added columns. They must come after ADDED_COLUMNS, or an older
+// database fails here before the columns exist
 const LATE_INDEXES = [
+  `CREATE INDEX IF NOT EXISTS submissions_undelivered_idx
+     ON submissions (delivered_at, received_at);`,
+  `CREATE INDEX IF NOT EXISTS submissions_purge_idx
+     ON submissions (purge_after);`,
   // The blog list, filtered by category, newest first
   `CREATE INDEX IF NOT EXISTS posts_category_idx
      ON posts (status, category, published_at);`,

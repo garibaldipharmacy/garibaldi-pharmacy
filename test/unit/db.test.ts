@@ -13,7 +13,9 @@ import {
   getSubmissionFiles,
   listSubmissions,
   persistSubmission,
+  getDb,
 } from "~~/server/utils/db";
+import { DatabaseSync } from "~~/server/utils/sqlite";
 
 let dir: string;
 
@@ -192,5 +194,41 @@ describe("backups", () => {
     const snapshot = join(dir, "snapshot.db");
     backupTo(snapshot);
     expect(existsSync(snapshot)).toBe(true);
+  });
+});
+
+describe("upgrading an existing database", () => {
+  it("adds the sync columns to a submissions table created before sync existed", () => {
+    // Staging and production already hold this table. CREATE TABLE IF NOT EXISTS
+    // leaves it alone, so the new columns have to be added explicitly or every
+    // query that touches them fails.
+    const old = new DatabaseSync(process.env.DATABASE_PATH!);
+    old.exec(`CREATE TABLE submissions (
+      id              TEXT PRIMARY KEY,
+      reference       TEXT NOT NULL UNIQUE,
+      kind            TEXT NOT NULL,
+      received_at     TEXT NOT NULL,
+      status          TEXT NOT NULL DEFAULT 'new',
+      flags           TEXT NOT NULL DEFAULT '[]',
+      acknowledged_at TEXT,
+      acknowledged_by TEXT,
+      idempotency_key TEXT NOT NULL UNIQUE,
+      payload         TEXT NOT NULL
+    );`);
+    old.exec(`INSERT INTO submissions (id, reference, kind, received_at, idempotency_key, payload)
+      VALUES ('old-1', 'OLD00001', 'refill', '2026-09-01T00:00:00.000Z', 'k-1', '{}');`);
+    old.close();
+
+    const db = getDb();
+    const columns = (db.prepare("PRAGMA table_info(submissions)").all() as { name: string }[]).map((c) => c.name);
+    expect(columns).toEqual(expect.arrayContaining(["delivered_at", "purge_after"]));
+
+    const indexes = (db.prepare("PRAGMA index_list(submissions)").all() as { name: string }[]).map((i) => i.name);
+    expect(indexes).toEqual(expect.arrayContaining(["submissions_undelivered_idx", "submissions_purge_idx"]));
+
+    // The existing request survives, still waiting to be delivered.
+    expect(getSubmission("old-1")).toMatchObject({ reference: "OLD00001", delivered_at: null, purge_after: null });
+    persistSubmission(submission());
+    expect(listSubmissions()).toHaveLength(2);
   });
 });
