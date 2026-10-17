@@ -4,6 +4,10 @@
 //
 //   node scripts/generate-sync-keypair.mjs
 //
+// Prefer the dashboard's own setup, which saves the secret halves straight into
+// its keys folder and nightly backup (shift-dashboard docs/deployment-guide.md,
+// step 7). This script is the fallback and produces the same formats.
+//
 // Run this ONCE, on the pharmacy's machine, and treat the output as follows:
 //
 //   SYNC_PUBLIC_KEY   -> the website's .env           (public half, safe)
@@ -39,7 +43,7 @@ SYNC_TOKEN_HASH=${tokenHash}
 
 SYNC_PRIVATE_KEY=${priv}
 SYNC_TOKEN=${token}
-SYNC_URL=http://localhost:3000
+SYNC_URL=https://garibaldipharmacy.com
 
 =============================================================================
 
