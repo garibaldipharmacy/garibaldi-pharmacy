@@ -1,142 +1,148 @@
 <template>
-  <!-- Hero Section -->
-  <section class="mx-auto">
-    <div class="relative">
-      <img
-        class="w-full"
-        src="@/assets/images/minor-ailments-pharmacy-squamish-1440.webp"
-        srcset="
-          @/assets/images/minor-ailments-pharmacy-squamish-800.webp 800w,
-          @/assets/images/minor-ailments-pharmacy-squamish-1440.webp 1440w
-        "
-        sizes="100vw"
-        width="1440"
-        height="572"
-        fetchpriority="high"
-        alt="A healthcare professional in a white coat and gloves is using a stethoscope to check the heart or lungs of a smiling young man wearing a denim jacket in a clinical setting."
-      />
-      <div class="hero-over-text sm:text-white px-5 mt-5 text-primary-900">
-        <h1 class="text-4xl font-bold">Minor Ailments</h1>
-        <p class="font-light mt-2 opacity-75 sm:opacity-100">
-          Pharmacists are the most accessible healthcare provider and are
-          therapeutics experts. Take advantage of our pharmacists when you are
-          experiencing a minor ailment. You will be able to get treatment faster
-          than it takes to see a doctor.
-        </p>
-      </div>
-    </div>
-  </section>
+  <PageIntro title="Minor Ailments">
+    <p>
+      Pharmacists are the most accessible healthcare provider and are
+      therapeutics experts. Take advantage of our pharmacists when you are
+      experiencing a minor ailment. You will be able to get treatment faster
+      than it takes to see a doctor.
+    </p>
+  </PageIntro>
+
+  <PagePhoto>
+    <img
+      src="@/assets/images/minor-ailments-pharmacy-squamish-1440.webp"
+      srcset="
+        @/assets/images/minor-ailments-pharmacy-squamish-800.webp 800w,
+        @/assets/images/minor-ailments-pharmacy-squamish-1440.webp 1440w
+      "
+      sizes="(min-width: 1152px) 1104px, calc(100vw - 2rem)"
+      width="1440"
+      height="572"
+      fetchpriority="high"
+      alt="A healthcare professional listening to a smiling patient's chest with a stethoscope"
+    />
+  </PagePhoto>
 
   <!-- Appointment Booking -->
-  <section
-    class="text-primary-900 bg-primary-100 sm:rounded-lg container mx-auto my-5 p-5 sm:p-10"
-  >
-    <h2 class="text-2xl font-bold mb-3">Appointment Booking</h2>
-    <div class="flex flex-wrap md:flex-nowrap items-center gap-5">
-      <div class="flex flex-col gap-4 md:w-3/4">
-        <p>
-          To get assessed and treated, have your BC Health Card ready and book
-          an appointment:
-        </p>
-        <p class="md:flex items-center">
-          <Icon name="fa6-solid:circle-info" class="mr-2" /><span
-            >Be sure to select Garibaldi Pharmacy as your clinic to see the
-            appointments available.</span
-          >
-        </p>
-        <p class="font-light w-4/5">
-          Is booking an appointment too complicated, do none of the time slots
-          work, or are you in a hurry? No problem. Give us a call at
-          <NuxtLink
-            :href="`tel:${phoneMain}`"
-            class="underline hover:no-underline"
-            >{{ phoneMain }}</NuxtLink
-          >
-          or email
-          <NuxtLink
-            :href="`mailto:${email}`"
-            class="underline hover:no-underline"
-            >{{ email }}</NuxtLink
-          >
-          and our pharmacist will try to make things work for you.
-        </p>
+  <section class="mx-auto max-w-6xl px-4 pt-10 sm:px-6">
+    <div
+      v-reveal
+      class="grid items-center gap-8 rounded-3xl bg-primary-900 px-6 py-10 text-white sm:px-12 lg:grid-cols-[1fr_auto] lg:gap-16 lg:py-12"
+    >
+      <div>
+        <h2 class="text-3xl font-bold tracking-tight">Appointment Booking</h2>
+        <div class="mt-5 space-y-4 font-light leading-relaxed text-white/80">
+          <p class="text-lg text-white">
+            To get assessed and treated, have your BC Health Card ready and book
+            an appointment:
+          </p>
+          <p class="flex gap-3">
+            <Icon
+              name="fa6-solid:circle-info"
+              class="mt-1 shrink-0 text-secondary-400"
+            /><span
+              >Be sure to select Garibaldi Pharmacy as your clinic to see the
+              appointments available.</span
+            >
+          </p>
+          <p>
+            Is booking an appointment too complicated, do none of the time
+            slots work, or are you in a hurry? No problem. Give us a call at
+            <NuxtLink
+              :href="`tel:${phoneMain}`"
+              class="text-white underline underline-offset-4 hover:no-underline"
+              >{{ phoneMain }}</NuxtLink
+            >
+            or email
+            <NuxtLink
+              :href="`mailto:${email}`"
+              class="break-words text-white underline underline-offset-4 hover:no-underline"
+              >{{ email }}</NuxtLink
+            >
+            and our pharmacist will try to make things work for you.
+          </p>
+        </div>
       </div>
-      <div class="md:w-1/4">
-        <NuxtLink
-          to="https://www.bookapharmacist.gov.bc.ca/minorail/s/"
-          class="font-bold bg-primary-900 p-4 rounded-lg text-white flex gap-2 items-center justify-center hover:scale-105 hover:opacity-95 transition-transform"
-          >Book Appointment <Icon name="fa6-solid:arrow-up-right-from-square"
-        /></NuxtLink>
-      </div>
+      <NuxtLink
+        to="https://www.bookapharmacist.gov.bc.ca/minorail/s/"
+        class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full bg-white px-7 py-4 font-semibold text-primary-900 transition hover:-translate-y-0.5 hover:shadow-lg"
+        >Book Appointment
+        <Icon name="fa6-solid:arrow-up-right-from-square" class="text-sm"
+      /></NuxtLink>
     </div>
   </section>
 
   <!-- List of Minor Ailments -->
-  <section class="mb-10">
-    <div class="p-1 sm:w-1/2 mx-auto text-primary-900 title-section container">
-      <h2 class="text-2xl font-bold text-center">List of Minor Ailments</h2>
-      <p class="text-center font-light opacity-80 mt-3">
-        Our pharmacists can assess and treat the following minor ailments. Click
-        on each one to learn more about the condition to see if it matches what
-        you are experiencing.
-      </p>
-      <p class="text-center font-light opacity-80 mt-3">
-        Not sure if what you're experiencing is a minor ailment? No problem. Our
-        pharmacists can still assess you and refer you to the appropriate
-        healthcare provider.
-      </p>
-    </div>
-    <div class="">
-      <div class="relative sm:w-1/2 mx-5 sm:mx-auto">
-        <div class="relative">
-          <input
-            type="text"
-            v-model="searchQuery"
-            placeholder="Search minor ailments..."
-            class="placeholder:text-slate-400 text-primary-900 border border-primary-100 bg-primary-50 rounded-md px-10 py-2 my-4 w-full focus:outline-primary-800"
-          />
-          <template v-if="searchQuery.length > 0">
-            <button
-              @click="clearInput"
-              class="absolute right-0 top-1/2 -translate-y-1/2 px-3 text-slate-400 focus:outline-none"
-            >
-              <Icon
-                name="fa6-solid:circle-xmark"
-                class=""
-                style="width: 1.5rem"
-              />
-            </button>
-          </template>
-          <Icon
-            name="fa6-solid:magnifying-glass"
-            class="text-slate-400 absolute left-3 top-1/2 transform -translate-y-1/2"
-            style="width: 1.5rem"
-          />
-        </div>
+  <section class="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
+    <div class="mx-auto max-w-2xl text-center text-primary-900">
+      <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">
+        List of Minor Ailments
+      </h2>
+      <div class="mt-4 space-y-3 text-lg font-light text-slate-600">
+        <p>
+          Our pharmacists can assess and treat the following minor ailments.
+          Read the description of each one to see if it matches what you are
+          experiencing.
+        </p>
+        <p>
+          Not sure if what you're experiencing is a minor ailment? No problem.
+          Our pharmacists can still assess you and refer you to the appropriate
+          healthcare provider.
+        </p>
       </div>
-      <!-- Minor Ailments List -->
-      <div v-if="filteredAilments.length > 0">
-        <ul
-          class="text-primary-900 container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 p-5"
+
+      <div class="relative mx-auto mt-8 max-w-lg">
+        <Icon
+          name="fa6-solid:magnifying-glass"
+          aria-hidden="true"
+          class="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-slate-400"
+        />
+        <input
+          type="search"
+          v-model="searchQuery"
+          aria-label="Search minor ailments"
+          placeholder="Search minor ailments..."
+          class="w-full rounded-full border-0 bg-primary-50 py-3.5 pl-12 pr-12 text-primary-900 ring-1 ring-primary-900/10 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-700 [&::-webkit-search-cancel-button]:hidden"
+        />
+        <button
+          v-if="searchQuery.length > 0"
+          type="button"
+          aria-label="Clear search"
+          @click="clearInput"
+          class="absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-primary-100 hover:text-primary-900"
         >
-          <li
-            v-for="ailment in filteredAilments"
-            :key="ailment.title"
-            class="bg-primary-100 p-5 rounded-lg"
-          >
-            <h3 class="text-xl font-bold">{{ ailment.title }}</h3>
-            <p class="opacity-75 font-light mt-2">{{ ailment.description }}</p>
-          </li>
-        </ul>
+          <Icon name="fa6-solid:circle-xmark" />
+        </button>
       </div>
-      <!-- Display message if no results found -->
-      <p
-        v-else
-        class="text-center py-10 bg-primary-100 sm:rounded-lg font-light text-xl text-primary-900 container mx-auto"
-      >
-        No matching minor ailments found.
-      </p>
     </div>
+
+    <ul
+      v-if="filteredAilments.length > 0"
+      class="mt-12 grid gap-x-12 text-primary-900 sm:grid-cols-2 lg:grid-cols-3"
+    >
+      <li
+        v-for="ailment in filteredAilments"
+        :key="ailment.title"
+        class="relative pt-5 pb-8"
+      >
+        <span
+          aria-hidden="true"
+          class="absolute inset-x-0 top-0 h-px bg-primary-900/10"
+        />
+        <h3 class="text-lg font-semibold">{{ ailment.title }}</h3>
+        <p class="mt-2 font-light leading-relaxed text-slate-600">
+          {{ ailment.description }}
+        </p>
+      </li>
+    </ul>
+    <!-- Display message if no results found -->
+    <p
+      v-else
+      role="status"
+      class="mt-12 rounded-3xl bg-primary-50 py-12 text-center text-xl font-light text-primary-900"
+    >
+      No matching minor ailments found.
+    </p>
   </section>
 </template>
 
@@ -158,13 +164,11 @@ useSeoMeta({
   ogTitle: "Garibaldi Pharmacy | Minor Ailment Pharmacy in Squamish",
   ogDescription:
     "Get fast treatment for minor ailments at Garibaldi Pharmacy in Squamish. Our expert pharmacists provide accessible care, helping you feel better without waiting to see a doctor.",
-  ogImage: "/favicon/android-chrome-512x512.png",
+  ...shareImages.dog,
   ogUrl: "https://garibaldipharmacy.com/services/minor-ailments/",
   twitterTitle: "Garibaldi Pharmacy | Minor Ailment Pharmacy in Squamish",
   twitterDescription:
     "Get fast treatment for minor ailments at Garibaldi Pharmacy in Squamish. Our expert pharmacists provide accessible care, helping you feel better without waiting to see a doctor.",
-  twitterImage: "/favicon/android-chrome-512x512.png",
-  twitterCard: "summary",
 });
 
 useHead({
@@ -345,18 +349,3 @@ const filteredAilments = computed(() => {
   });
 });
 </script>
-
-<style scoped>
-@media screen and (min-width: 640px) {
-  .hero-over-text {
-    position: absolute;
-    top: 50%;
-    right: 2rem;
-    transform: translateY(-50%);
-    width: 450px;
-    max-width: calc(100% - 40px);
-    padding: 0;
-    margin-top: 0;
-  }
-}
-</style>

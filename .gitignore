@@ -23,5 +23,6 @@ logs
 .env.*
 !.env.example
 
-# Local Netlify folder
-.netlify
+# Lighthouse CI working files and reports
+.lighthouseci
+lighthouse-reports

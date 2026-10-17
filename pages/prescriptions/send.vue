@@ -1,326 +1,214 @@
 <template>
-  <PrescriptionFormSelector />
-  <PrescriptionHeader />
-  <div class="container mx-auto mt-10 mb-10">
-    <div class="flex flex-wrap gap-y-5 md:w-2/3 px-5">
-      <p>
-        <strong
-          >The prescription MUST be provided to the pharmacist at the time of
-          pickup.</strong
-        >
-      </p>
-      <p>
-        <strong
-          >By completing this form, you consent to allow the collection and use
-          of your personal information for the purpose of filling your
-          prescription at Garibaldi Pharmacy and understand that all personal
-          information will reside at Garibaldi Pharmacy.</strong
-        >
-      </p>
-      <p class="font-light">
-        A pharmacy staff member will contact you to when your prescription is
-        ready.
-      </p>
-    </div>
+  <div class="mx-auto max-w-3xl px-4 pt-10 pb-20 sm:px-6 lg:pt-14 lg:pb-24">
+    <PrescriptionFormSelector />
+    <PrescriptionHeader />
+
     <form
-      name="send-prescription"
-      method="post"
-      class="mt-10"
-      action="/success/send"
-      netlify-honeypot="bot-field"
-      data-netlify="true"
-      enctype="multipart/form-data"
+      class="mt-10 space-y-8 rounded-3xl bg-primary-50 p-6 sm:p-10"
+      novalidate
+      @submit.prevent="onSubmit"
     >
-      <input type="hidden" name="form-name" value="send-prescription" />
-      <div
-        class="grid gap-6 mb-6 md:grid-cols-2 shadow-lg border border-primary-100 rounded py-5 px-2"
-      >
-        <!-- Legal First Name -->
-        <div class="col-span-2 px-5 sm:col-auto">
-          <label
-            for="first_name"
-            class="flex mb-2 text-sm font-medium text-gray-900"
-            >Legal First Name
-            <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
-          /></label>
-          <input
-            type="text"
-            id="first_name"
-            name="first_name"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-            placeholder="Johnathon"
-            required
-          />
-        </div>
-        <!-- Legal Last Name -->
-        <div class="col-span-2 px-5 sm:col-span-1">
-          <label
-            for="last_name"
-            class="flex mb-2 text-sm font-medium text-gray-900"
-            >Legal Last Name
-            <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
-          /></label>
-          <input
-            type="text"
-            id="last_name"
-            name="last_name"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-            placeholder="Doe"
-            required
-          />
-        </div>
+      <FormErrorSummary ref="summary" :message="error" :errors="errors" />
 
-        <div
-          class="flex gap-5 w-full items-center col-span-2 px-5 sm:col-span-1 flex-wrap md:flex-nowrap"
+      <p class="text-sm font-light text-slate-600">
+        All fields are required unless marked optional.
+      </p>
+
+      <FormSection :step="1" title="About you">
+        <FormField
+          id="first_name"
+          label="Legal First Name"
+          :error="fieldError('patient.firstName')"
+          v-slot="{ field }"
         >
-          <!-- Sex -->
-          <div class="w-full">
-            <label for="sex" class="flex mb-2 text-sm font-medium text-gray-900"
-              >Sex
-              <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
-            /></label>
-            <select
-              name="sex"
-              id="sex"
-              class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-            >
-              <option selected disabled>Select Sex</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-            </select>
-          </div>
-
-          <!-- Date of Birth -->
-          <div class="w-full">
-            <label
-              for="date_of_birth"
-              class="block mb-2 text-sm font-medium text-gray-900"
-              >Date of Birth
-              <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
-            /></label>
-            <input
-              type="date"
-              name="date_of_birth"
-              id="date_of_birth"
-              class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-              placeholder="Select date"
-            />
-          </div>
-        </div>
-
-        <!-- Personal Health Number -->
-        <div class="col-span-2 px-5 sm:col-span-1">
-          <label
-            for="personal_health_number"
-            class="block mb-2 text-sm font-medium text-gray-900"
-            >Personal Health Number
-          </label>
           <input
-            name="personal_health_number"
+            v-bind="field"
+            v-model="patient.firstName"
             type="text"
-            id="personal_health_number"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-            placeholder="9123-456-789"
-            pattern="9\d{3}-\d{3}-\d{3}"
+            name="first_name"
+            class="form-input"
+            autocomplete="given-name"
+            required
+          />
+        </FormField>
+
+        <FormField
+          id="last_name"
+          label="Legal Last Name"
+          :error="fieldError('patient.lastName')"
+          v-slot="{ field }"
+        >
+          <input
+            v-bind="field"
+            v-model="patient.lastName"
+            type="text"
+            name="last_name"
+            class="form-input"
+            autocomplete="family-name"
+            required
+          />
+        </FormField>
+
+        <FormField
+          id="date_of_birth"
+          label="Date of Birth"
+          :error="fieldError('patient.dateOfBirth')"
+          v-slot="{ field }"
+        >
+          <input
+            v-bind="field"
+            v-model="patient.dateOfBirth"
+            type="date"
+            name="date_of_birth"
+            class="form-input"
+            autocomplete="bday"
+            required
+          />
+        </FormField>
+
+        <FormField
+          id="sex"
+          label="Sex"
+          optional
+          :error="fieldError('patient.sex')"
+          v-slot="{ field }"
+        >
+          <select
+            v-bind="field"
+            v-model="patient.sex"
+            name="sex"
+            class="form-input"
+          >
+            <option :value="undefined" disabled>Select Sex</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </FormField>
+
+        <FormField
+          id="personal_health_number"
+          label="Personal Health Number"
+          hint="On the back of your BC Services Card, driver's licence or CareCard."
+          optional
+          :error="fieldError('patient.phn')"
+          v-slot="{ field }"
+        >
+          <input
+            v-bind="field"
+            v-model="patient.phn"
             v-maska
+            type="text"
+            name="personal_health_number"
+            class="form-input"
+            placeholder="9123-456-789"
             data-maska="####-###-###"
           />
-        </div>
+        </FormField>
+      </FormSection>
 
-        <!-- Cell Phone Number -->
-        <div class="col-span-2 px-5 sm:col-span-1">
-          <label
-            for="cell_phone_number"
-            class="block mb-2 text-sm font-medium text-gray-900"
-            >Cell Phone Number
-            <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
-          /></label>
+      <FormSection :step="2" title="How we can reach you">
+        <FormField
+          id="cell_phone_number"
+          label="Cell Phone Number"
+          :error="fieldError('patient.phone')"
+          v-slot="{ field }"
+        >
           <input
-            type="text"
-            id="cell_phone_number"
-            name="cell_phone_number"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-            placeholder="(604) 123-4567"
+            v-bind="field"
+            v-model="patient.phone"
             v-maska
+            type="tel"
+            name="cell_phone_number"
+            class="form-input"
+            placeholder="(604) 123-4567"
             data-maska="(###) ###-####"
+            autocomplete="tel"
             required
           />
-        </div>
+        </FormField>
 
-        <!-- Email -->
-        <div class="col-span-2 px-5 sm:col-span-1">
-          <label
-            for="email"
-            class="block mb-2 text-sm font-medium text-gray-900"
-            >Email</label
-          >
+        <FormField
+          id="email"
+          label="Email"
+          :error="fieldError('patient.email')"
+          v-slot="{ field }"
+        >
           <input
+            v-bind="field"
+            v-model="patient.email"
             type="email"
             name="email"
-            id="email"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-            placeholder="john@example.com"
-          />
-        </div>
-
-        <div
-          class="mx-5 col-span-2 bg-slate-200 flex-100 font-light p-5 rounded"
-        >
-          <p class="font-medium">
-            Submit photos of prescription and any insurance plan cards:
-          </p>
-          <p class="mt-3">
-            Please follow these instructions to ensure there are no delays in
-            processing your prescription:
-          </p>
-          <ul class="list-disc">
-            <li class="ml-5">
-              Please place your prescription on a flat surface with adequate
-              lighting
-            </li>
-            <li class="ml-5">
-              Make sure to take a photo of the
-              <strong class="font-bold underline">entire page</strong> of the
-              prescription
-            </li>
-            <li class="ml-5">
-              Review each photo to ensure text is legible and in focus
-            </li>
-            <li class="ml-5">
-              When taking photos of insurance plan cards, please take photos of
-              the entire card (both front and back).
-            </li>
-          </ul>
-          <p class="mt-3 italic">
-            Note: If you have previously submitted your insurance plan cards,
-            the pharmacy will already have this in our system. You will only
-            need to take a photo of your insurance plan cards if the information
-            has changed.
-          </p>
-        </div>
-
-        <!-- Prescription Attachment -->
-        <div class="w-full col-span-2 px-5 sm:col-span-1">
-          <label
-            for="prescription-file"
-            class="block mb-2 text-sm font-medium text-gray-900"
-            >Prescription 1
-            <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
-          /></label>
-
-          <input
-            type="file"
-            name="prescription-file"
-            id="prescription-file"
-            accept="image/*,.pdf"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
+            class="form-input"
+            autocomplete="email"
             required
           />
-        </div>
+        </FormField>
+      </FormSection>
 
-        <!-- Prescription Attachment -->
-        <div class="w-full col-span-2 px-5 sm:col-span-1">
-          <div>
-            <label
-              for="prescription-file-2"
-              class="block mb-2 text-sm font-medium text-gray-900"
-              >Prescription 2</label
-            >
-            <input
-              type="file"
-              name="prescription-file-2"
-              id="prescription-file-2"
-              accept="image/*,.pdf"
-              class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-            />
-          </div>
-        </div>
+      <!--
+        Previously two hardcoded prescription inputs and two hardcoded insurance
+        card pairs, because Netlify Forms required statically known field names.
+        Now repeaters with an add button.
+      -->
+      <FormSection :step="3" title="Your prescription">
+        <FormFileRepeater
+          v-model="prescriptions"
+          legend="Prescriptions"
+          hide-legend
+          hint="Take a clear photo of the whole prescription, or attach a PDF."
+          item-label="Prescription"
+          plural-label="prescriptions"
+          add-label="Add another prescription"
+          editor-note="Make sure the whole prescription, including the prescriber's signature, is visible."
+          error-prefix="prescriptions"
+          :errors="errors"
+          :fields="prescriptionFields"
+          :max="LIMITS.maxPrescriptions"
+          required
+        />
+      </FormSection>
 
-        <div class="col-span-2 flex-100 font-light px-5 rounded">
-          <span class="font-light uppercase opacity-75 block">Plan Card 1</span>
-        </div>
-        <!-- Insurance Card -->
-        <div class="w-full col-span-2 px-5 sm:col-span-1">
-          <label
-            for="insurance-card-front"
-            class="block mb-2 text-sm font-medium text-gray-900"
-          >
-            Insurance Card 1 (Front)
-          </label>
+      <FormSection
+        :step="4"
+        title="Insurance plan cards (optional)"
+        description="If you have previously submitted your insurance plan cards, the pharmacy will already have this in our system. You will only need to take a photo of your insurance plan cards if the information has changed."
+      >
+        <FormFileRepeater
+          v-model="insurance"
+          legend="Insurance plan cards (optional)"
+          hide-legend
+          hint="Only if you have coverage and it is new or has changed. Having insurance is not required to send us a prescription."
+          item-label="Insurance card"
+          plural-label="insurance cards"
+          add-label="Add an insurance card"
+          editor-note="Make sure the whole card is visible, including your name and plan details."
+          error-prefix="insurance"
+          :errors="errors"
+          :fields="insuranceFields"
+          :max="LIMITS.maxInsuranceCards"
+          :min-rows="0"
+        />
+      </FormSection>
 
-          <input
-            type="file"
-            name="insurance-card-front"
-            id="insurance-card-front"
-            accept="image/*,.pdf"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-          />
-        </div>
-        <!-- Insurance Card -->
-        <div class="w-full col-span-2 px-5 sm:col-span-1">
-          <label
-            for="insurance-card-back"
-            class="block mb-2 text-sm font-medium text-gray-900"
-          >
-            Insurance Card 1 (Back)
-          </label>
+      <FormSubmit
+        label="Send Prescription"
+        :pending-label="uploadLabel"
+        :pending="pending"
+        icon="fa6-solid:prescription"
+      />
 
-          <input
-            type="file"
-            name="insurance-card-back"
-            id="insurance-card-back"
-            accept="image/*,.pdf"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-          />
-        </div>
-        <div class="col-span-2 flex-100 font-light px-5 rounded">
-          <span class="font-light uppercase opacity-75 block">Plan Card 2</span>
-        </div>
-        <!-- Insurance Card -->
-        <div class="w-full col-span-2 px-5 sm:col-span-1">
-          <label
-            for="insurance-card-front-2"
-            class="block mb-2 text-sm font-medium text-gray-900"
-          >
-            Insurance Card 2 (Front)
-          </label>
-
-          <input
-            type="file"
-            name="insurance-card-front-2"
-            id="insurance-card-front-2"
-            accept="image/*,.pdf"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-          />
-        </div>
-        <!-- Insurance Card -->
-        <div class="w-full col-span-2 px-5 sm:col-span-1">
-          <label
-            for="insurance-card-back-2"
-            class="block mb-2 text-sm font-medium text-gray-900"
-            >Insurance Card 2 (Back)
-          </label>
-
-          <input
-            type="file"
-            name="insurance-card-back-2"
-            id="insurance-card-back-2"
-            accept="image/*,.pdf"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-          />
-        </div>
-
-        <!-- Recapcha -->
-        <!-- <div class="px-5" data-netlify-recaptcha="true"></div> -->
-
-        <div class="col-span-2 px-5 sm:col-span-2">
-          <button
-            type="submit"
-            class="bg-primary-900 text-white rounded py-2 px-5 hover:bg-primary-800 transition-colors w-full sm:w-auto"
-          >
-            Submit
-          </button>
-        </div>
+      <!-- Honeypot. Hidden from people, irresistible to bots. Last in the form so
+           its hidden box adds no spacing above anything -->
+      <div class="hidden" aria-hidden="true">
+        <label for="bot-field">Do not fill this in</label>
+        <input
+          id="bot-field"
+          v-model="botField"
+          type="text"
+          name="bot-field"
+          tabindex="-1"
+          autocomplete="off"
+        />
       </div>
     </form>
   </div>
@@ -329,6 +217,8 @@
 <script setup>
 // Registered here rather than globally so only the form pages load it
 import { vMaska } from "maska";
+import { computed, reactive, ref } from "vue";
+import { LIMITS } from "~~/shared/forms";
 
 useSeoMeta({
   title: "Send Prescriptions in Squamish | Garibaldi Pharmacy",
@@ -337,35 +227,93 @@ useSeoMeta({
   ogTitle: "Send Prescriptions in Squamish | Garibaldi Pharmacy",
   ogDescription:
     "Send your prescription to Garibaldi Pharmacy in Squamish with ease. Our pharmacists provide fast, safe, and personalized medication services.",
-  ogImage: "/favicon/android-chrome-512x512.png",
-  ogUrl: "https://garibaldipharmacy.com/prescriptions/send/",
+  ...shareImages.dog,
   twitterTitle: "Send Prescriptions in Squamish | Garibaldi Pharmacy",
   twitterDescription:
     "Send your prescription to Garibaldi Pharmacy in Squamish with ease. Our pharmacists provide fast, safe, and personalized medication services.",
-  twitterImage: "/favicon/android-chrome-512x512.png",
-  twitterCard: "summary",
 });
 
+// Canonical and ogUrl come from `site.url` via nuxt-site-config rather than being
+// hardcoded to production, which used to make staging claim the live canonical.
 useHead({
-  htmlAttrs: {
-    lang: "en",
-  },
-  link: [
-    {
-      rel: "canonical",
-      href: "https://garibaldipharmacy.com/prescriptions/send/",
-    },
-    {
-      rel: "icon",
-      type: "image/png",
-      href: "/favicon/favicon-32x32.png",
-    },
-  ],
+  htmlAttrs: { lang: "en" },
+  link: [{ rel: "icon", type: "image/png", href: "/favicon/favicon-32x32.png" }],
 });
-</script>
 
-<style>
-.uppy-Dashboard-inner {
-  font-family: "Lexend", sans-serif;
+const { pending, progress, error, errors, errorRegion, botField, fieldError, submit } =
+  useRequestForm("/success/send");
+const summary = ref(null);
+
+const prescriptionFields = [{ key: "file", label: "Prescription", required: true }];
+const insuranceFields = [
+  { key: "front", label: "Front of card" },
+  {
+    key: "back",
+    label: "Back of card",
+    hint: "Optional. Some cards have nothing on the back.",
+  },
+];
+
+const patient = reactive({
+  firstName: "",
+  lastName: "",
+  sex: undefined,
+  dateOfBirth: "",
+  phn: "",
+  phone: "",
+  email: "",
+});
+
+const prescriptions = ref([{ file: null }]);
+const insurance = ref([]);
+
+const uploadLabel = computed(() =>
+  progress.value > 0 && progress.value < 100
+    ? `Uploading ${progress.value}%`
+    : "Sending...",
+);
+
+watchEffect(() => {
+  errorRegion.value = summary.value?.region ?? null;
+});
+
+async function onSubmit() {
+  // Build the multipart part names the server will look for. Keys are boring and
+  // machine-generated; the patient's filename never becomes a lookup key or a path.
+  const files = [];
+
+  const chosenPrescriptions = prescriptions.value
+    .map((row, index) => ({ row, index }))
+    .filter(({ row }) => row.file);
+
+  for (const { row, index } of chosenPrescriptions) {
+    const key = `rx_${index}`;
+    files.push({ key, file: row.file });
+  }
+
+  const insurancePayload = [];
+  insurance.value.forEach((row, index) => {
+    if (!row.front) return;
+    const frontKey = `ins_${index}_front`;
+    files.push({ key: frontKey, file: row.front });
+
+    const card = { front: { key: frontKey } };
+    if (row.back) {
+      const backKey = `ins_${index}_back`;
+      files.push({ key: backKey, file: row.back });
+      card.back = { key: backKey };
+    }
+    insurancePayload.push(card);
+  });
+
+  await submit(
+    {
+      kind: "send",
+      patient: { ...patient },
+      prescriptions: chosenPrescriptions.map(({ index }) => ({ key: `rx_${index}` })),
+      insurance: insurancePayload,
+    },
+    files,
+  );
 }
-</style>
+</script>

@@ -1,226 +1,177 @@
 <template>
-  <PrescriptionFormSelector />
-  <PrescriptionHeader />
-  <div class="container mx-auto mt-10 mb-10">
+  <div class="mx-auto max-w-3xl px-4 pt-10 pb-20 sm:px-6 lg:pt-14 lg:pb-24">
+    <PrescriptionFormSelector />
+    <PrescriptionHeader />
+
     <form
-      name="refill-prescription"
-      method="post"
-      class="mt-10"
-      action="/success/refill"
-      netlify-honeypot="bot-field"
-      data-netlify="true"
-      enctype="multipart/form-data"
+      class="mt-10 space-y-8 rounded-3xl bg-primary-50 p-6 sm:p-10"
+      novalidate
+      @submit.prevent="onSubmit"
     >
-      <input type="hidden" name="form-name" value="refill-prescription" />
-      <div
-        class="grid gap-6 mb-6 md:grid-cols-2 shadow-lg border border-primary-100 rounded py-5 px-2"
-      >
-        <!-- Legal First Name -->
-        <div class="col-span-2 px-5 sm:col-auto">
-          <label
-            for="first_name"
-            class="flex mb-2 text-sm font-medium text-gray-900"
-            >Legal First Name
-            <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
-          /></label>
-          <input
-            type="text"
-            id="first_name"
-            name="first_name"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-            placeholder="Johnathon"
-            required
-          />
-        </div>
-        <!-- Legal Last Name -->
-        <div class="col-span-2 px-5 sm:col-span-1">
-          <label
-            for="last_name"
-            class="flex mb-2 text-sm font-medium text-gray-900"
-            >Legal Last Name
-            <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
-          /></label>
-          <input
-            type="text"
-            id="last_name"
-            name="last_name"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-            placeholder="Doe"
-            required
-          />
-        </div>
+      <FormErrorSummary ref="summary" :message="error" :errors="errors" />
 
-        <div
-          class="flex gap-5 w-full items-center col-span-2 px-5 sm:col-span-1"
+      <p class="text-sm font-light text-slate-600">
+        All fields are required unless marked optional.
+      </p>
+
+      <FormSection :step="1" title="About you">
+        <FormField
+          id="first_name"
+          label="Legal First Name"
+          :error="fieldError('patient.firstName')"
+          v-slot="{ field }"
         >
-          <!-- Date of Birth -->
-          <div class="w-full">
-            <label
-              for="date_of_birth"
-              class="block mb-2 text-sm font-medium text-gray-900"
-              >Date of Birth
-              <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
-            /></label>
-            <input
-              type="date"
-              name="date_of_birth"
-              id="date_of_birth"
-              class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-              placeholder="Select date"
-            />
-          </div>
-        </div>
-
-        <!-- Cell Phone Number -->
-        <div class="col-span-2 px-5 sm:col-span-1">
-          <label
-            for="cell_phone_number"
-            class="block mb-2 text-sm font-medium text-gray-900"
-            >Cell Phone Number
-            <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
-          /></label>
           <input
+            v-bind="field"
+            v-model="patient.firstName"
             type="text"
-            id="cell_phone_number"
-            name="cell_phone_number"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-            placeholder="(604) 123-4567"
-            v-maska
-            data-maska="(###) ###-####"
+            name="first_name"
+            class="form-input"
+            autocomplete="given-name"
             required
           />
-        </div>
+        </FormField>
 
-        <!-- Email -->
-        <div class="col-span-2 px-5 sm:col-span-1">
-          <label
-            for="email"
-            class="block mb-2 text-sm font-medium text-gray-900"
-            >Email<Icon
-              name="fa6-solid:asterisk"
-              class="text-red-600 text-xs ml-1"
-            />
-          </label>
+        <FormField
+          id="last_name"
+          label="Legal Last Name"
+          :error="fieldError('patient.lastName')"
+          v-slot="{ field }"
+        >
           <input
+            v-bind="field"
+            v-model="patient.lastName"
+            type="text"
+            name="last_name"
+            class="form-input"
+            autocomplete="family-name"
+            required
+          />
+        </FormField>
+
+        <FormField
+          id="date_of_birth"
+          label="Date of Birth"
+          :error="fieldError('patient.dateOfBirth')"
+          v-slot="{ field }"
+        >
+          <input
+            v-bind="field"
+            v-model="patient.dateOfBirth"
+            type="date"
+            name="date_of_birth"
+            class="form-input"
+            autocomplete="bday"
+            required
+          />
+        </FormField>
+      </FormSection>
+
+      <FormSection :step="2" title="How we can reach you">
+        <FormField
+          id="cell_phone_number"
+          label="Cell Phone Number"
+          :error="fieldError('patient.phone')"
+          v-slot="{ field }"
+        >
+          <input
+            v-bind="field"
+            v-model="patient.phone"
+            v-maska
+            type="tel"
+            name="cell_phone_number"
+            class="form-input"
+            placeholder="(604) 123-4567"
+            data-maska="(###) ###-####"
+            autocomplete="tel"
+            required
+          />
+        </FormField>
+
+        <FormField
+          id="email"
+          label="Email"
+          :error="fieldError('patient.email')"
+          v-slot="{ field }"
+        >
+          <input
+            v-bind="field"
+            v-model="patient.email"
             type="email"
             name="email"
-            id="email"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-            placeholder="john@example.com"
+            class="form-input"
+            autocomplete="email"
             required
           />
-        </div>
+        </FormField>
+      </FormSection>
 
-        <!-- Prescriptions to be refilled -->
-        <div class="col-span-2 px-5 sm:col-span-1">
-          <label
-            for="pharmacist-notes"
-            class="block mb-2 text-sm font-medium text-gray-900"
-            >Please list the medications you would like refilled by the most
-            recent prescription number <strong>OR</strong> provide the name or
-            description of the medication.</label
-          >
-          <textarea
-            placeholder="Enter medications here..."
-            name="pharmacist-notes"
-            id="pharmacist-notes"
-            cols="30"
-            rows="10"
-            class="border border-gray-300 bg-gray-50 rounded w-full font-light p-3 text-sm"
-          ></textarea>
-        </div>
-
-        <!-- Pickup or delivery radio buttons -->
-        <div>
-          <RadioGroup
-            v-model="selected"
-            name="options"
-            class="col-span-2 px-5 sm:col-span-1"
-          >
-            <RadioGroupLabel as="span"> Medication Retrieval </RadioGroupLabel>
-            <RadioGroupOption
-              v-for="option in options"
-              :key="option"
-              :value="option"
-              class=""
-              v-slot="{ active, checked }"
-            >
-              <span
-                class="font-light cursor-pointer hover:text-secondary-900 transition-colors"
-              >
-                <Icon
-                  v-if="checked"
-                  name="fa6-solid:circle-check"
-                  class="text-secondary-900 mr-3"
-                />
-                <Icon v-else name="fa6-regular:circle" class="mr-3" />
-                {{ option }}
-              </span>
-            </RadioGroupOption>
-          </RadioGroup>
-
-          <div
-            v-if="selected === `No`"
-            class="col-span-2 px-5 sm:col-span-1 mt-5"
-          >
-            <label
-              for="prescription-list"
-              class="block mb-2 text-sm font-medium text-gray-900"
-              >Please list medications you would like transferred by name and
-              strength. For example: Ramipril 10mg capsules</label
-            >
-            <textarea
-              placeholder="Ramipril 10mg capsules"
-              name="prescription-list"
-              id="prescription-list"
-              cols="30"
-              rows="10"
-              class="border border-gray-300 bg-gray-50 rounded w-full font-light p-3 text-sm"
-            ></textarea>
-          </div>
-        </div>
-        <!-- Special Instructions -->
-        <div class="col-span-2 px-5 sm:col-span-1">
-          <label
-            for="special-instructions"
-            class="block mb-3 text-sm font-medium text-gray-900"
-            >Special Instructions</label
-          >
-          <span class="text-sm font-light"
-            >Please add any extra details that you think we may need to know
-            when filling your prescription.</span
-          >
-          <textarea
-            placeholder="Enter notes here..."
-            name="special-instructions"
-            id="special-instructions"
-            cols="30"
-            rows="10"
-            class="border border-gray-300 bg-gray-50 rounded w-full font-light p-3 text-sm mt-3"
-          ></textarea>
-        </div>
-
-        <div
-          class="mx-5 col-span-2 bg-slate-200 flex-100 font-light p-5 rounded"
+      <FormSection :step="3" title="Your refill">
+        <FormField
+          id="medications"
+          label="Medications to refill"
+          hint="List them by the most recent prescription number, or give the name or description of the medication."
+          :error="fieldError('medications')"
+          class="sm:col-span-2"
+          v-slot="{ field }"
         >
-          <p>
-            Note: If you do not receive an automated e-mail message or phone
-            call within 24-hours to confirm your refill request, please call
-            {{ phoneMain }} for assistance.
-          </p>
-        </div>
+          <!-- Previously optional, so a refill could be submitted listing nothing. -->
+          <textarea
+            v-bind="field"
+            v-model="medications"
+            name="medications"
+            rows="4"
+            class="form-input"
+            required
+          ></textarea>
+        </FormField>
 
-        <!-- Recapcha -->
-        <div class="px-5" data-netlify-recaptcha="true"></div>
+        <FormChoice
+          v-model="retrievalMethod"
+          label="Medication Retrieval"
+          :options="retrievalOptions"
+          class="sm:col-span-2"
+        />
+      </FormSection>
 
-        <div class="col-span-2 px-5 sm:col-span-2">
-          <button
-            type="submit"
-            class="bg-primary-900 text-white rounded py-2 px-5 hover:bg-primary-800 transition-colors w-full sm:w-auto"
-          >
-            Send Refill Request
-          </button>
-        </div>
+      <FormSection :step="4" title="Anything else?">
+        <FormField
+          id="special-instructions"
+          label="Special Instructions"
+          hint="Please add any extra details that you think we may need to know when filling your prescription."
+          optional
+          :error="fieldError('specialInstructions')"
+          class="sm:col-span-2"
+          v-slot="{ field }"
+        >
+          <textarea
+            v-bind="field"
+            v-model="specialInstructions"
+            name="special-instructions"
+            rows="4"
+            class="form-input"
+          ></textarea>
+        </FormField>
+      </FormSection>
+
+      <FormSubmit
+        label="Send Refill Request"
+        :pending="pending"
+        icon="fa6-solid:prescription-bottle"
+      />
+
+      <!-- Honeypot. Hidden from people, irresistible to bots. Last in the form so
+           its hidden box adds no spacing above anything -->
+      <div class="hidden" aria-hidden="true">
+        <label for="bot-field">Do not fill this in</label>
+        <input
+          id="bot-field"
+          v-model="botField"
+          type="text"
+          name="bot-field"
+          tabindex="-1"
+          autocomplete="off"
+        />
       </div>
     </form>
   </div>
@@ -229,9 +180,8 @@
 <script setup>
 // Registered here rather than globally so only the form pages load it
 import { vMaska } from "maska";
-import { ref } from "vue";
-import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue";
-import { businessInfo } from "~/constants/business";
+import { reactive, ref } from "vue";
+import { RETRIEVAL_METHODS } from "~~/shared/forms";
 
 useSeoMeta({
   title: "Refill Prescriptions in Squamish | Garibaldi Pharmacy",
@@ -240,37 +190,64 @@ useSeoMeta({
   ogTitle: "Refill Prescriptions in Squamish | Garibaldi Pharmacy",
   ogDescription:
     "Refill your prescriptions quickly at Garibaldi Pharmacy in Squamish. Our expert pharmacists ensure your medications are ready when you need them.",
-  ogImage: "/favicon/android-chrome-512x512.png",
-  ogUrl: "https://garibaldipharmacy.com/prescriptions/refill/",
+  ...shareImages.dog,
   twitterTitle: "Refill Prescriptions in Squamish | Garibaldi Pharmacy",
   twitterDescription:
     "Refill your prescriptions quickly at Garibaldi Pharmacy in Squamish. Our expert pharmacists ensure your medications are ready when you need them.",
-  twitterImage: "/favicon/android-chrome-512x512.png",
-  twitterCard: "summary",
 });
 
+// Canonical and ogUrl are generated from `site.url` by nuxt-site-config. They used
+// to be hardcoded to the production domain, which made staging advertise the live
+// site as its own canonical.
 useHead({
-  htmlAttrs: {
-    lang: "en",
-  },
-  link: [
-    {
-      rel: "canonical",
-      href: "https://garibaldipharmacy.com/prescriptions/refill/",
-    },
-    {
-      rel: "icon",
-      type: "image/png",
-      href: "/favicon/favicon-32x32.png",
-    },
-  ],
+  htmlAttrs: { lang: "en" },
+  link: [{ rel: "icon", type: "image/png", href: "/favicon/favicon-32x32.png" }],
 });
 
-const phoneMain = businessInfo.contact.phone.main;
+const { pending, error, errors, errorRegion, botField, fieldError, submit } =
+  useRequestForm("/success/refill");
+const summary = ref(null);
 
-const options = [
-  "I will pickup my prescription",
-  "I would like my prescription delivered (may be a reasonable delivery charge)",
+const patient = reactive({
+  firstName: "",
+  lastName: "",
+  dateOfBirth: "",
+  phone: "",
+  email: "",
+});
+const medications = ref("");
+const retrievalMethod = ref("pickup");
+
+// Short titles, with the original wording kept as each option's description.
+// The key (pickup or delivery) is what gets submitted
+const retrievalOptions = [
+  {
+    value: "pickup",
+    label: "Pickup",
+    icon: "fa6-solid:store",
+    description: RETRIEVAL_METHODS.pickup,
+  },
+  {
+    value: "delivery",
+    label: "Delivery",
+    icon: "fa6-solid:truck",
+    description: RETRIEVAL_METHODS.delivery,
+  },
 ];
-const selected = ref(options[0]);
+const specialInstructions = ref("");
+
+// Point the composable at the summary so a failed submit moves focus there.
+watchEffect(() => {
+  errorRegion.value = summary.value?.region ?? null;
+});
+
+async function onSubmit() {
+  await submit({
+    kind: "refill",
+    patient: { ...patient },
+    medications: medications.value,
+    retrievalMethod: retrievalMethod.value,
+    specialInstructions: specialInstructions.value,
+  });
+}
 </script>

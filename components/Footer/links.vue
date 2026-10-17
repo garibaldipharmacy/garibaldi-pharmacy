@@ -1,11 +1,9 @@
 <template>
-  <div
-    class="flex bg-primary-930 rounded-lg p-5 gap-5 text-sm flex-wrap w-full md:w-auto"
-  >
+  <div class="flex flex-wrap gap-x-16 gap-y-10 text-sm">
     <div v-for="footerLink in footerLinks">
-      <h3 class="mb-5">{{ footerLink.title }}</h3>
-      <ul class="font-light text-primary-300">
-        <li v-for="link in footerLink.links" class="mb-3">
+      <h3 class="mb-4 font-medium">{{ footerLink.title }}</h3>
+      <ul class="space-y-3 font-light text-primary-300">
+        <li v-for="link in footerLink.links">
           <NuxtLink
             :to="link.href"
             :class="['transition-colors', link.href && 'hover:text-white']"
@@ -54,6 +52,7 @@ const footerLinks = [
         href: "/services/point-of-care-testing/",
       },
       { title: "Covid Vaccine", href: "/services/immunizations/" },
+      { title: "Medical Clinic", href: "/medical-clinic/" },
     ],
   },
 ];

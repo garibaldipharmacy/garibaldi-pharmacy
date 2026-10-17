@@ -1,20 +1,23 @@
 <template>
+  <!-- Translucent so the page shows through softly as it scrolls beneath -->
   <header
-    class="bg-white header-lower flex flex-wrap items-center p-5 shadow-lg z-50 gap-5"
+    class="header-lower z-50 border-b border-primary-900/10 bg-white/80 backdrop-blur-lg"
   >
-    <div class="logo w-1/3 sm:w-auto">
-      <NuxtLink to="/">
-        <img
-          src="@/assets/images/logostyles/logo-wide.svg"
-          alt="Garibaldi Pharmacy and Compounding Lab logo"
-          width="172"
-          height="50"
-        />
-      </NuxtLink>
-    </div>
+    <div class="mx-auto flex max-w-6xl items-center gap-5 px-4 py-3 sm:px-6">
+      <div class="logo w-1/3 sm:w-auto">
+        <NuxtLink to="/">
+          <img
+            src="@/assets/images/logostyles/logo-wide.svg"
+            alt="Garibaldi Pharmacy and Compounding Lab logo"
+            width="172"
+            height="50"
+          />
+        </NuxtLink>
+      </div>
 
-    <Nav :links="links" class="hidden lg:flex" />
-    <NavMobile :links="links" class="lg:hidden" />
+      <Nav :links="links" class="hidden lg:flex" />
+      <NavMobile :links="links" class="lg:hidden" />
+    </div>
   </header>
 </template>
 
@@ -93,8 +96,8 @@ const links = ref<HeaderNavLink[]>([
     })),
   },
   {
-    title: "Medical Clinic",
-    link: "/medical-clinic/",
+    title: "Blog",
+    link: "/blog/",
   },
   {
     title: "Contact",

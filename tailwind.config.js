@@ -14,6 +14,10 @@ export default {
     },
     extend: {
       colors: {
+        // Exact colours from the logo artwork
+        brand: {
+          green: "#377E23",
+        },
         primary: {
           50: "#F1F2F4",
           100: "#E4E6EC",
