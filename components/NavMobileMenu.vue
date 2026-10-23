@@ -21,7 +21,7 @@
                The close button lives inside the panel so tapping it can't
                also register as an outside click and reopen the menu. -->
           <div
-            class="flex flex-wrap items-center gap-5 p-5 shadow-lg shrink-0"
+            class="flex shrink-0 items-center gap-5 border-b border-primary-900/10 px-4 py-3 sm:px-6"
           >
             <div class="logo w-1/3 sm:w-auto">
               <NuxtLink to="/" @click="close">
@@ -118,7 +118,18 @@
                 class="flex items-center hover:opacity-75"
               >
                 <Icon name="fa6-solid:phone" class="mr-3 shrink-0" />
+                <span class="mr-1 font-normal">Main:</span>
                 {{ phoneMain }}
+              </a>
+            </li>
+            <li>
+              <a
+                :href="`tel:${phoneFax}`"
+                class="flex items-center hover:opacity-75"
+              >
+                <Icon name="fa6-solid:fax" class="mr-3 shrink-0" />
+                <span class="mr-1 font-normal">Fax:</span>
+                {{ phoneFax }}
               </a>
             </li>
             <li class="flex items-center">
@@ -153,6 +164,7 @@ import {
 import { businessInfo } from "~/constants/business";
 
 const phoneMain = businessInfo.contact.phone.main;
+const phoneFax = businessInfo.contact.phone.fax;
 const hours = businessInfo.business_hours.short;
 const location = businessInfo.address.short;
 const mapsLink = businessInfo.links.google_maps;

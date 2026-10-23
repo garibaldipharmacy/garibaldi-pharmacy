@@ -1,39 +1,40 @@
 <template>
-  <section
-    class="flex flex-wrap bg-primary-100 mx-auto items-center justify-center"
-  >
-    <div class="px-10 py-20 sm:w-1/2 mx-auto text-primary-900 title-section">
-      <h1 class="text-4xl font-bold text-center">Consultations</h1>
-      <p class="text-center font-light opacity-80 mt-3 w-4/5 mx-auto">
-        Pharmacists are the medication experts and can help you understand your
-        medical conditions. Take advantage of their knowledge by booking a
-        consultation relevant to you.
-      </p>
-    </div>
-  </section>
+  <PageIntro title="Consultations">
+    <p>
+      Pharmacists are the medication experts and can help you understand your
+      medical conditions. Take advantage of their knowledge by booking a
+      consultation relevant to you.
+    </p>
+  </PageIntro>
 
-  <section class="container mx-auto -m-14 pb-40">
-    <ul
-      class="container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 p-5"
-    >
+  <section class="mx-auto max-w-6xl px-4 pb-20 sm:px-6 lg:pb-24">
+    <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       <li
-        v-for="card in pricingCards"
+        v-for="(card, index) in pricingCards"
         :key="card.name"
-        class="shadow-md text-primary-900 flex flex-col gap-2 p-5 bg-white rounded-xl"
+        v-reveal="(index % 4) * 100"
+        class="flex flex-col rounded-3xl bg-primary-50 p-7 text-primary-900"
       >
-        <span class="text-xl">{{ card.name }}</span>
-        <span class="font-light opacity-75">{{ card.description }}</span>
-        <span class="text-3xl font-bold"
-          >{{ card.price }}<span v-if="card.note">*</span></span
-        >
-        <span v-if="card.note" class="text-xs mt-5 opacity-75 mb-5"
-          >*{{ card.note }}</span
-        >
+        <h2 class="text-lg font-semibold">{{ card.name }}</h2>
+        <p class="mt-3 text-sm font-light leading-relaxed text-slate-600">
+          {{ card.description }}
+        </p>
+        <p class="mt-auto pt-8 text-4xl font-bold tracking-tight">
+          {{ card.price }}<span v-if="card.note">*</span>
+        </p>
+        <!-- Always present, so prices and buttons line up across cards
+             whether or not a card has a footnote -->
+        <p class="mt-2 min-h-[2rem] text-xs font-light text-slate-600">
+          <template v-if="card.note">*{{ card.note }}</template>
+        </p>
         <button
           type="button"
           @click="openModal"
-          class="transition-colors cursor-pointer font-light hover:bg-primary-900 hover:text-white py-2 px-5 rounded-md mt-auto text-center border-primary-200 border"
+          class="group mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-primary-900 px-5 py-3 font-medium text-white transition-colors hover:bg-primary-700"
         >
+          <span class="icon-motion--ring inline-flex">
+            <Icon name="fa6-solid:phone" class="text-sm" />
+          </span>
           Call to Book
         </button>
       </li>
@@ -41,7 +42,7 @@
   </section>
 
   <TransitionRoot appear :show="isOpen" as="template">
-    <Dialog as="div" @close="closeModal" class="relative z-10">
+    <Dialog as="div" @close="closeModal" class="relative z-[60]">
       <TransitionChild
         as="template"
         enter="duration-300 ease-out"
@@ -51,7 +52,7 @@
         leave-from="opacity-100"
         leave-to="opacity-0"
       >
-        <div class="fixed inset-0 bg-black/25" />
+        <div class="fixed inset-0 bg-primary-950/40 backdrop-blur-sm" />
       </TransitionChild>
 
       <div class="fixed inset-0 overflow-y-auto">
@@ -68,29 +69,29 @@
             leave-to="opacity-0 scale-95"
           >
             <DialogPanel
-              class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+              class="w-full max-w-md transform overflow-hidden rounded-3xl bg-white p-8 text-left align-middle shadow-xl transition-all"
             >
               <DialogTitle
                 as="h3"
-                class="text-lg font-medium leading-6 text-primary-900 flex items-center"
+                class="text-sm font-medium uppercase tracking-widest text-primary-400"
               >
                 <span>Consultation Booking</span>
               </DialogTitle>
 
-              <p class="mt-5 text-xl text-primary-900 font-light">
+              <p class="mt-4 text-2xl font-light text-primary-900">
                 Call
                 <NuxtLink
-                  class="hover:underline hover:opacity-75 transition-opacity font-medium"
+                  class="font-semibold underline underline-offset-4 hover:no-underline"
                   :href="`tel:${phone}`"
                   >{{ phone }}</NuxtLink
                 >
                 now to book your consultation
               </p>
 
-              <div class="mt-10">
+              <div class="mt-8">
                 <button
                   type="button"
-                  class="inline-flex justify-center rounded-md border border-transparent bg-primary-100 px-4 py-2 text-sm font-medium text-primary-900 hover:bg-primary-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-900 focus-visible:ring-offset-2"
+                  class="inline-flex justify-center rounded-full bg-primary-100 px-6 py-2.5 text-sm font-medium text-primary-900 transition-colors hover:bg-primary-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-900 focus-visible:ring-offset-2"
                   @click="closeModal"
                 >
                   Close
@@ -137,13 +138,11 @@ useSeoMeta({
   ogTitle: "Pharmacist Consultations in Squamish | Garibaldi Pharmacy",
   ogDescription:
     "Book a personalized pharmacist consultation at Garibaldi Pharmacy in Squamish. Our experts provide health advice, medication reviews, and one-on-one guidance tailored to you.",
-  ogImage: "/favicon/android-chrome-512x512.png",
+  ...shareImages.dog,
   ogUrl: "https://garibaldipharmacy.com/services/consultations/",
   twitterTitle: "Pharmacist Consultations in Squamish | Garibaldi Pharmacy",
   twitterDescription:
     "Book a personalized pharmacist consultation at Garibaldi Pharmacy in Squamish. Our experts provide health advice, medication reviews, and one-on-one guidance tailored to you.",
-  twitterImage: "/favicon/android-chrome-512x512.png",
-  twitterCard: "summary",
 });
 
 useHead({

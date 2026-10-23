@@ -6,7 +6,7 @@ export interface PrescriptionAction {
   shortTitle: string;
   link: string;
   icon: string;
-  // Icon colour scheme, matching ButtonPill themes
+  // Icon colour scheme, matching ActionTile themes
   theme: "primary" | "secondary";
 }
 

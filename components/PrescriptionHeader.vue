@@ -1,13 +1,21 @@
 <template>
-  <header
-    v-if="currentHeaderItem"
-    class="bg-secondary-100 p-10 md:p-20 text-secondary-900"
-  >
-    <div class="flex text-3xl font-bold">
-      <Icon :name="currentHeaderItem.icon" class="mr-3" />
-      <h1>{{ currentHeaderItem.title }}</h1>
-    </div>
-    <p class="md:w-1/2 font-light mt-3">{{ currentHeaderItem.description }}</p>
+  <header v-if="currentHeaderItem" class="mt-10 text-primary-900 sm:mt-14">
+    <h1
+      class="motion-rise flex items-center gap-4 text-4xl font-bold leading-tight tracking-tight sm:text-5xl"
+    >
+      <span
+        aria-hidden="true"
+        class="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-secondary-100 text-xl text-secondary-900 sm:h-14 sm:w-14 sm:text-2xl"
+      >
+        <Icon :name="currentHeaderItem.icon" />
+      </span>
+      {{ currentHeaderItem.title }}
+    </h1>
+    <p
+      class="motion-rise mt-5 text-lg font-light text-slate-600 [animation-delay:150ms]"
+    >
+      {{ currentHeaderItem.description }}
+    </p>
   </header>
 </template>
 

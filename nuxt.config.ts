@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import { resolve } from "path";
 import { defineLocalBusiness } from "nuxt-schema-org/schema";
+import { businessInfo } from "./constants/business";
 
 export default defineNuxtConfig({
   compatibilityDate: "2025-08-20",
@@ -15,14 +16,30 @@ export default defineNuxtConfig({
     },
   },
   nitro: {
-    // You can leave empty or customize as needed
+    // Pinned explicitly. Netlify auto-detected its own preset; on the droplet we
+    // run `node .output/server/index.mjs` under systemd behind Caddy.
+    preset: "node-server",
+  },
+  runtimeConfig: {
+    public: {
+      // Overridden at runtime by NUXT_PUBLIC_TURNSTILE_SITE_KEY. When empty the
+      // widget does not render and the server skips verification, so local
+      // development works without a Cloudflare account.
+      turnstileSiteKey: "",
+    },
   },
   routeRules: {
     // Thank-you pages have no search value. A route rule keeps them out of
     // both the robots meta tag and the sitemap.
     "/success/**": { robots: "noindex, nofollow" },
+    // Patient data must never be cached by a browser or an intermediary.
+    "/api/**": { headers: { "cache-control": "no-store" } },
+    // The submissions view is for staff, never for search engines.
+    "/admin/**": { robots: "noindex, nofollow", headers: { "cache-control": "no-store" } },
   },
   site: {
+    // Overridden at runtime by NUXT_SITE_URL, which is how staging advertises
+    // itself rather than claiming to be production.
     url: "https://garibaldipharmacy.com",
     name: "Garibaldi Pharmacy",
     description:
@@ -57,6 +74,10 @@ export default defineNuxtConfig({
     families: {
       Lexend: "200..700",
     },
+  },
+  sitemap: {
+    // Posts are written after deploying, so the sitemap asks the database
+    sources: ["/api/__sitemap__/posts"],
   },
   ssr: true,
   seo: {
@@ -116,7 +137,18 @@ export default defineNuxtConfig({
         latitude: 49.75354791456258,
         longitude: -123.13403029997691,
       },
-      image: "https://garibaldipharmacy.com/favicon/android-chrome-512x512.png",
+      // Photos of the storefront in the three shapes Google asks for. They
+      // live in public/ so their addresses never change between builds
+      image: ["16x9", "4x3", "1x1"].map(
+        (shape) =>
+          `https://garibaldipharmacy.com/images/garibaldi-pharmacy-storefront-squamish-${shape}.jpg`,
+      ),
+      // The neighbourhoods and towns we serve, for local search
+      areaServed: [
+        "Squamish",
+        ...businessInfo.service_area.neighbourhoods,
+        ...businessInfo.service_area.communities,
+      ].map((name) => ({ "@type": "Place", name })),
       sameAs: [
         "https://www.facebook.com/garibaldipharmacy",
         "https://www.instagram.com/garibaldipharmacy",

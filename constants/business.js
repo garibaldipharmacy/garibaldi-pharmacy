@@ -24,10 +24,31 @@ export const businessInfo = {
   links: {
     website: "https://garibaldipharmacy.com",
     google_maps: "https://maps.app.goo.gl/wcfw2YnzXpJwDh7V7",
+    google_reviews:
+      "https://www.google.com/maps/place/Garibaldi+Pharmacy+%26+Compounding+Lab/@49.7534509,-123.1341054,17z/data=!4m8!3m7!1s0x5486f9aba5d1b65d:0xbf08346d48a7b8a6!8m2!3d49.7534509!4d-123.1341054!9m1!1b1!16s%2Fg%2F11vb7t_0bv",
     instagram: "https://www.instagram.com/garibaldipharmacy",
     facebook: "https://www.facebook.com/garibaldipharmacy",
     linkedin: "https://ca.linkedin.com/company/garibaldi-pharmacy",
     patient_register: "https://register.garibaldipharmacy.com",
+  },
+  // Where our patients come from: listed on the Squamish landing page and in
+  // the structured data search engines read (areaServed in nuxt.config.ts)
+  service_area: {
+    neighbourhoods: [
+      "Downtown Squamish",
+      "Dentville",
+      "Valleycliffe",
+      "Hospital Hill",
+      "Northyards",
+      "Garibaldi Estates",
+      "Garibaldi Highlands",
+      "Brackendale",
+      "Tantalus",
+      "Crumpit Woods",
+      "University Heights",
+      "Paradise Valley",
+    ],
+    communities: ["Britannia Beach", "Furry Creek", "Whistler", "Pemberton"],
   },
   business_hours: {
     full_week: {
@@ -41,6 +62,14 @@ export const businessInfo = {
       holidays: "Closed",
     },
     short: "Mon-Fri 9:00 AM - 6:00 PM | Sat-Sun/Holidays: Closed",
+    // Closed on every BC statutory holiday; see shared/holidays.ts for the list.
+    // These cover what the rules can't know
+    holidays: {
+      // Also close the Monday after a stat holiday that falls on a weekend
+      closeMondayAfterWeekendHoliday: false,
+      // One-off closures, e.g. { date: "2026-12-26", name: "Boxing Day" }
+      extraClosures: [],
+    },
     clinic: {
       monday: "9 AM - 12:30 PM & 1:30 PM - 5 PM",
       tuesday: "9 AM - 12:30 PM & 1:30 PM - 5 PM",

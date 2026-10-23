@@ -1,27 +1,30 @@
 <template>
   <div
-    class="flex flex-wrap items-center justify-center gap-5 py-4 pb-1 border-t border-primary-800 mt-5 text-sm"
+    class="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-6 text-sm"
   >
-    <span class="font-light">&copy; {{ year }} Goodfella's Pharmacy Ltd.</span>
-    <ul class="flex gap-3">
-      <li
-        v-for="social in socials"
-        :key="social.name"
-        class="hover:opacity-50 transition-opacity"
+    <p class="flex flex-wrap items-baseline font-light text-primary-200">
+      <span>&copy; {{ year }} Goodfella's Pharmacy Ltd.</span>
+      <span aria-hidden="true" class="mx-3 text-primary-300/60">·</span>
+      <NuxtLink
+        to="/sitemap/"
+        class="text-xs text-primary-300 underline hover:no-underline"
+        >Sitemap</NuxtLink
       >
-        <NuxtLink :href="social.link" :title="social.name">
+    </p>
+    <ul class="flex gap-2">
+      <li v-for="social in socials" :key="social.name">
+        <NuxtLink
+          :href="social.link"
+          :title="social.name"
+          class="flex h-9 w-9 items-center justify-center rounded-full bg-white/5 text-primary-200 transition-colors hover:bg-white/20 hover:text-white"
+        >
           <Icon :name="social.icon" />
         </NuxtLink>
       </li>
     </ul>
 
-    <ul class="ml-auto font-extralight opacity-75 flex gap-5">
+    <ul class="hidden">
       <!-- <li>
-        <NuxtLink to="/sitemap/" class="hover:opacity-50 transition-opacity"
-          >Sitemap</NuxtLink
-        >
-      </li>
-      <li>
         <NuxtLink to="/terms/" class="hover:opacity-50 transition-opacity"
           >Terms</NuxtLink
         >

@@ -1,264 +1,252 @@
 <template>
-  <PrescriptionFormSelector />
-  <PrescriptionHeader />
-  <div class="container mx-auto mt-10 mb-10">
+  <div class="mx-auto max-w-3xl px-4 pt-10 pb-20 sm:px-6 lg:pt-14 lg:pb-24">
+    <PrescriptionFormSelector />
+    <PrescriptionHeader />
+
     <form
-      name="transfer-prescription"
-      method="post"
-      class="mt-10"
-      action="/success/transfer"
-      netlify-honeypot="bot-field"
-      data-netlify="true"
-      enctype="multipart/form-data"
+      class="mt-10 space-y-8 rounded-3xl bg-primary-50 p-6 sm:p-10"
+      novalidate
+      @submit.prevent="onSubmit"
     >
-      <input type="hidden" name="form-name" value="transfer-prescription" />
-      <div
-        class="grid gap-6 mb-6 md:grid-cols-2 shadow-lg border border-primary-100 rounded py-5 px-2"
-      >
-        <!-- Legal First Name -->
-        <div class="col-span-2 px-5 sm:col-auto">
-          <label
-            for="first_name"
-            class="flex mb-2 text-sm font-medium text-gray-900"
-            >Legal First Name
-            <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
-          /></label>
-          <input
-            type="text"
-            id="first_name"
-            name="first_name"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-            placeholder="Johnathon"
-            required
-          />
-        </div>
-        <!-- Legal Last Name -->
-        <div class="col-span-2 px-5 sm:col-span-1">
-          <label
-            for="last_name"
-            class="flex mb-2 text-sm font-medium text-gray-900"
-            >Legal Last Name
-            <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
-          /></label>
-          <input
-            type="text"
-            id="last_name"
-            name="last_name"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-            placeholder="Doe"
-            required
-          />
-        </div>
+      <FormErrorSummary ref="summary" :message="error" :errors="errors" />
 
-        <div
-          class="flex gap-5 w-full items-center col-span-2 px-5 sm:col-span-1 flex-wrap md:flex-nowrap"
+      <p class="text-sm font-light text-slate-600">
+        All fields are required unless marked optional.
+      </p>
+
+      <FormSection :step="1" title="About you">
+        <FormField
+          id="first_name"
+          label="Legal First Name"
+          :error="fieldError('patient.firstName')"
+          v-slot="{ field }"
         >
-          <!-- Sex -->
-          <div class="w-full">
-            <label for="sex" class="flex mb-2 text-sm font-medium text-gray-900"
-              >Sex
-              <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
-            /></label>
-            <select
-              name="sex"
-              id="sex"
-              class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-            >
-              <option selected disabled>Select Sex</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-            </select>
-          </div>
-
-          <!-- Date of Birth -->
-          <div class="w-full">
-            <label
-              for="date_of_birth"
-              class="block mb-2 text-sm font-medium text-gray-900"
-              >Date of Birth
-              <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
-            /></label>
-            <input
-              type="date"
-              name="date_of_birth"
-              id="date_of_birth"
-              class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-              placeholder="Select date"
-            />
-          </div>
-        </div>
-
-        <!-- Personal Health Number -->
-        <div class="col-span-2 px-5 sm:col-span-1">
-          <label
-            for="personal_health_number"
-            class="block mb-2 text-sm font-medium text-gray-900"
-            >Personal Health Number
-          </label>
           <input
-            name="personal_health_number"
+            v-bind="field"
+            v-model="patient.firstName"
             type="text"
-            id="personal_health_number"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-            placeholder="9123-456-789"
-            pattern="9\d{3}-\d{3}-\d{3}"
+            name="first_name"
+            class="form-input"
+            autocomplete="given-name"
+            required
+          />
+        </FormField>
+
+        <FormField
+          id="last_name"
+          label="Legal Last Name"
+          :error="fieldError('patient.lastName')"
+          v-slot="{ field }"
+        >
+          <input
+            v-bind="field"
+            v-model="patient.lastName"
+            type="text"
+            name="last_name"
+            class="form-input"
+            autocomplete="family-name"
+            required
+          />
+        </FormField>
+
+        <FormField
+          id="date_of_birth"
+          label="Date of Birth"
+          :error="fieldError('patient.dateOfBirth')"
+          v-slot="{ field }"
+        >
+          <input
+            v-bind="field"
+            v-model="patient.dateOfBirth"
+            type="date"
+            name="date_of_birth"
+            class="form-input"
+            autocomplete="bday"
+            required
+          />
+        </FormField>
+
+        <FormField
+          id="sex"
+          label="Sex"
+          optional
+          :error="fieldError('patient.sex')"
+          v-slot="{ field }"
+        >
+          <select
+            v-bind="field"
+            v-model="patient.sex"
+            name="sex"
+            class="form-input"
+          >
+            <option :value="undefined" disabled>Select Sex</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </FormField>
+
+        <FormField
+          id="personal_health_number"
+          label="Personal Health Number"
+          hint="On the back of your BC Services Card, driver's licence or CareCard."
+          optional
+          :error="fieldError('patient.phn')"
+          v-slot="{ field }"
+        >
+          <input
+            v-bind="field"
+            v-model="patient.phn"
             v-maska
+            type="text"
+            name="personal_health_number"
+            class="form-input"
+            placeholder="9123-456-789"
             data-maska="####-###-###"
           />
-        </div>
+        </FormField>
+      </FormSection>
 
-        <!-- Cell Phone Number -->
-        <div class="col-span-2 px-5 sm:col-span-1">
-          <label
-            for="cell_phone_number"
-            class="block mb-2 text-sm font-medium text-gray-900"
-            >Cell Phone Number
-            <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
-          /></label>
+      <FormSection :step="2" title="How we can reach you">
+        <FormField
+          id="cell_phone_number"
+          label="Cell Phone Number"
+          :error="fieldError('patient.phone')"
+          v-slot="{ field }"
+        >
           <input
-            type="text"
-            id="cell_phone_number"
-            name="cell_phone_number"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-            placeholder="(604) 123-4567"
+            v-bind="field"
+            v-model="patient.phone"
             v-maska
+            type="tel"
+            name="cell_phone_number"
+            class="form-input"
+            placeholder="(604) 123-4567"
             data-maska="(###) ###-####"
+            autocomplete="tel"
             required
           />
-        </div>
+        </FormField>
 
-        <!-- Email -->
-        <div class="col-span-2 px-5 sm:col-span-1">
-          <label
-            for="email"
-            class="block mb-2 text-sm font-medium text-gray-900"
-            >Email</label
-          >
+        <FormField
+          id="email"
+          label="Email"
+          :error="fieldError('patient.email')"
+          v-slot="{ field }"
+        >
           <input
+            v-bind="field"
+            v-model="patient.email"
             type="email"
             name="email"
-            id="email"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-            placeholder="john@example.com"
-          />
-        </div>
-
-        <!-- Pharmacy Name -->
-        <div class="col-span-2 px-5 sm:col-span-1">
-          <label
-            for="pharmacy_name"
-            class="flex mb-2 text-sm font-medium text-gray-900"
-            >Pharmacy Name
-            <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
-          /></label>
-          <input
-            type="text"
-            id="pharmacy_name"
-            name="pharmacy_name"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-            placeholder="ABC Pharmacy"
+            class="form-input"
+            autocomplete="email"
             required
           />
-        </div>
+        </FormField>
+      </FormSection>
 
-        <!-- Pharmacy Phone Number -->
-        <div class="col-span-2 px-5 sm:col-span-1">
-          <label
-            for="pharmacy_phone_number"
-            class="block mb-2 text-sm font-medium text-gray-900"
-            >Pharmacy Phone Number
-            <Icon name="fa6-solid:asterisk" class="text-red-600 text-xs ml-1"
-          /></label>
+      <FormSection :step="3" title="Your current pharmacy">
+        <FormField
+          id="pharmacy_name"
+          label="Pharmacy Name"
+          :error="fieldError('fromPharmacyName')"
+          v-slot="{ field }"
+        >
           <input
+            v-bind="field"
+            v-model="fromPharmacyName"
             type="text"
-            id="pharmacy_phone_number"
-            name="pharmacy_phone_number"
-            class="font-light bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-900 focus:border-primary-900 block w-full p-2.5"
-            placeholder="(604) 123-4567"
+            name="pharmacy_name"
+            class="form-input"
+            autocomplete="organization"
+            required
+          />
+        </FormField>
+
+        <FormField
+          id="pharmacy_phone_number"
+          label="Pharmacy Phone Number"
+          :error="fieldError('fromPharmacyPhone')"
+          v-slot="{ field }"
+        >
+          <input
+            v-bind="field"
+            v-model="fromPharmacyPhone"
             v-maska
+            type="tel"
+            name="pharmacy_phone_number"
+            class="form-input"
+            placeholder="(604) 123-4567"
             data-maska="(###) ###-####"
             required
           />
-        </div>
+        </FormField>
 
-        <!-- Transfer all eligible prescriptions? -->
-        <div>
-          <RadioGroup
-            v-model="selected"
-            name="options"
-            class="col-span-2 px-5 sm:col-span-1"
-          >
-            <RadioGroupLabel as="span">
-              Transfer all eligible prescriptions?
-            </RadioGroupLabel>
-            <RadioGroupOption
-              v-for="option in options"
-              :key="option"
-              :value="option"
-              v-slot="{ active, checked }"
-            >
-              <span
-                class="font-light cursor-pointer hover:text-secondary-900 flex items-center gap-2 transition-colors"
-              >
-                <Icon
-                  v-if="checked"
-                  name="fa6-solid:circle-check"
-                  class="text-secondary-900"
-                />
-                <Icon v-else name="fa6-regular:circle" class="" />
-                {{ option }}
-              </span>
-            </RadioGroupOption>
-          </RadioGroup>
+        <FormChoice
+          v-model="transferAll"
+          label="Transfer all eligible prescriptions?"
+          :options="transferOptions"
+          class="sm:col-span-2"
+        />
 
-          <div
-            v-if="selected === `No`"
-            class="col-span-2 px-5 sm:col-span-1 mt-5"
-          >
-            <label
-              for="prescription-list"
-              class="block mb-2 text-sm font-medium text-gray-900"
-              >Please list medications you would like transferred by name and
-              strength. For example: Ramipril 10mg capsules</label
-            >
-            <textarea
-              placeholder="Ramipril 10mg capsules"
-              name="prescription-list"
-              id="prescription-list"
-              cols="30"
-              rows="10"
-              class="border border-gray-300 bg-gray-50 rounded w-full font-light p-3 text-sm"
-            ></textarea>
-          </div>
-        </div>
-        <!-- Notes for Pharmacist -->
-        <div class="col-span-2 px-5 sm:col-span-1">
-          <label
-            for="pharmacist-notes"
-            class="block mb-2 text-sm font-medium text-gray-900"
-            >Notes for the Pharmacist</label
-          >
+        <!-- Only needed when the patient is not transferring everything. -->
+        <FormField
+          v-if="!transferAll"
+          id="medications"
+          label="Medications to transfer"
+          hint="List each by name and strength. For example: Ramipril 10mg capsules"
+          :error="fieldError('medications')"
+          class="sm:col-span-2"
+          v-slot="{ field }"
+        >
           <textarea
-            placeholder="Enter notes here..."
-            name="pharmacist-notes"
-            id="pharmacist-notes"
-            cols="30"
-            rows="10"
-            class="border border-gray-300 bg-gray-50 rounded w-full font-light p-3 text-sm"
+            v-bind="field"
+            v-model="medications"
+            name="medications"
+            rows="4"
+            class="form-input"
+            required
           ></textarea>
-        </div>
+        </FormField>
+      </FormSection>
 
-        <!-- Recapcha -->
-        <div class="px-5" data-netlify-recaptcha="true"></div>
+      <FormSection :step="4" title="Anything else?">
+        <FormField
+          id="notes"
+          label="Notes for the Pharmacist"
+          optional
+          :error="fieldError('notes')"
+          class="sm:col-span-2"
+          v-slot="{ field }"
+        >
+          <textarea
+            v-bind="field"
+            v-model="notes"
+            name="notes"
+            rows="4"
+            class="form-input"
+          ></textarea>
+        </FormField>
+      </FormSection>
 
-        <div class="col-span-2 px-5 sm:col-span-2">
-          <button
-            type="submit"
-            class="bg-primary-900 text-white rounded py-2 px-5 hover:bg-primary-800 transition-colors w-full sm:w-auto"
-          >
-            Request Transfer
-          </button>
-        </div>
+      <FormSubmit
+        label="Send Transfer Request"
+        :pending="pending"
+        icon="fa6-solid:paper-plane"
+      />
+
+      <!-- Honeypot. Hidden from people, irresistible to bots. Last in the form so
+           its hidden box adds no spacing above anything -->
+      <div class="hidden" aria-hidden="true">
+        <label for="bot-field">Do not fill this in</label>
+        <input
+          id="bot-field"
+          v-model="botField"
+          type="text"
+          name="bot-field"
+          tabindex="-1"
+          autocomplete="off"
+        />
       </div>
     </form>
   </div>
@@ -267,7 +255,7 @@
 <script setup>
 // Registered here rather than globally so only the form pages load it
 import { vMaska } from "maska";
-import { ref } from "vue";
+import { reactive, ref } from "vue";
 
 useSeoMeta({
   title: "Transfer Prescriptions in Squamish | Garibaldi Pharmacy",
@@ -276,33 +264,59 @@ useSeoMeta({
   ogTitle: "Transfer Prescriptions in Squamish | Garibaldi Pharmacy",
   ogDescription:
     "Easily transfer your prescriptions to Garibaldi Pharmacy in Squamish. Our pharmacists handle the process quickly and safely, ensuring your medications are ready when you need them.",
-  ogImage: "/favicon/android-chrome-512x512.png",
-  ogUrl: "https://garibaldipharmacy.com/prescriptions/transfer/",
+  ...shareImages.dog,
   twitterTitle: "Transfer Prescriptions in Squamish | Garibaldi Pharmacy",
   twitterDescription:
     "Easily transfer your prescriptions to Garibaldi Pharmacy in Squamish. Our pharmacists handle the process quickly and safely, ensuring your medications are ready when you need them.",
-  twitterImage: "/favicon/android-chrome-512x512.png",
-  twitterCard: "summary",
 });
 
+// Canonical and ogUrl come from `site.url` via nuxt-site-config rather than being
+// hardcoded to production, which used to make staging claim the live canonical.
 useHead({
-  htmlAttrs: {
-    lang: "en",
-  },
-  link: [
-    {
-      rel: "canonical",
-      href: "https://garibaldipharmacy.com/prescriptions/transfer/",
-    },
-    {
-      rel: "icon",
-      type: "image/png",
-      href: "/favicon/favicon-32x32.png",
-    },
-  ],
+  htmlAttrs: { lang: "en" },
+  link: [{ rel: "icon", type: "image/png", href: "/favicon/favicon-32x32.png" }],
 });
-import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue";
 
-const options = ["Yes", "No"];
-const selected = ref(options[0]);
+const { pending, error, errors, errorRegion, botField, fieldError, submit } =
+  useRequestForm("/success/transfer");
+const summary = ref(null);
+
+// Was the strings "Yes" and "No" in the submitted payload. Now a boolean, so the
+// stored value cannot drift when the UI copy is edited.
+const transferOptions = [
+  { value: true, label: "Yes" },
+  { value: false, label: "No" },
+];
+
+const patient = reactive({
+  firstName: "",
+  lastName: "",
+  sex: undefined,
+  dateOfBirth: "",
+  phn: "",
+  phone: "",
+  email: "",
+});
+
+const fromPharmacyName = ref("");
+const fromPharmacyPhone = ref("");
+const transferAll = ref(true);
+const medications = ref("");
+const notes = ref("");
+
+watchEffect(() => {
+  errorRegion.value = summary.value?.region ?? null;
+});
+
+async function onSubmit() {
+  await submit({
+    kind: "transfer",
+    patient: { ...patient },
+    fromPharmacyName: fromPharmacyName.value,
+    fromPharmacyPhone: fromPharmacyPhone.value,
+    transferAll: transferAll.value,
+    medications: medications.value,
+    notes: notes.value,
+  });
+}
 </script>

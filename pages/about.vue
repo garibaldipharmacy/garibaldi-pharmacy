@@ -1,122 +1,92 @@
 <template>
-  <section class="container mx-auto">
-    <div
-      class="flex flex-wrap py-20 gap-5 px-5 sm:gap-0 items-center justify-center text-primary-900"
-    >
-      <h1 class="text-3xl font-bold md:basis-1/2">
-        Owned and operated by locals
-      </h1>
-      <p class="font-light md:basis-1/2">
-        Our goal is to meet your healthcare needs, whether it is diagnosing a
-        medical condition, a routine checkup, or getting your medication and
-        immunizations.
-      </p>
-    </div>
-  </section>
+  <PageIntro title="Owned and operated by locals">
+    <p>
+      Our goal is to meet your healthcare needs, whether it is diagnosing a
+      medical condition, a routine checkup, or getting your medication and
+      immunizations.
+    </p>
+  </PageIntro>
 
-  <section class="mx-auto">
-    <div class="bg-primary-100">
-      <div class="relative">
-        <img
-          class="w-full"
-          src="@/assets/images/squamish-garibaldi-area-1440.webp"
-          srcset="
-            @/assets/images/squamish-garibaldi-area-800.webp 800w,
-            @/assets/images/squamish-garibaldi-area-1440.webp 1440w
-          "
-          sizes="100vw"
-          width="1440"
-          height="549"
-          fetchpriority="high"
-          alt="The image captures the view in Squamish BC, a forest-covered cliffs beside a tranquil fjord under a cloudy sky."
+  <PagePhoto>
+    <!-- Phones show the photo taller than its wide shape, so they get a crop
+         that matches instead of downloading the wide version -->
+    <picture>
+      <source
+        media="(max-width: 639px)"
+        srcset="@/assets/images/stawamus-chief-howe-sound-squamish-phone.webp"
+        width="824"
+        height="549"
+      />
+      <img
+        src="@/assets/images/stawamus-chief-howe-sound-squamish-1440.webp"
+        srcset="
+          @/assets/images/stawamus-chief-howe-sound-squamish-800.webp 800w,
+          @/assets/images/stawamus-chief-howe-sound-squamish-1440.webp 1440w
+        "
+        sizes="(min-width: 1152px) 1104px, calc(100vw - 3rem)"
+        width="1440"
+        height="549"
+        fetchpriority="high"
+        alt="The Stawamus Chief rising above Howe Sound in Squamish, BC, under a cloudy sky"
+      />
+    </picture>
+    <template #credit>
+      <NuxtLink
+        to="https://mattanthonyphoto.com/"
+        class="flex items-center gap-2 rounded-full bg-white/80 px-3 py-1 text-xs text-primary-900 backdrop-blur transition-colors hover:bg-primary-900 hover:text-white"
+        ><Icon name="fa6-solid:circle-info" />Photo: Matt Anthony
+        Photography</NuxtLink
+      >
+    </template>
+  </PagePhoto>
+
+  <!-- Who we are / What we do -->
+  <section class="mx-auto max-w-6xl px-4 pt-16 sm:px-6 lg:pt-20">
+    <div class="grid gap-x-16 text-primary-900 md:grid-cols-2">
+      <div v-reveal class="relative pt-6 pb-10">
+        <span
+          aria-hidden="true"
+          class="absolute inset-x-0 top-0 h-px bg-primary-900/10"
         />
-        <NuxtLink
-          to="https://mattanthonyphoto.com/"
-          class="flex items-center justify-center photo-credit absolute bg-primary-100 opacity-75 px-2 py-1 rounded-full text-xs text-primary-900 backdrop-blur-lg hover:bg-primary-900 hover:text-primary-100 transition-colors"
-          ><Icon name="fa6-solid:circle-info" class="mr-2" />Photo: Matt Anthony
-          Photography</NuxtLink
-        >
+        <h2 class="text-2xl font-bold tracking-tight">Who we are</h2>
+        <div class="mt-4 space-y-4 font-light leading-relaxed text-slate-600">
+          <p>
+            Garibaldi Pharmacy is Squamish’s first independent pharmacy, owned
+            and operated by locals.
+          </p>
+          <p>
+            Located in the heart of the Garibaldi Highlights region, we are
+            conveniently only a short distance from your home so you always
+            have quick access for your health care needs.
+          </p>
+        </div>
+      </div>
+      <div v-reveal="120" class="relative pt-6 pb-10">
+        <span
+          aria-hidden="true"
+          class="absolute inset-x-0 top-0 h-px bg-primary-900/10"
+        />
+        <h2 class="text-2xl font-bold tracking-tight">What we do</h2>
+        <div class="mt-4 space-y-4 font-light leading-relaxed text-slate-600">
+          <p>
+            We are a full-service pharmacy specializing in compounding with an
+            in-house medical clinic.
+          </p>
+          <p>
+            Our goal is to meet your healthcare needs, whether it is diagnosing
+            a medical condition, a routine checkup, or getting your medication
+            and immunizations.
+          </p>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="container mx-auto p-5">
-    <div class="flex flex-wrap py-20 text-primary-900">
-      <div class="md:basis-1/2 p-1">
-        <h2 class="text-2xl font-bold mb-5">Who we are</h2>
-        <p class="font-light mb-5">
-          Garibaldi Pharmacy is Squamish’s first independent pharmacy, owned and
-          operated by locals.
-        </p>
-        <p class="font-light">
-          Located in the heart of the Garibaldi Highlights region, we are
-          conveniently only a short distance from your home so you always have
-          quick access for your health care needs.
-        </p>
-      </div>
-      <div class="md:basis-1/2 p-1">
-        <h2 class="text-2xl font-bold mb-5">What we do</h2>
-        <p class="font-light mb-5">
-          We are a full-service pharmacy specializing in compounding with an
-          in-house medical clinic.
-        </p>
-        <p class="font-light">
-          Our goal is to meet your healthcare needs, whether it is diagnosing a
-          medical condition, a routine checkup, or getting your medication and
-          immunizations.
-        </p>
-      </div>
-    </div>
-  </section>
-
+  <!-- Why Us -->
   <SectionWhyUs />
 
-  <section class="2xl:container 2xl:mx-auto flex justify-center flex-wrap">
-    <div class="md:basis-1/2">
-      <img
-        class="fill-image"
-        src="@/assets/images/squamish-pharmacist-medicine-to-patient-1440.webp"
-        srcset="
-          @/assets/images/squamish-pharmacist-medicine-to-patient-800.webp 800w,
-          @/assets/images/squamish-pharmacist-medicine-to-patient-1440.webp 1440w,
-          @/assets/images/squamish-pharmacist-medicine-to-patient-2400.webp 2400w
-        "
-        sizes="(min-width: 768px) 50vw, 100vw"
-        width="1440"
-        height="960"
-        loading="lazy"
-        alt="A pharmacist showing a box of medication to a customer in a pharmacy."
-      />
-    </div>
-    <div
-      class="md:basis-1/2 bg-primary-100 text-primary-900 p-10 flex flex-col justify-center"
-    >
-      <h2 class="font-bold text-2xl mb-10">Local Experts</h2>
-      <div class="font-light">
-        <p class="mb-5">
-          When you are issued a prescription by your doctor that calls for a
-          medication or dosage form that is not commercially available, in many
-          cases this must be outsourced to a compounding pharmacy in the Lower
-          Mainland. Turnaround can usually take several days.
-        </p>
-        <p class="mb-5">
-          Garibaldi Pharmacy will be the Sea to Sky’s first compounding
-          pharmacy. With our state-of-the-art clean room that is built to the
-          latest regulatory standards, we can produce your customized medication
-          in-house.
-          <NuxtLink
-            to="/services/compounding/"
-            class="underline hover:no-underline"
-            >Learn more about our compounding services.</NuxtLink
-          >
-        </p>
-        <p>
-          As local business owners, we want to serve the best interests of
-          Squamish residents and be trusted professionals in the community.
-        </p>
-      </div>
-    </div>
-  </section>
+  <!-- Local Experts: a light counterpart to the Why Us panel above -->
+  <SectionLocalExperts />
 
   <CallToAction title="Interested in becoming a patient?" />
 </template>
@@ -129,13 +99,11 @@ useSeoMeta({
   ogTitle: "About Garibaldi Pharmacy | Independent Pharmacy in Squamish",
   ogDescription:
     "Garibaldi Pharmacy is Squamish's first independent pharmacy, owned and operated by locals. We provide full-service care, including compounding, prescriptions, immunizations, and an in-house medical clinic.",
-  ogImage: "/favicon/android-chrome-512x512.png",
+  ...shareImages.dog,
   ogUrl: "https://garibaldipharmacy.com/about/",
   twitterTitle: "About Garibaldi Pharmacy | Independent Pharmacy in Squamish",
   twitterDescription:
     "Garibaldi Pharmacy is Squamish's first independent pharmacy, owned and operated by locals. We provide full-service care, including compounding, prescriptions, immunizations, and an in-house medical clinic.",
-  twitterImage: "/favicon/android-chrome-512x512.png",
-  twitterCard: "summary",
 });
 
 useHead({
@@ -155,17 +123,3 @@ useHead({
   ],
 });
 </script>
-
-<style scoped>
-.photo-credit {
-  right: 1rem;
-  bottom: 1rem;
-}
-
-.fill-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
-</style>

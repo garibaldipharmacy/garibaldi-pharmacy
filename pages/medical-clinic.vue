@@ -1,149 +1,161 @@
 <template>
-  <div>
-    <!-- Hero Section -->
-    <section
-      class="flex flex-wrap bg-primary-100 mx-auto items-center justify-center"
-    >
-      <div class="p-10 sm:w-1/2 mx-auto text-primary-900 title-section">
-        <h2 class="text-3xl font-bold text-center">
-          Garibaldi Pharmacy is proud to bring a new medical clinic into
-          Squamish!
-        </h2>
-      </div>
-      <img
-        class="sm:w-1/2"
-        src="@/assets/images/terra-nova-squamish-medical-clinic-900.webp"
-        srcset="
-          @/assets/images/terra-nova-squamish-medical-clinic-480.webp 480w,
-          @/assets/images/terra-nova-squamish-medical-clinic-900.webp 900w
-        "
-        sizes="(min-width: 640px) 50vw, 100vw"
-        width="900"
-        height="600"
-        fetchpriority="high"
-        alt="The Squamish storefront of Garibaldi Pharmacy and Terra Nova Medical clinic"
-      />
-    </section>
+  <PageIntro
+    title="Garibaldi Pharmacy is proud to bring a new medical clinic into Squamish!"
+  />
 
-    <!-- Announcement for No More Patients -->
-    <!-- <section class="container mx-auto flex items-center justify-center mt-10">
-      <div
-        class="bg-secondary-100 p-4 rounded-md border-secondary-900 border-t-8 flex items-center justify-center gap-5 md:w-1/2 mx-10 md:mx-0 flex-wrap"
-      >
+  <PagePhoto>
+    <img
+      src="@/assets/images/terra-nova-squamish-medical-clinic-900.webp"
+      srcset="
+        @/assets/images/terra-nova-squamish-medical-clinic-480.webp 480w,
+        @/assets/images/terra-nova-squamish-medical-clinic-900.webp 900w
+      "
+      sizes="(min-width: 1152px) 1104px, calc(100vw - 2rem)"
+      width="900"
+      height="600"
+      fetchpriority="high"
+      alt="The reception area of Terra Nova Squamish Clinic, inside Garibaldi Pharmacy in Squamish"
+    />
+  </PagePhoto>
+
+  <!-- Announcement for No More Patients -->
+  <!-- <section class="mx-auto max-w-6xl px-4 pt-10 sm:px-6">
+    <div
+      class="flex flex-wrap items-center gap-5 rounded-3xl bg-secondary-100 p-6 text-secondary-900 sm:p-8"
+    >
+      <h2 class="flex items-center gap-3 text-xl font-bold">
+        <Icon name="fa6-solid:bullhorn" /> Announcement
+      </h2>
+      <p class="font-light">
+        Due to the high volume of patient registrations, the clinic is no
+        longer taking in new patients. If you are in need of a family doctor,
+        you may call the clinic to be put on a wait list. We are hoping to open
+        up intake again soon as more practitioners become available later this
+        year.
+      </p>
+    </div>
+  </section> -->
+
+  <section class="mx-auto max-w-6xl px-4 pt-10 pb-20 sm:px-6 lg:pb-24">
+    <!-- The clinic and its contact details stack on the left, leaving the
+         hours enough width that the split-day times stay on one line -->
+    <div class="grid gap-4 lg:grid-cols-2">
+      <div class="grid gap-4">
+        <!-- The clinic -->
         <div
-          class="flex items-center justify-center gap-5 text-secondary-900 font-bold"
+          v-reveal
+          class="flex flex-col gap-5 rounded-3xl bg-secondary-100 p-8 font-light leading-relaxed text-secondary-950"
         >
-          <Icon name="fa6-solid:bullhorn" class="text-xl" />
-          <h3 class="text-xl">Announcement</h3>
-        </div>
-        <div>
+          <img
+            src="@/assets/images/logostyles/terranova-logo.svg"
+            alt="Terra Nova Medical Group logo"
+            width="150"
+            height="91"
+            loading="lazy"
+            class="mb-2"
+          />
           <p>
-            Due to the high volume of patient registrations, the clinic is no
-            longer taking in new patients. If you are in need of a family
-            doctor, you may call the clinic to be put on a wait list. We are
-            hoping to open up intake again soon as more practitioners become
-            available later this year.
+            Our in-house medical clinic is a family practice clinic and is
+            managed by the
+            <NuxtLink
+              class="font-normal text-secondary-900 underline underline-offset-4 hover:no-underline"
+              target="_blank"
+              to="https://www.terranovamedical.ca/"
+              rel="noopener noreferrer"
+              >Terra Nova Medical Group</NuxtLink
+            >.
+          </p>
+          <p>
+            Terra Nova Squamish Clinic is currently led by Dr. Alison Ukrainec.
+          </p>
+        </div>
+
+        <!-- Contact -->
+        <div
+          v-reveal="100"
+          class="flex flex-col rounded-3xl bg-primary-50 p-8 text-primary-900"
+        >
+          <h2 class="text-lg font-semibold">
+            To reach the clinic you may now contact them directly:
+          </h2>
+          <ul class="mt-6 space-y-2">
+            <li v-for="option in contactOptions" :key="option.title">
+              <NuxtLink
+                :to="option.link"
+                class="group flex items-center gap-4 rounded-2xl bg-white p-4 transition hover:shadow-md"
+              >
+                <CircleIcon
+                  :icon="option.icon"
+                  :class="[
+                    'h-10 w-10 shrink-0 overflow-hidden',
+                    iconMotion(option.icon),
+                  ]"
+                />
+                <span class="min-w-0">
+                  <span class="block text-sm font-light text-slate-500">{{
+                    option.title
+                  }}</span>
+                  <span class="block font-medium [overflow-wrap:anywhere]"
+                    ><!-- A break opportunity after the @, so an email address that
+                  doesn't fit splits there rather than mid-word. <wbr> adds
+                  nothing to copied text -->
+                    <template v-if="option.value.indexOf('@') > 0"
+                      >{{ option.value.split("@")[0] }}@<wbr />{{
+                        option.value.split("@")[1]
+                      }}</template
+                    >
+                    <template v-else>{{ option.value }}</template></span
+                  >
+                </span>
+              </NuxtLink>
+            </li>
+          </ul>
+          <p class="mt-6 font-light text-slate-600">
+            Please address any emails to Christina, our medical office assistant
           </p>
         </div>
       </div>
-    </section> -->
 
-    <section
-      class="flex container p-10 md:p-0 justify-center mx-auto gap-5 my-10 flex-wrap"
-    >
+      <!-- Hours -->
       <div
-        class="bg-secondary-100 rounded-md p-10 text font-light flex flex-col gap-5 flex-1"
+        v-reveal="200"
+        class="rounded-3xl bg-primary-50 p-5 font-light text-primary-900 sm:p-8"
       >
-        <img
-          src="@/assets/images/logostyles/terranova-logo.svg"
-          alt="Terranova Medical Clinic Logo"
-          width="150"
-          height="91"
-          class="mx-auto mb-5"
-        />
-        <p>
-          Our in-house medical clinic is a family practice clinic and is managed
-          by the
-          <NuxtLink
-            class="text-secondary-900 underline hover:no-underline"
-            target="_blank"
-            to="https://www.terranovamedical.ca/"
-            rel="noopener noreferrer"
-            >Terra Nova Medical Group</NuxtLink
-          >.
-        </p>
-        <p>
-          Terra Nova Squamish Clinic is currently led by Dr. Alison Ukrainec.
-        </p>
-      </div>
-
-      <div class="bg-white shadow-md rounded-md py-2.5 px-3 w-full md:w-2/6">
-        <h3 class="text-primary-900 ml-5 mt-5 text-lg">
-          To reach the clinic you may now contact them directly:
-        </h3>
-        <ul class="p-4">
-          <li v-for="option in contactOptions" :key="option.title" class="p-1">
-            <NuxtLink
-              :to="option.link"
-              class="text-primary-900 flex gap-2 flex-wrap hover:text-secondary-900 transition-colors"
-            >
-              <div>
-                <Icon :name="option.icon" class="mr-3" />
-                <span class="font-medium">{{ option.title }}</span>
-              </div>
-              <span class="font-light w-full sm:w-auto sm:ml-auto truncate">{{
-                option.value
-              }}</span>
-            </NuxtLink>
-          </li>
-        </ul>
-        <p class="text-primary-900 ml-5 mt-5 mb-5 font-light">
-          Please address any emails to Christina, our medical office assistant
-        </p>
-      </div>
-
-      <div class="font-light bg-white p-8 flex-1 shadow-md rounded-md">
-        <h4 class="font-bold text-primary-900 text-lg">
-          <Icon name="fa6-solid:clock" class="mr-2" /> Medical Clinic Hours
-        </h4>
-        <ul class="mt-5">
+        <h2 class="flex items-center gap-2 text-lg font-semibold">
+          <Icon name="fa6-solid:clock" class="text-sm text-primary-400" />
+          Medical Clinic Hours
+        </h2>
+        <ul class="mt-6 space-y-1 text-sm">
           <li
             v-for="(hour, day) in hours"
-            :class="[
-              'flex',
-              'gap-5',
-              'text-sm',
-              'mb-2',
-              'capitalize',
-              {
-                'opacity-75': !isCurrentDay(day),
-                'text-primary-900': !isCurrentDay(day),
-                'font-bold': isCurrentDay(day),
-                'text-secondary-900': isCurrentDay(day),
-              },
-            ]"
             :key="day"
+            :class="[
+              'flex items-baseline gap-4 rounded-lg px-3 py-2 capitalize',
+              day === today
+                ? 'bg-white font-semibold text-secondary-900'
+                : 'text-primary-900/80',
+            ]"
           >
-            <span class="">{{ day }}</span>
-            <span class="ml-auto text-xs sm:text-sm">{{ hour }}</span>
-          </li>
-          <li
-            class="text-sm mt-5 text-secondary-900 flex items-center flex-wrap gap-2"
-          >
-            <Icon name="fa6-solid:asterisk" /> Please note the clinic is closed
-            from 12:30 - 1:30 PM daily for lunch
+            <span>{{ day }}</span>
+            <span
+              class="ml-auto whitespace-nowrap text-right text-xs sm:text-sm"
+              >{{ hour }}</span
+            >
           </li>
         </ul>
+        <p class="mt-5 flex items-center gap-2 px-3 text-sm text-secondary-900">
+          <Icon name="fa6-solid:asterisk" class="shrink-0" /> Please note the
+          clinic is closed from 12:30 - 1:30 PM daily for lunch
+        </p>
       </div>
-    </section>
-    <section
-      class="flex mx-auto justify-start items-center container mb-10"
-    ></section>
-  </div>
+    </div>
+  </section>
 </template>
 
 <script lang="ts" setup>
 import { businessInfo } from "~/constants/business";
+import { iconMotion } from "~/constants/iconMotions";
+
 const { contact } = businessInfo;
 
 const contactOptions = [
@@ -163,24 +175,9 @@ const contactOptions = [
 
 const hours = businessInfo.business_hours.clinic;
 
-const isCurrentDay = (day: string) => {
-  const currentDate = new Date();
-  const currentDayIndex = new Date(
-    currentDate.toLocaleString("en-US", { timeZone: "America/Vancouver" })
-  ).getDay();
-
-  const daysOfWeek = [
-    "sunday",
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday",
-  ];
-
-  return daysOfWeek[currentDayIndex].toLowerCase() === day.toLowerCase();
-};
+// Worked out in the browser, so a prerendered page never highlights the day
+// it happened to be built on
+const { today } = useStoreHours();
 
 useSeoMeta({
   title: "Medical Clinic in Squamish | Garibaldi Pharmacy & Terra Nova Clinic",
@@ -190,14 +187,12 @@ useSeoMeta({
     "Medical Clinic in Squamish | Garibaldi Pharmacy & Terra Nova Clinic",
   ogDescription:
     "Garibaldi Pharmacy in Squamish offers an in-house medical clinic, managed by Terra Nova Medical Group. Get family healthcare, prescriptions, minor ailment care, and vaccinations conveniently on-site.",
-  ogImage: "/favicon/android-chrome-512x512.png",
+  ...shareImages.dog,
   ogUrl: "https://garibaldipharmacy.com/medical-clinic/",
   twitterTitle:
     "Medical Clinic in Squamish | Garibaldi Pharmacy & Terra Nova Clinic",
   twitterDescription:
     "Garibaldi Pharmacy in Squamish offers an in-house medical clinic, managed by Terra Nova Medical Group. Get family healthcare, prescriptions, minor ailment care, and vaccinations conveniently on-site.",
-  twitterImage: "/favicon/android-chrome-512x512.png",
-  twitterCard: "summary",
 });
 
 useHead({

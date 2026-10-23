@@ -1,12 +1,13 @@
 <template>
   <div
-    class="font-light bg-primary-930 rounded-lg p-5 text-sm w-full md:w-auto"
+    class="w-full self-start rounded-2xl bg-primary-930 p-6 text-sm font-light lg:w-72"
   >
-    <h3 class="font-bold">
-      <Icon name="fa6-solid:clock" class="mr-2" /> Business Hours
+    <h3 class="flex items-center font-medium">
+      <Icon name="fa6-solid:clock" class="mr-2 text-xs text-primary-300" />
+      Business Hours
     </h3>
 
-    <ul class="mt-5">
+    <ul class="mt-4">
       <li
         v-for="(hour, day) in hours"
         :key="day"
@@ -28,33 +29,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from "vue";
-import { businessInfo } from "~/constants/business";
+const { hours, today } = useStoreHours();
 
-const hours = businessInfo.business_hours.full_week;
-const currentDay = ref<string | null>(null);
-
-const daysOfWeek = [
-  "sunday",
-  "monday",
-  "tuesday",
-  "wednesday",
-  "thursday",
-  "friday",
-  "saturday",
-];
-
-onMounted(() => {
-  const now = new Date();
-  const dayIndex = new Date(
-    now.toLocaleString("en-US", { timeZone: "America/Vancouver" })
-  ).getDay();
-  currentDay.value = daysOfWeek[dayIndex];
-});
-
-const isCurrentDay = (day: string) => {
-  return currentDay.value?.toLowerCase() === day.toLowerCase();
-};
+const isCurrentDay = (day: string) => today.value === day;
 </script>
 
 <style scoped>
