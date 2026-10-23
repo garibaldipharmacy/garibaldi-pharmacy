@@ -41,14 +41,14 @@
           class="mt-0.5 shrink-0 text-primary-400"
         />
         <span>
-          Note: If you do not receive an automated e-mail message or phone call
-          within 24-hours to confirm your {{ confirming }}, please call
+          We'll contact you by e-mail or phone within one business day to
+          confirm your {{ confirming }}. If you haven't heard from us by then,
+          please call
           <a
             :href="`tel:${phone}`"
             class="font-normal text-primary-700 underline underline-offset-4 hover:no-underline"
             >{{ phone }}</a
-          >
-          for assistance.
+          >.
         </span>
       </p>
 
