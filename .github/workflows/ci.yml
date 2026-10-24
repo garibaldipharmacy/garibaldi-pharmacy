@@ -4,8 +4,13 @@
 # deploy on push.
 #
 # Branch -> environment mapping:
-#   feat/do-migration -> staging   (port 3001, /srv/garibaldi-staging)
-#   main              -> production (port 3000, /srv/garibaldi-prod)
+#   staging -> staging    (port 3001, /srv/garibaldi-staging), deploys at once
+#   main    -> production (port 3000, /srv/garibaldi-prod), waits for approval
+#
+# Shipping a change (see README): open a PR; to try it on staging, push its
+# branch to `staging` (git push -f origin HEAD:staging); merge the PR to main;
+# approve the production deploy. The workflow that runs is the one in the
+# pushed commit, so a branch must include this file's `staging` rule to deploy.
 #
 # Required GitHub Environment configuration:
 #   Environment "staging"     vars:    SITE_URL, SITE_INDEXABLE, DEPLOY_PATH, SERVICE, PORT
@@ -156,7 +161,7 @@ jobs:
     if: >-
       github.event_name == 'push' &&
       vars.DEPLOY_ENABLED == 'true' &&
-      (github.ref_name == 'feat/do-migration' || github.ref_name == 'main')
+      (github.ref_name == 'staging' || github.ref_name == 'main')
     runs-on: ubuntu-24.04
     timeout-minutes: 15
 
