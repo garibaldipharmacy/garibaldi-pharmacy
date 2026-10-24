@@ -158,6 +158,14 @@ describe("receipt email", () => {
     }
   });
 
+  it("asks patients not to reply, and to phone instead", () => {
+    const receipt = buildReceiptEmail(input(refill));
+    expect(receipt.text).toContain("Please don't reply to this email.");
+    expect(receipt.text).toContain("replies aren't received");
+    expect(receipt.html).toContain(escapeHtml("Please don't reply to this email."));
+    expect(receipt.html).toContain('href="tel:+16048487059"');
+  });
+
   it("lists the opening hours while they are a simple weekday schedule", () => {
     expect(openingHoursText()).toBe("Monday to Friday, 9:00 AM to 6:00 PM");
   });

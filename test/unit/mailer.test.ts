@@ -16,7 +16,6 @@ beforeEach(() => {
   closeDb();
   process.env.RESEND_API_KEY = "re_test_key";
   delete process.env.MAIL_FROM;
-  delete process.env.PHARMACY_EMAIL;
   fetchMock = vi.fn(async () => new Response(JSON.stringify({ id: "email_1" }), { status: 200 }));
   vi.stubGlobal("fetch", fetchMock);
   vi.spyOn(console, "info").mockImplementation(() => {});
@@ -65,7 +64,7 @@ function outbox() {
 }
 
 describe("sendMail", () => {
-  it("sends HTML, text and inline pictures through Resend, replies to the pharmacy", async () => {
+  it("sends HTML, text and inline pictures through Resend, from the no-reply address", async () => {
     const result = await sendMail({
       to: "patient@example.com",
       subject: "Hello",
@@ -78,8 +77,9 @@ describe("sendMail", () => {
     const [url, init] = fetchMock.mock.calls[0] as [string, RequestInit];
     expect(url).toBe("https://api.resend.com/emails");
     expect(init.headers).toMatchObject({ Authorization: "Bearer re_test_key" });
+    // toEqual also proves there is no reply_to: nobody should reply to it
     expect(JSON.parse(init.body as string)).toEqual({
-      from: "Garibaldi Pharmacy <noreply@send.garibaldipharmacy.com>",
+      from: "Garibaldi Pharmacy - No Reply <noreply@send.garibaldipharmacy.com>",
       to: ["patient@example.com"],
       subject: "Hello",
       text: "Hi",
@@ -87,8 +87,13 @@ describe("sendMail", () => {
       attachments: [
         { filename: "logo.png", content: "aGk=", content_type: "image/png", content_id: "logo" },
       ],
-      reply_to: "pharmacist@garibaldipharmacy.com",
     });
+  });
+
+  it("sends a Reply-To only when a message asks for one", async () => {
+    await sendMail({ to: "a@example.com", subject: "Hello", text: "Hi", replyTo: "b@example.com" });
+    const body = JSON.parse((fetchMock.mock.calls[0] as [string, RequestInit])[1].body as string);
+    expect(body.reply_to).toBe("b@example.com");
   });
 
   it("only logs when no API key is configured", async () => {
@@ -114,6 +119,7 @@ describe("drainOutbox", () => {
 
     const body = JSON.parse((fetchMock.mock.calls[0] as [string, RequestInit])[1].body as string);
     expect(body.to).toEqual(["patient@example.com"]);
+    expect(body).not.toHaveProperty("reply_to");
     expect(body.subject).toBe("Refill request received · 1A2B3C4D");
     expect(body.html).toContain("Pick up at the pharmacy");
     expect(body.html).not.toContain("Ramipril");

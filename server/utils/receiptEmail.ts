@@ -108,6 +108,10 @@ const WEBSITE_LABEL = WEBSITE.replace(/^https?:\/\//, "").replace(/\/$/, "");
 const PRIVACY_NOTE =
   "For your privacy, we never include medication names or other health details in email.";
 
+// The receipt comes from a no-reply address, with no Reply-To (see mailer.ts)
+const NO_REPLY_HEADLINE = "Please don't reply to this email.";
+const NO_REPLY_DETAIL = `It was sent automatically and replies aren't received. For questions, or if you didn't send this request, call us at ${PHONE}.`;
+
 export function escapeHtml(value: string): string {
   return value
     .replace(/&/g, "&amp;")
@@ -235,7 +239,7 @@ function textVersion(wording: Wording, reference: string, rows: SummaryRow[]): s
     ...(hours ? [`Open ${hours}`] : []),
     WEBSITE,
     "",
-    `Didn't send this request? You can ignore this email, or let us know at ${PHONE}.`,
+    `${NO_REPLY_HEADLINE} ${NO_REPLY_DETAIL}`,
   ].join("\n");
 }
 
@@ -393,7 +397,10 @@ function htmlVersion(
             </td>
           </tr>
           <tr>
-            <td align="center" style="padding: 14px 24px 8px; font-size: 12px; line-height: 1.6; color: ${C.muted};">Didn't send this request? You can ignore this email, or let us know at <a href="${PHONE_HREF}" style="color: ${C.muted};">${e(PHONE)}</a>.</td>
+            <td align="center" style="padding: 16px 24px 8px; font-size: 12px; line-height: 1.6; color: ${C.muted};"><strong style="color: ${C.ink};">${e(NO_REPLY_HEADLINE)}</strong> ${e(NO_REPLY_DETAIL).replace(
+              e(PHONE),
+              `<a href="${PHONE_HREF}" style="color: ${C.link}; white-space: nowrap;">${e(PHONE)}</a>`,
+            )}</td>
           </tr>
         </table>
         <!--[if mso]></td></tr></table><![endif]-->

@@ -5,7 +5,11 @@
 //
 // One message per request: the patient's receipt, "we got it, here is your
 // reference number", built in receiptEmail.ts. Staff are not emailed; requests
-// reach them through the dashboard. A patient's reply goes to the pharmacy.
+// reach them through the dashboard.
+//
+// The receipt is no-reply: it comes from a no-reply address with no Reply-To,
+// and asks patients to phone instead. send.garibaldipharmacy.com receives no
+// mail, so a reply bounces back to the patient rather than vanishing.
 //
 // The patient's email address is unverified. A typo means sending to a stranger,
 // so the receipt contains a reference code and nothing the patient typed.
@@ -22,6 +26,7 @@ export interface Mail {
   html?: string;
   /** Pictures the HTML shows with cid: links */
   images?: InlineImage[];
+  /** Only sent when set. The receipt sets none: it is no-reply. */
   replyTo?: string;
 }
 
@@ -31,15 +36,12 @@ export interface MailResult {
   error?: string;
 }
 
-function fromAddress(): string {
-  return (
-    process.env.MAIL_FROM || "Garibaldi Pharmacy <noreply@send.garibaldipharmacy.com>"
-  );
-}
+// "No Reply" sits in the name inboxes show. A hyphen rather than parentheses:
+// in an address header, parentheses mark a comment that some mail apps hide.
+const DEFAULT_FROM = "Garibaldi Pharmacy - No Reply <noreply@send.garibaldipharmacy.com>";
 
-/** Where replies to the receipt go */
-export function pharmacyEmail(): string {
-  return process.env.PHARMACY_EMAIL || "pharmacist@garibaldipharmacy.com";
+function fromAddress(): string {
+  return process.env.MAIL_FROM || DEFAULT_FROM;
 }
 
 /**
@@ -76,7 +78,7 @@ export async function sendMail(mail: Mail): Promise<MailResult> {
               })),
             }
           : {}),
-        reply_to: mail.replyTo ?? pharmacyEmail(),
+        ...(mail.replyTo ? { reply_to: mail.replyTo } : {}),
       }),
     });
 
@@ -107,7 +109,6 @@ export function patientConfirmation(args: {
     text: receipt.text,
     html: receipt.html,
     images: receipt.images,
-    replyTo: pharmacyEmail(),
   };
 }
 
