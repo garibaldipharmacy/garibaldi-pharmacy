@@ -249,7 +249,7 @@ export default defineEventHandler(async (event): Promise<SubmitResponse> => {
   }
 
   // ---------------------------------------------------------------------
-  // Persist, then queue notifications. One transaction.
+  // Persist, then queue the patient's receipt email. One transaction.
   // ---------------------------------------------------------------------
   const receivedAt = new Date();
   const reference = makeReference();
@@ -274,10 +274,8 @@ export default defineEventHandler(async (event): Promise<SubmitResponse> => {
       idempotencyKey: envelope.idempotencyKey,
       payload: body,
       files: stored,
-      notifications: [
-        { kind: "staff_notification", recipient: pharmacyEmail() },
-        { kind: "patient_confirmation", recipient: body.patient.email },
-      ],
+      // Staff are not emailed: the request reaches them through the dashboard.
+      notifications: [{ kind: "patient_confirmation", recipient: body.patient.email }],
     });
 
     // A retry or a double-tapped submit button is a no-op, not a second record.

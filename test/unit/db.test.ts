@@ -43,10 +43,7 @@ function submission(overrides: Partial<Parameters<typeof persistSubmission>[0]> 
     idempotencyKey: randomUUID(),
     payload: { kind: "refill", medications: "Ramipril 10mg" },
     files: [],
-    notifications: [
-      { kind: "staff_notification", recipient: "pharmacist@example.com" },
-      { kind: "patient_confirmation", recipient: "patient@example.com" },
-    ],
+    notifications: [{ kind: "patient_confirmation", recipient: "patient@example.com" }],
     ...overrides,
   };
 }

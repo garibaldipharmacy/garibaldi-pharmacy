@@ -3,21 +3,25 @@
 // Not SMTP: DigitalOcean blocks outbound 25, 465 and 587 by default, so an SMTP
 // relay is not merely a deliverability preference, it will not connect at all.
 //
-// Two messages, both deliberately free of patient health information:
-//
-//   staff_notification    "a request arrived, open the dashboard"
-//   patient_confirmation  "we got it, here is your reference number"
+// One message per request: the patient's receipt, "we got it, here is your
+// reference number", built in receiptEmail.ts. Staff are not emailed; requests
+// reach them through the dashboard. A patient's reply goes to the pharmacy.
 //
 // The patient's email address is unverified. A typo means sending to a stranger,
-// so the confirmation contains a reference code and nothing clinical.
+// so the receipt contains a reference code and nothing the patient typed.
 
+import type { RequestBody } from "~~/shared/forms";
 import { getDb } from "./db";
+import { buildReceiptEmail, type InlineImage } from "./receiptEmail";
 import { redact } from "./security";
 
 export interface Mail {
   to: string;
   subject: string;
   text: string;
+  html?: string;
+  /** Pictures the HTML shows with cid: links */
+  images?: InlineImage[];
   replyTo?: string;
 }
 
@@ -33,12 +37,9 @@ function fromAddress(): string {
   );
 }
 
+/** Where replies to the receipt go */
 export function pharmacyEmail(): string {
   return process.env.PHARMACY_EMAIL || "pharmacist@garibaldipharmacy.com";
-}
-
-export function siteUrl(): string {
-  return process.env.NUXT_SITE_URL || "https://garibaldipharmacy.com";
 }
 
 /**
@@ -64,6 +65,17 @@ export async function sendMail(mail: Mail): Promise<MailResult> {
         to: [mail.to],
         subject: mail.subject,
         text: mail.text,
+        ...(mail.html ? { html: mail.html } : {}),
+        ...(mail.images?.length
+          ? {
+              attachments: mail.images.map((image) => ({
+                filename: image.filename,
+                content: image.content,
+                content_type: image.contentType,
+                content_id: image.contentId,
+              })),
+            }
+          : {}),
         reply_to: mail.replyTo ?? pharmacyEmail(),
       }),
     });
@@ -78,67 +90,23 @@ export async function sendMail(mail: Mail): Promise<MailResult> {
 }
 
 // ---------------------------------------------------------------------------
-// Message bodies
+// Message
 // ---------------------------------------------------------------------------
-
-const SERVICE_LABEL: Record<string, string> = {
-  refill: "prescription refill request",
-  transfer: "prescription transfer request",
-  send: "new prescription",
-};
-
-export function staffNotification(args: {
-  kind: string;
-  reference: string;
-  flagged: boolean;
-}): Mail {
-  const label = SERVICE_LABEL[args.kind] ?? "request";
-  return {
-    to: pharmacyEmail(),
-    subject: `New ${label} (ref ${args.reference})`,
-    text: [
-      `A new ${label} was submitted on the website.`,
-      ``,
-      `Reference: ${args.reference}`,
-      args.flagged ? `This one is flagged for review.` : ``,
-      ``,
-      `Open the dashboard to view it: ${siteUrl()}/admin`,
-      ``,
-      `No patient details are included in this email by design.`,
-    ]
-      .filter((line) => line !== ``)
-      .join("\n"),
-  };
-}
 
 export function patientConfirmation(args: {
   kind: string;
   reference: string;
   email: string;
   receivedAt: Date;
+  payload: RequestBody | null;
 }): Mail {
-  const label = SERVICE_LABEL[args.kind] ?? "request";
-  const when = args.receivedAt.toLocaleString("en-CA", {
-    timeZone: "America/Vancouver",
-    dateStyle: "full",
-    timeStyle: "short",
-  });
-
+  const receipt = buildReceiptEmail(args);
   return {
     to: args.email,
-    subject: `We received your ${label} (ref ${args.reference})`,
-    text: [
-      `Hi,`,
-      ``,
-      `We received your ${label} on ${when}.`,
-      `Your reference number is ${args.reference}.`,
-      ``,
-      `A member of our team will contact you within one business day. If you have`,
-      `not heard from us by then, please call us at 604-848-7059.`,
-      ``,
-      `Garibaldi Pharmacy`,
-      `102-1870 Dowad Drive, Squamish, BC`,
-    ].join("\n"),
+    subject: receipt.subject,
+    text: receipt.text,
+    html: receipt.html,
+    images: receipt.images,
     replyTo: pharmacyEmail(),
   };
 }
@@ -162,10 +130,19 @@ interface OutboxRow {
   attempts: number;
 }
 
+function parsePayload(raw: string): RequestBody | null {
+  try {
+    return JSON.parse(raw) as RequestBody;
+  } catch {
+    return null;
+  }
+}
+
 /**
- * Drains queued notifications. Called after a submission is committed and on an
- * interval, so an email provider having a bad minute never means an accepted
- * prescription request goes unannounced.
+ * Sends queued receipts. Called after each submission is committed, so an
+ * email provider having a bad minute never means an accepted prescription
+ * request goes unacknowledged: a failed receipt is retried, with backoff, when
+ * the next request arrives.
  */
 export async function drainOutbox(now = new Date()): Promise<{ sent: number; failed: number }> {
   const db = getDb();
@@ -183,26 +160,31 @@ export async function drainOutbox(now = new Date()): Promise<{ sent: number; fai
   let failed = 0;
 
   for (const row of rows) {
+    // Staff notifications were retired. One queued before the upgrade is closed
+    // off unsent rather than emailed to the pharmacy.
+    if (row.kind !== "patient_confirmation") {
+      db.prepare("UPDATE outbox SET sent_at = ?, last_error = ? WHERE id = ?").run(
+        now.toISOString(),
+        "not sent: staff notifications are retired",
+        row.id,
+      );
+      continue;
+    }
+
     const submission = db
-      .prepare("SELECT kind, reference, received_at, flags FROM submissions WHERE id = ?")
+      .prepare("SELECT kind, reference, received_at, payload FROM submissions WHERE id = ?")
       .get(row.submission_id) as unknown as
-      | { kind: string; reference: string; received_at: string; flags: string }
+      | { kind: string; reference: string; received_at: string; payload: string }
       | undefined;
     if (!submission) continue;
 
-    const mail =
-      row.kind === "patient_confirmation"
-        ? patientConfirmation({
-            kind: submission.kind,
-            reference: submission.reference,
-            email: row.recipient,
-            receivedAt: new Date(submission.received_at),
-          })
-        : staffNotification({
-            kind: submission.kind,
-            reference: submission.reference,
-            flagged: submission.flags !== "[]",
-          });
+    const mail = patientConfirmation({
+      kind: submission.kind,
+      reference: submission.reference,
+      email: row.recipient,
+      receivedAt: new Date(submission.received_at),
+      payload: parsePayload(submission.payload),
+    });
 
     const result = await sendMail(mail);
     if (result.ok) {
