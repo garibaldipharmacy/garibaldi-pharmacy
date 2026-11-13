@@ -219,7 +219,7 @@
 // Registered here rather than globally so only the form pages load it
 import { vMaska } from "maska";
 import { computed, reactive, ref } from "vue";
-import { LIMITS } from "~~/shared/forms";
+import { LIMITS, PHONE_MASK_OPTIONS } from "~~/shared/forms";
 
 useSeoMeta({
   title: "Send Prescriptions in Squamish | Garibaldi Pharmacy",

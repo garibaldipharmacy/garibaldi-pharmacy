@@ -78,28 +78,6 @@ test.describe("refill", () => {
     await expect(page).toHaveURL(/\/success\/refill/);
   });
 
-  test("keeps every digit of a number pasted with its country code", async ({ page }) => {
-    await page.goto("/prescriptions/refill/");
-    const phone = page.locator("#cell_phone_number");
-
-    // The old mask turned this into (160) 454-2187
-    await phone.fill("+1 604-555-0100");
-    await expect(phone).toHaveValue("+1 (604) 555-0100");
-
-    await phone.fill("604-555-0100");
-    await expect(phone).toHaveValue("(604) 555-0100");
-
-    await phone.fill("");
-    await phone.pressSequentially("16045550100");
-    await expect(phone).toHaveValue("+1 (604) 555-0100");
-
-    await fillCommonFields(page);
-    await phone.fill("+1 604-555-0100");
-    await page.fill("#medications", "Ramipril 10mg capsules");
-    await page.getByRole("button", { name: /send refill request/i }).click();
-    await expect(page).toHaveURL(/\/success\/refill/);
-  });
-
   test("blocks an empty medication list and keeps what was typed", async ({ page }) => {
     await page.goto("/prescriptions/refill/");
     await fillCommonFields(page);
@@ -134,6 +112,42 @@ test.describe("refill", () => {
       el.dispatchEvent(new Event("input", { bubbles: true }));
     });
 
+    await page.getByRole("button", { name: /send refill request/i }).click();
+    await expect(page).toHaveURL(/\/success\/refill/);
+  });
+});
+
+test.describe("phone numbers with a country code", () => {
+  // Every phone field on every form. The send page once missed the mask's
+  // import, so its field went unformatted while refill was fine.
+  for (const [path, selector] of [
+    ["/prescriptions/refill/", "#cell_phone_number"],
+    ["/prescriptions/transfer/", "#cell_phone_number"],
+    ["/prescriptions/transfer/", "#pharmacy_phone_number"],
+    ["/prescriptions/send/", "#cell_phone_number"],
+  ]) {
+    test(`${path} ${selector} keeps every digit`, async ({ page }) => {
+      await page.goto(path);
+      const phone = page.locator(selector);
+
+      // The old mask turned this into (160) 454-2187
+      await phone.fill("+1 604-555-0100");
+      await expect(phone).toHaveValue("+1 (604) 555-0100");
+
+      await phone.fill("604-555-0100");
+      await expect(phone).toHaveValue("(604) 555-0100");
+
+      await phone.fill("");
+      await phone.pressSequentially("16045550100");
+      await expect(phone).toHaveValue("+1 (604) 555-0100");
+    });
+  }
+
+  test("submits a number entered with its country code", async ({ page }) => {
+    await page.goto("/prescriptions/refill/");
+    await fillCommonFields(page);
+    await page.fill("#cell_phone_number", "+1 604-555-0100");
+    await page.fill("#medications", "Ramipril 10mg capsules");
     await page.getByRole("button", { name: /send refill request/i }).click();
     await expect(page).toHaveURL(/\/success\/refill/);
   });
