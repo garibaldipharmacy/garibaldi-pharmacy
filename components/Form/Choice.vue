@@ -3,7 +3,10 @@
        options carry a description. Still a radio group underneath, so arrow
        keys and screen readers work as for any set of radio buttons -->
   <RadioGroup
+    :id="id"
     :model-value="modelValue"
+    :aria-invalid="error ? 'true' : undefined"
+    :aria-describedby="error ? `${id}-error` : undefined"
     @update:model-value="(value) => emit('update:modelValue', value)"
   >
     <RadioGroupLabel class="form-label">{{ label }}</RadioGroupLabel>
@@ -56,7 +59,9 @@
       >
         <span
           :class="[
-            'flex items-center justify-center gap-2 rounded-xl px-6 py-2.5 font-medium transition',
+            // Icon above the label on phones, so three options fit a narrow
+            // screen without stretching the form wider than it
+            'flex flex-col items-center justify-center gap-1 whitespace-nowrap rounded-xl px-2 py-2.5 font-medium transition sm:flex-row sm:gap-2 sm:px-6',
             checked
               ? 'bg-primary-900 text-white shadow'
               : 'text-slate-600 hover:bg-primary-50 hover:text-primary-900',
@@ -67,6 +72,8 @@
         </span>
       </RadioGroupOption>
     </div>
+
+    <FieldError v-if="id" :id="`${id}-error`" :message="error" />
   </RadioGroup>
 </template>
 
@@ -76,6 +83,9 @@ import { RadioGroup, RadioGroupLabel, RadioGroupOption } from "@headlessui/vue";
 const props = defineProps<{
   modelValue: unknown;
   label: string;
+  // Both needed for an error to be shown and announced
+  id?: string;
+  error?: string;
   options: {
     value: unknown;
     label: string;

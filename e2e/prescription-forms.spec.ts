@@ -10,12 +10,13 @@ const PATIENT = {
   email: "not-a-real-patient@example.invalid",
 };
 
-async function fillCommonFields(page: Page) {
+async function fillCommonFields(page: Page, { notify = true } = {}) {
   await page.fill("#first_name", PATIENT.firstName);
   await page.fill("#last_name", PATIENT.lastName);
   await page.fill("#date_of_birth", PATIENT.dateOfBirth);
   await page.fill("#cell_phone_number", PATIENT.phone);
   await page.fill("#email", PATIENT.email);
+  if (notify) await page.getByRole("radio", { name: "Text me" }).click();
 }
 
 /** A real PNG, so the server's content sniffing accepts it. */
@@ -54,6 +55,27 @@ test.describe("refill", () => {
     await expect(page.getByRole("heading", { level: 2 }).first()).toContainText(
       /thank you/i,
     );
+  });
+
+  test("requires a way to be told the prescription is ready", async ({ page }) => {
+    await page.goto("/prescriptions/refill/");
+    await fillCommonFields(page, { notify: false });
+    await page.fill("#medications", "Ramipril 10mg capsules");
+    await page.getByRole("button", { name: /send refill request/i }).click();
+
+    await expect(page).not.toHaveURL(/\/success/);
+    const group = page.getByRole("radiogroup", { name: /how do you want to be notified/i });
+    await expect(group).toHaveAttribute("aria-invalid", "true");
+    await expect(group.getByText("Choose how we should let you know")).toBeVisible();
+
+    // Only one can be chosen; picking another replaces it
+    await page.getByRole("radio", { name: "Call me" }).click();
+    await page.getByRole("radio", { name: "Email me" }).click();
+    await expect(page.getByRole("radio", { name: "Email me" })).toBeChecked();
+    await expect(page.getByRole("radio", { name: "Call me" })).not.toBeChecked();
+
+    await page.getByRole("button", { name: /send refill request/i }).click();
+    await expect(page).toHaveURL(/\/success\/refill/);
   });
 
   test("blocks an empty medication list and keeps what was typed", async ({ page }) => {

@@ -134,6 +134,27 @@ export const RETRIEVAL_METHODS = {
 
 export type RetrievalMethod = keyof typeof RETRIEVAL_METHODS;
 
+/**
+ * How the patient wants to hear that their prescription is ready. Exactly one,
+ * and required. The keys are what gets stored; the labels are UI copy and can
+ * change freely.
+ */
+export const NOTIFY_METHODS = {
+  call: "Call me",
+  text: "Text me",
+  email: "Email me",
+} as const;
+
+export type NotifyMethod = keyof typeof NOTIFY_METHODS;
+
+export const notifyBySchema = z.enum(
+  Object.keys(NOTIFY_METHODS) as [NotifyMethod, ...NotifyMethod[]],
+  {
+    // Missing, empty or unknown all read the same to the patient
+    errorMap: () => ({ message: "Choose how we should let you know" }),
+  },
+);
+
 const refillBody = z.object({
   kind: z.literal("refill"),
   patient: patientSchema,
@@ -142,12 +163,14 @@ const refillBody = z.object({
   medications: text(5000, "Medications"),
   // Was `options`, which stored a full English sentence from the UI label.
   retrievalMethod: z.enum(["pickup", "delivery"]),
+  notifyBy: notifyBySchema,
   specialInstructions: optionalText(2000),
 });
 
 const transferBody = z.object({
   kind: z.literal("transfer"),
   patient: patientWithHealthInfoSchema,
+  notifyBy: notifyBySchema,
   fromPharmacyName: text(200, "Pharmacy name"),
   fromPharmacyPhone: phoneSchema,
   // Was `options` storing the strings "Yes" / "No".
@@ -172,6 +195,7 @@ const fileRef = z.object({
 const sendBody = z.object({
   kind: z.literal("send"),
   patient: patientWithHealthInfoSchema,
+  notifyBy: notifyBySchema,
   prescriptions: z
     .array(fileRef)
     .min(1, "Attach at least one prescription")

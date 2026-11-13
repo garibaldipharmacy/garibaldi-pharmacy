@@ -50,7 +50,7 @@
 
 <script setup lang="ts">
 import { FILE_ROLE_LABELS, type SubmissionDetailDTO } from "~~/shared/submissions";
-import { formatPhone, RETRIEVAL_METHODS } from "~~/shared/forms";
+import { formatPhone, NOTIFY_METHODS, RETRIEVAL_METHODS } from "~~/shared/forms";
 
 const props = defineProps<{ detail: SubmissionDetailDTO }>();
 
@@ -83,6 +83,13 @@ const requestRows = computed<Row[]>(() => {
   const payload = props.detail.payload as Record<string, unknown> | undefined;
   const rows: Row[] = [];
   if (!payload) return rows;
+
+  // Missing on requests sent before the question was added, so the row is skipped.
+  push(
+    rows,
+    "Notify when ready",
+    NOTIFY_METHODS[payload.notifyBy as keyof typeof NOTIFY_METHODS],
+  );
 
   if (payload.kind === "refill") {
     push(rows, "Medications", payload.medications);

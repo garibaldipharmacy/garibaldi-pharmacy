@@ -143,6 +143,8 @@
             required
           />
         </FormField>
+
+        <FormNotifyBy v-model="notifyBy" :error="fieldError('notifyBy')" />
       </FormSection>
 
       <!--
@@ -263,6 +265,7 @@ const patient = reactive({
   phone: "",
   email: "",
 });
+const notifyBy = ref(null);
 
 const prescriptions = ref([{ file: null }]);
 const insurance = ref([]);
@@ -310,6 +313,7 @@ async function onSubmit() {
     {
       kind: "send",
       patient: { ...patient },
+      notifyBy: notifyBy.value,
       prescriptions: chosenPrescriptions.map(({ index }) => ({ key: `rx_${index}` })),
       insurance: insurancePayload,
     },

@@ -34,6 +34,7 @@ describe("phone handling", () => {
   it("accepts a masked phone number and normalises it", () => {
     const parsed = requestBodySchema.parse({
       kind: "refill",
+      notifyBy: "text",
       patient,
       medications: "Ramipril 10mg",
       retrievalMethod: "pickup",
@@ -44,6 +45,7 @@ describe("phone handling", () => {
   it("rejects a phone number that is too short", () => {
     const result = requestBodySchema.safeParse({
       kind: "refill",
+      notifyBy: "text",
       patient: { ...patient, phone: "604555" },
       medications: "Ramipril 10mg",
       retrievalMethod: "pickup",
@@ -53,7 +55,12 @@ describe("phone handling", () => {
 });
 
 describe("date of birth", () => {
-  const base = { kind: "refill", medications: "x", retrievalMethod: "pickup" };
+  const base = {
+    kind: "refill",
+    notifyBy: "text",
+    medications: "x",
+    retrievalMethod: "pickup",
+  };
 
   it("rejects an empty value", () => {
     // Previously the form showed a required asterisk with no `required`
@@ -87,6 +94,7 @@ describe("refill", () => {
     // The old form let someone submit a refill request listing nothing at all.
     const result = requestBodySchema.safeParse({
       kind: "refill",
+      notifyBy: "text",
       patient,
       medications: "   ",
       retrievalMethod: "pickup",
@@ -100,6 +108,7 @@ describe("refill", () => {
   it("stores a stable retrieval method rather than a UI sentence", () => {
     const parsed = requestBodySchema.parse({
       kind: "refill",
+      notifyBy: "text",
       patient,
       medications: "Ramipril 10mg capsules",
       retrievalMethod: "delivery",
@@ -110,6 +119,7 @@ describe("refill", () => {
   it("rejects the old English-sentence value", () => {
     const result = requestBodySchema.safeParse({
       kind: "refill",
+      notifyBy: "text",
       patient,
       medications: "Ramipril 10mg",
       retrievalMethod: "I will pickup my prescription",
@@ -121,6 +131,7 @@ describe("refill", () => {
 describe("transfer", () => {
   const base = {
     kind: "transfer",
+    notifyBy: "text",
     patient: patientWithHealthInfo,
     fromPharmacyName: "ABC Pharmacy",
     fromPharmacyPhone: "(604) 555-0199",
@@ -178,7 +189,7 @@ describe("transfer", () => {
 });
 
 describe("send", () => {
-  const base = { kind: "send", patient: patientWithHealthInfo };
+  const base = { kind: "send", patient: patientWithHealthInfo, notifyBy: "text" };
 
   it("requires at least one prescription", () => {
     const result = requestBodySchema.safeParse({ ...base, prescriptions: [] });
@@ -253,6 +264,47 @@ describe("send", () => {
   });
 });
 
+describe("notifyBy", () => {
+  const base = {
+    kind: "refill",
+    patient,
+    medications: "Ramipril 10mg",
+    retrievalMethod: "pickup",
+  };
+
+  it.each([
+    ["missing", undefined],
+    ["empty", ""],
+    ["unknown", "fax"],
+    ["more than one", ["call", "text"]],
+  ])("rejects a %s choice", (_, notifyBy) => {
+    const result = requestBodySchema.safeParse({ ...base, notifyBy });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(fieldErrors(result.error).notifyBy).toBe("Choose how we should let you know");
+    }
+  });
+
+  it.each(["call", "text", "email"])("accepts %s", (notifyBy) => {
+    expect(requestBodySchema.parse({ ...base, notifyBy })).toMatchObject({ notifyBy });
+  });
+
+  it.each(["transfer", "send"])("is required on %s too", (kind) => {
+    const body =
+      kind === "transfer"
+        ? {
+            kind,
+            patient: patientWithHealthInfo,
+            fromPharmacyName: "ABC Pharmacy",
+            fromPharmacyPhone: "(604) 555-0199",
+            transferAll: true,
+          }
+        : { kind, patient: patientWithHealthInfo, prescriptions: [{ key: "rx_0" }] };
+    expect(requestBodySchema.safeParse(body).success).toBe(false);
+    expect(requestBodySchema.safeParse({ ...body, notifyBy: "text" }).success).toBe(true);
+  });
+});
+
 describe("envelope", () => {
   const valid = {
     idempotencyKey: "123e4567-e89b-42d3-a456-426614174000",
@@ -276,6 +328,7 @@ describe("fieldErrors", () => {
   it("flattens nested paths for the UI", () => {
     const result = requestBodySchema.safeParse({
       kind: "refill",
+      notifyBy: "text",
       patient: { ...patient, email: "not-an-email" },
       medications: "x",
       retrievalMethod: "pickup",

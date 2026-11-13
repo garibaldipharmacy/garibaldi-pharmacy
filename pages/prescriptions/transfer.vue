@@ -143,6 +143,8 @@
             required
           />
         </FormField>
+
+        <FormNotifyBy v-model="notifyBy" :error="fieldError('notifyBy')" />
       </FormSection>
 
       <FormSection :step="3" title="Your current pharmacy">
@@ -297,6 +299,7 @@ const patient = reactive({
   phone: "",
   email: "",
 });
+const notifyBy = ref(null);
 
 const fromPharmacyName = ref("");
 const fromPharmacyPhone = ref("");
@@ -312,6 +315,7 @@ async function onSubmit() {
   await submit({
     kind: "transfer",
     patient: { ...patient },
+    notifyBy: notifyBy.value,
     fromPharmacyName: fromPharmacyName.value,
     fromPharmacyPhone: fromPharmacyPhone.value,
     transferAll: transferAll.value,

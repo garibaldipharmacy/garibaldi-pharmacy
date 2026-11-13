@@ -104,6 +104,8 @@
             required
           />
         </FormField>
+
+        <FormNotifyBy v-model="notifyBy" :error="fieldError('notifyBy')" />
       </FormSection>
 
       <FormSection :step="3" title="Your refill">
@@ -215,6 +217,7 @@ const patient = reactive({
   phone: "",
   email: "",
 });
+const notifyBy = ref(null);
 const medications = ref("");
 const retrievalMethod = ref("pickup");
 
@@ -245,6 +248,7 @@ async function onSubmit() {
   await submit({
     kind: "refill",
     patient: { ...patient },
+    notifyBy: notifyBy.value,
     medications: medications.value,
     retrievalMethod: retrievalMethod.value,
     specialInstructions: specialInstructions.value,
