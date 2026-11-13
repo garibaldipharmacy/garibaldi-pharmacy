@@ -116,12 +116,11 @@
           <input
             v-bind="field"
             v-model="patient.phone"
-            v-maska
+            v-maska:[PHONE_MASK_OPTIONS]
             type="tel"
             name="cell_phone_number"
             class="form-input"
             placeholder="(604) 123-4567"
-            data-maska="(###) ###-####"
             autocomplete="tel"
             required
           />
@@ -143,6 +142,8 @@
             required
           />
         </FormField>
+
+        <FormNotifyBy v-model="notifyBy" :error="fieldError('notifyBy')" />
       </FormSection>
 
       <!--
@@ -263,6 +264,7 @@ const patient = reactive({
   phone: "",
   email: "",
 });
+const notifyBy = ref(null);
 
 const prescriptions = ref([{ file: null }]);
 const insurance = ref([]);
@@ -310,6 +312,7 @@ async function onSubmit() {
     {
       kind: "send",
       patient: { ...patient },
+      notifyBy: notifyBy.value,
       prescriptions: chosenPrescriptions.map(({ index }) => ({ key: `rx_${index}` })),
       insurance: insurancePayload,
     },

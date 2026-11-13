@@ -77,12 +77,11 @@
           <input
             v-bind="field"
             v-model="patient.phone"
-            v-maska
+            v-maska:[PHONE_MASK_OPTIONS]
             type="tel"
             name="cell_phone_number"
             class="form-input"
             placeholder="(604) 123-4567"
-            data-maska="(###) ###-####"
             autocomplete="tel"
             required
           />
@@ -104,6 +103,8 @@
             required
           />
         </FormField>
+
+        <FormNotifyBy v-model="notifyBy" :error="fieldError('notifyBy')" />
       </FormSection>
 
       <FormSection :step="3" title="Your refill">
@@ -181,7 +182,7 @@
 // Registered here rather than globally so only the form pages load it
 import { vMaska } from "maska";
 import { reactive, ref } from "vue";
-import { RETRIEVAL_METHODS } from "~~/shared/forms";
+import { PHONE_MASK_OPTIONS, RETRIEVAL_METHODS } from "~~/shared/forms";
 
 useSeoMeta({
   title: "Refill Prescriptions in Squamish | Garibaldi Pharmacy",
@@ -215,6 +216,7 @@ const patient = reactive({
   phone: "",
   email: "",
 });
+const notifyBy = ref(null);
 const medications = ref("");
 const retrievalMethod = ref("pickup");
 
@@ -245,6 +247,7 @@ async function onSubmit() {
   await submit({
     kind: "refill",
     patient: { ...patient },
+    notifyBy: notifyBy.value,
     medications: medications.value,
     retrievalMethod: retrievalMethod.value,
     specialInstructions: specialInstructions.value,

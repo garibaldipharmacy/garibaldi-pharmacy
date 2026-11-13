@@ -116,12 +116,11 @@
           <input
             v-bind="field"
             v-model="patient.phone"
-            v-maska
+            v-maska:[PHONE_MASK_OPTIONS]
             type="tel"
             name="cell_phone_number"
             class="form-input"
             placeholder="(604) 123-4567"
-            data-maska="(###) ###-####"
             autocomplete="tel"
             required
           />
@@ -143,6 +142,8 @@
             required
           />
         </FormField>
+
+        <FormNotifyBy v-model="notifyBy" :error="fieldError('notifyBy')" />
       </FormSection>
 
       <FormSection :step="3" title="Your current pharmacy">
@@ -172,12 +173,11 @@
           <input
             v-bind="field"
             v-model="fromPharmacyPhone"
-            v-maska
+            v-maska:[PHONE_MASK_OPTIONS]
             type="tel"
             name="pharmacy_phone_number"
             class="form-input"
             placeholder="(604) 123-4567"
-            data-maska="(###) ###-####"
             required
           />
         </FormField>
@@ -256,6 +256,7 @@
 // Registered here rather than globally so only the form pages load it
 import { vMaska } from "maska";
 import { reactive, ref } from "vue";
+import { PHONE_MASK_OPTIONS } from "~~/shared/forms";
 
 useSeoMeta({
   title: "Transfer Prescriptions in Squamish | Garibaldi Pharmacy",
@@ -297,6 +298,7 @@ const patient = reactive({
   phone: "",
   email: "",
 });
+const notifyBy = ref(null);
 
 const fromPharmacyName = ref("");
 const fromPharmacyPhone = ref("");
@@ -312,6 +314,7 @@ async function onSubmit() {
   await submit({
     kind: "transfer",
     patient: { ...patient },
+    notifyBy: notifyBy.value,
     fromPharmacyName: fromPharmacyName.value,
     fromPharmacyPhone: fromPharmacyPhone.value,
     transferAll: transferAll.value,
