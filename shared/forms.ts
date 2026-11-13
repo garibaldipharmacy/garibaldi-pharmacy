@@ -65,11 +65,39 @@ const text = (max: number, label: string) =>
 const optionalText = (max: number) =>
   z.string().trim().max(max, "That is too long").optional().default("");
 
+/**
+ * The 10-digit North American number, however it was written. A leading
+ * country code is dropped, so "+1 604-542-1875", "1 (604) 542-1875" and
+ * "604-542-1875" all give "6045421875". Anything else comes back as bare
+ * digits for validation to reject.
+ */
+export function nationalPhoneDigits(value: string): string {
+  const d = digitsOnly(value);
+  return d.length === 11 && d.startsWith("1") ? d.slice(1) : d;
+}
+
+/**
+ * Input mask for phone fields, chosen from what has been typed so far. North
+ * American area codes never start with 1, so a leading 1 is always the country
+ * code and gets its own slot. With a single 10-digit mask, a pasted
+ * "+1 604-542-1875" filled the slots with "1604542187" and silently dropped
+ * the last digit.
+ */
+export function phoneMask(value: string): string {
+  return digitsOnly(value).startsWith("1") ? "+# (###) ###-####" : "(###) ###-####";
+}
+
+/** Options for `v-maska:[PHONE_MASK_OPTIONS]` on phone inputs. */
+export const PHONE_MASK_OPTIONS = { mask: phoneMask };
+
 export const phoneSchema = z
   .string()
-  .transform(digitsOnly)
-  .refine((v) => v.length === 10, {
-    message: "Enter a 10-digit phone number",
+  .transform(nationalPhoneDigits)
+  // No area code starts with 0 or 1. Checked as well as the length because a
+  // country code that pushed out the last digit (see phoneMask) still leaves
+  // 10 digits, the first of them a 1.
+  .refine((v) => /^[2-9]\d{9}$/.test(v), {
+    message: "Enter a valid phone number, like (604) 123-4567",
   });
 
 export const emailSchema = z

@@ -5,8 +5,12 @@ import {
   fieldErrors,
   formatPhone,
   LIMITS,
+  nationalPhoneDigits,
+  phoneMask,
+  phoneSchema,
   requestBodySchema,
 } from "~~/shared/forms";
+import { Mask } from "maska";
 
 const patient = {
   firstName: "Test",
@@ -42,6 +46,61 @@ describe("phone handling", () => {
     expect(parsed.patient.phone).toBe("6045550100");
   });
 
+  it.each([
+    ["+1 604-542-1875"],
+    ["+1 (604) 542-1875"],
+    ["1-604-542-1875"],
+    ["+16045421875"],
+    ["604-542-1875"],
+    ["(604) 542-1875"],
+    ["6045421875"],
+  ])("reads %s as 6045421875, with or without the country code", (phone) => {
+    expect(nationalPhoneDigits(phone)).toBe("6045421875");
+    const parsed = requestBodySchema.parse({
+      kind: "refill",
+      patient: { ...patient, phone },
+      notifyBy: "text",
+      medications: "Ramipril 10mg",
+      retrievalMethod: "pickup",
+    });
+    expect(parsed.patient.phone).toBe("6045421875");
+  });
+
+  it("rejects a country-code number that lost its last digit", () => {
+    // What the old 10-digit mask made of a pasted "+1 604-542-1875". No area
+    // code starts with 1, so this can never be a real number.
+    const result = requestBodySchema.safeParse({
+      kind: "refill",
+      patient: { ...patient, phone: "1604542187" },
+      notifyBy: "text",
+      medications: "Ramipril 10mg",
+      retrievalMethod: "pickup",
+    });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(fieldErrors(result.error)["patient.phone"]).toMatch(/valid phone number/);
+    }
+  });
+
+  it.each([["2604542187501"], ["26045421875"], ["0604542187"]])(
+    "rejects %s",
+    (phone) => {
+      expect(phoneSchema.safeParse(phone).success).toBe(false);
+    },
+  );
+
+  it("normalises the transferring pharmacy's number the same way", () => {
+    const parsed = requestBodySchema.parse({
+      kind: "transfer",
+      patient: { ...patient, sex: "female", phn: "" },
+      notifyBy: "call",
+      fromPharmacyName: "ABC Pharmacy",
+      fromPharmacyPhone: "+1 604 555 0199",
+      transferAll: true,
+    });
+    expect(parsed).toMatchObject({ fromPharmacyPhone: "6045550199" });
+  });
+
   it("rejects a phone number that is too short", () => {
     const result = requestBodySchema.safeParse({
       kind: "refill",
@@ -51,6 +110,33 @@ describe("phone handling", () => {
       retrievalMethod: "pickup",
     });
     expect(result.success).toBe(false);
+  });
+});
+
+describe("phone input mask", () => {
+  // The real masking library with the mask the forms use, so this covers what
+  // a patient actually sees in the field.
+  const mask = new Mask({ mask: phoneMask });
+
+  it.each([
+    ["+1 604-542-1875", "+1 (604) 542-1875"],
+    ["1-604-542-1875", "+1 (604) 542-1875"],
+    ["+16045421875", "+1 (604) 542-1875"],
+    ["604-542-1875", "(604) 542-1875"],
+    ["6045421875", "(604) 542-1875"],
+  ])("shows a pasted %s as %s, keeping every digit", (pasted, shown) => {
+    expect(mask.masked(pasted)).toBe(shown);
+    expect(nationalPhoneDigits(mask.masked(pasted))).toBe("6045421875");
+  });
+
+  it("formats a country code typed one digit at a time", () => {
+    let value = "";
+    for (const digit of "16045421875") value = mask.masked(value + digit);
+    expect(value).toBe("+1 (604) 542-1875");
+  });
+
+  it("drops the country code slot when the 1 is deleted", () => {
+    expect(mask.masked("+ (604) 542-1875")).toBe("(604) 542-1875");
   });
 });
 

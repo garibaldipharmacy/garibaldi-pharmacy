@@ -16,7 +16,7 @@ async function submitRefill(page: Page, medications = "Ramipril 10mg capsules") 
   await page.fill("#first_name", "Testy");
   await page.fill("#last_name", "McFixture");
   await page.fill("#date_of_birth", "1980-05-02");
-  await page.fill("#cell_phone_number", "6045550100");
+  await page.fill("#cell_phone_number", "+1 604-555-0100");
   await page.fill("#email", "not-a-real-patient@example.invalid");
   await page.getByRole("radio", { name: "Text me" }).click();
   await page.fill("#medications", medications);
@@ -115,6 +115,8 @@ test.describe("viewing submissions", () => {
     // Stored as a machine value; rendered as the sentence a pharmacist reads.
     await expect(page.getByText(/I will pickup my prescription/)).toBeVisible();
     await expect(page.getByText("Text me", { exact: true })).toBeVisible();
+    // Typed with a country code, stored and shown as the 10-digit number
+    await expect(page.getByText("(604) 555-0100")).toBeVisible();
   });
 
   test("serves an attachment decrypted, to a signed-in session only", async ({ page }) => {

@@ -78,6 +78,28 @@ test.describe("refill", () => {
     await expect(page).toHaveURL(/\/success\/refill/);
   });
 
+  test("keeps every digit of a number pasted with its country code", async ({ page }) => {
+    await page.goto("/prescriptions/refill/");
+    const phone = page.locator("#cell_phone_number");
+
+    // The old mask turned this into (160) 454-2187
+    await phone.fill("+1 604-555-0100");
+    await expect(phone).toHaveValue("+1 (604) 555-0100");
+
+    await phone.fill("604-555-0100");
+    await expect(phone).toHaveValue("(604) 555-0100");
+
+    await phone.fill("");
+    await phone.pressSequentially("16045550100");
+    await expect(phone).toHaveValue("+1 (604) 555-0100");
+
+    await fillCommonFields(page);
+    await phone.fill("+1 604-555-0100");
+    await page.fill("#medications", "Ramipril 10mg capsules");
+    await page.getByRole("button", { name: /send refill request/i }).click();
+    await expect(page).toHaveURL(/\/success\/refill/);
+  });
+
   test("blocks an empty medication list and keeps what was typed", async ({ page }) => {
     await page.goto("/prescriptions/refill/");
     await fillCommonFields(page);

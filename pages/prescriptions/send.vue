@@ -116,12 +116,11 @@
           <input
             v-bind="field"
             v-model="patient.phone"
-            v-maska
+            v-maska:[PHONE_MASK_OPTIONS]
             type="tel"
             name="cell_phone_number"
             class="form-input"
             placeholder="(604) 123-4567"
-            data-maska="(###) ###-####"
             autocomplete="tel"
             required
           />
