@@ -133,12 +133,12 @@
           :error="fieldError('patient.sex')"
         />
 
+        <!-- Only for someone under 18, once their date of birth says so -->
         <FormField
-          v-if="!forMe"
+          v-if="weightNeeded"
           id="weight"
           label="Weight"
-          hint="Needed for anyone under 18, as some doses depend on weight."
-          :optional="!weightNeeded"
+          hint="Some doses depend on weight for anyone under 18."
           :error="fieldError('patient.weight')"
           v-slot="{ field }"
         >
@@ -150,7 +150,7 @@
             class="form-input"
             placeholder="e.g. 24 kg"
             maxlength="40"
-            :required="weightNeeded"
+            required
           />
         </FormField>
       </FormSection>
@@ -548,8 +548,8 @@ import {
   emptyConsentForm,
   emptyConsentItem,
   validateConsentForm,
+  asksWeight,
   vaccineFor,
-  weightRequired,
 } from "~~/shared/consentForm";
 import { PHONE_MASK_OPTIONS } from "~~/shared/forms";
 
@@ -587,8 +587,8 @@ const newItem = () => ({ ...emptyConsentItem(), key: nextKey++ });
 
 const form = reactive({ ...emptyConsentForm(), items: [newItem()] });
 const forMe = computed(() => form.forWhom === "me");
-// Required under 18, judged from the date of birth as it's typed
-const weightNeeded = computed(() => weightRequired(form));
+// Shown, and required, for someone under 18, judged from the date of birth as it's typed
+const weightNeeded = computed(() => asksWeight(form));
 
 const forWhomOptions = [
   { value: "me", label: "Me" },

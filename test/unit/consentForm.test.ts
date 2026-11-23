@@ -14,7 +14,7 @@ import {
   isUnder18,
   pharmacyToday,
   validateConsentForm,
-  weightRequired,
+  asksWeight,
   type ConsentFormState,
 } from "~~/shared/consentForm";
 import { validConsent } from "./consentFixtures";
@@ -158,6 +158,7 @@ describe("the payload builder", () => {
 
     const child = filled();
     child.forWhom = "child";
+    child.patient.dateOfBirth = "2018-03-09";
     child.patient.weight = " 24 kg ";
     child.relationship = "rep";
     const forChild = buildConsentPayload(child, signedAt);
@@ -245,39 +246,44 @@ describe("checking the form before it is sent", () => {
     expect(Object.keys(validateConsentForm(s, ok))).toContain("acknowledgement.relationship");
   });
 
-  it("requires weight for someone in care who is under 18", () => {
+  it("asks, and requires, a weight for someone in care who is under 18", () => {
     const s = filled();
     s.forWhom = "child";
     s.relationship = "parent";
     s.patient.dateOfBirth = "2018-03-09";
-    expect(validateConsentForm(s, ok)).toEqual({
-      "patient.weight": "Enter their weight, like 24 kg. It's needed for anyone under 18.",
-    });
+    expect(asksWeight(s, now)).toBe(true);
+    expect(validateConsentForm(s, ok)).toEqual({ "patient.weight": "Enter their weight, like 24 kg" });
     s.patient.weight = "24 kg";
     expect(validateConsentForm(s, ok)).toEqual({});
+    expect(buildConsentPayload(s, signedAt).patient.weight).toBe("24 kg");
   });
 
-  it("lets weight be left out for someone in care who is 18 or over", () => {
+  it("doesn't ask a weight for someone in care who is 18 or over, nor send one typed earlier", () => {
     const s = filled();
     s.forWhom = "child";
     s.relationship = "rep";
+    s.patient.weight = "70 kg";
+    expect(asksWeight(s, now)).toBe(false);
     expect(validateConsentForm(s, ok)).toEqual({});
     expect(buildConsentPayload(s, signedAt).patient).not.toHaveProperty("weight");
-    expect(weightRequired(s, now)).toBe(false);
   });
 
-  it("treats weight as required until the date of birth is known", () => {
+  it("doesn't ask a weight until the date of birth shows they're under 18", () => {
     const s = filled();
     s.forWhom = "child";
-    s.patient.dateOfBirth = "";
-    expect(weightRequired(s, now)).toBe(true);
+    for (const dob of ["", "2018", "2018-03"]) {
+      s.patient.dateOfBirth = dob;
+      expect(asksWeight(s, now)).toBe(false);
+    }
   });
 
   it("never asks weight on a form for me, whatever the age", () => {
     const s = filled();
     s.patient.dateOfBirth = "2012-01-01";
-    expect(weightRequired(s, now)).toBe(false);
+    s.patient.weight = "40 kg";
+    expect(asksWeight(s, now)).toBe(false);
     expect(validateConsentForm(s, ok)).toEqual({});
+    expect(buildConsentPayload(s, signedAt).patient).not.toHaveProperty("weight");
   });
 
   it("asks which vaccine for something else", () => {

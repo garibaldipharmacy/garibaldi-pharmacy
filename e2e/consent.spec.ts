@@ -198,29 +198,36 @@ test.describe("consent form details", () => {
     await expect(page.locator("#phn")).toHaveValue("9123456787");
   });
 
-  test("weight and relationship appear only for someone in care", async ({ page }) => {
+  test("relationship appears only for someone in care", async ({ page }) => {
     await page.goto("/consent/");
-    await expect(page.locator("#weight")).toHaveCount(0);
     await expect(page.getByRole("radiogroup", { name: /how are you related/i })).toHaveCount(0);
     await page.getByRole("radio", { name: "Someone in my care" }).click();
-    await expect(page.locator("#weight")).toBeVisible();
     await expect(page.getByRole("radiogroup", { name: /how are you related/i })).toBeVisible();
   });
 
-  test("weight is required under 18 and optional from 18", async ({ page }) => {
+  test("weight appears, and is required, only once the date of birth is under 18", async ({ page }) => {
     await page.goto("/consent/");
+    const dob = page.locator("#date_of_birth");
+    const weight = page.locator("#weight");
+
+    // For me, never, whatever the age
+    await dob.pressSequentially("20180309");
+    await expect(weight).toHaveCount(0);
+
+    // For someone in care: hidden for an adult, shown for a child
     await page.getByRole("radio", { name: "Someone in my care" }).click();
-    const label = page.locator('label[for="weight"]');
-    await expect(label).not.toContainText("(optional)");
+    await expect(weight).toBeVisible();
+    await expect(page.locator('label[for="weight"]')).not.toContainText("(optional)");
+    await dob.fill("");
+    await expect(weight).toHaveCount(0);
+    await dob.pressSequentially("19900101");
+    await expect(weight).toHaveCount(0);
 
-    await page.locator("#date_of_birth").pressSequentially("19900101");
-    await expect(label).toContainText("(optional)");
-
-    await page.locator("#date_of_birth").fill("");
-    await page.locator("#date_of_birth").pressSequentially("20180309");
-    await expect(label).not.toContainText("(optional)");
+    await dob.fill("");
+    await dob.pressSequentially("20180309");
+    await expect(weight).toBeVisible();
     await send(page);
-    await expect(page.locator("#weight-error")).toContainText("needed for anyone under 18");
+    await expect(page.locator("#weight-error")).toContainText("Enter their weight");
   });
 
   test("the HealthLinkBC link is for reference only and opens in a new tab", async ({ page }) => {

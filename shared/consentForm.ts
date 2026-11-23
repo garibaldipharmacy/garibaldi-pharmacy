@@ -107,12 +107,12 @@ export function isUnder18(dateOfBirth: string, now = new Date()): boolean | null
 }
 
 /**
- * Weight is asked only on a form for someone in care (the contract sends it
- * only for a child), and is required there for anyone under 18. Until the date
- * of birth says otherwise, it's treated as required.
+ * Weight is asked, and then required, only for someone under 18, and only on a
+ * form for someone in care, as the contract sends it only for a child. It
+ * appears once the date of birth shows they're under 18.
  */
-export function weightRequired(s: ConsentFormState, now = new Date()): boolean {
-  return s.forWhom === "child" && isUnder18(s.patient.dateOfBirth, now) !== false;
+export function asksWeight(s: ConsentFormState, now = new Date()): boolean {
+  return s.forWhom === "child" && isUnder18(s.patient.dateOfBirth, now) === true;
 }
 
 /** Digits only. Never shortened, so a pasted "9123 456 789" keeps every digit. */
@@ -215,7 +215,7 @@ export const DETAIL_QUESTIONS = ["allergy", "reaction", "bleeding"] as const;
  */
 export function buildConsentPayload(s: ConsentFormState, signedAt: Date): ConsentPayload {
   const forChild = s.forWhom === "child";
-  const weight = s.patient.weight.trim();
+  const weight = asksWeight(s, signedAt) ? s.patient.weight.trim() : "";
   const screening: Record<string, string> = {
     sick: s.screening.sick,
     allergy: s.screening.allergy,
@@ -239,7 +239,7 @@ export function buildConsentPayload(s: ConsentFormState, signedAt: Date): Consen
       sex: s.patient.sex,
       phone: nationalPhoneDigits(s.patient.phone),
       email: s.patient.email.trim(),
-      ...(forChild && weight ? { weight } : {}),
+      ...(weight ? { weight } : {}),
     },
     emergencyContact: {
       name: s.emergencyContact.name.trim(),
@@ -286,7 +286,7 @@ const MESSAGES: Record<string, string> = {
   "patient.dateOfBirth": "Enter the date of birth as YYYY-MM-DD",
   "patient.phn": PHN_ERROR,
   "patient.sex": "Choose sex at birth",
-  "patient.weight": "Enter their weight, like 24 kg. It's needed for anyone under 18.",
+  "patient.weight": "Enter their weight, like 24 kg",
   "patient.phone": PHONE_ERROR,
   "patient.email": "Enter a valid email address, or leave it blank",
   "emergencyContact.name": "Emergency contact name is required",
@@ -361,9 +361,7 @@ export function validateConsentForm(
   flag("patient.dateOfBirth", !realDate(p.dateOfBirth.trim()) || !dateOfBirthSchema.safeParse(p.dateOfBirth).success);
   flag("patient.phn", cleanPhn(p.phn).length !== 10);
   flag("patient.sex", p.sex !== "male" && p.sex !== "female");
-  if (s.forWhom === "child") {
-    flag("patient.weight", (weightRequired(s, now) && blank(p.weight)) || tooLong(p.weight, 40));
-  }
+  if (asksWeight(s, now)) flag("patient.weight", blank(p.weight) || tooLong(p.weight, 40));
   flag("patient.phone", !phoneSchema.safeParse(p.phone).success);
   flag("patient.email", !blank(p.email) && (!emailSchema.safeParse(p.email).success || tooLong(p.email, 200)));
 
