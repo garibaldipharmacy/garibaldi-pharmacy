@@ -17,10 +17,10 @@
         class="group inline-flex w-full shrink-0 items-center justify-center gap-3 rounded-full bg-white py-2.5 pl-2.5 pr-6 font-medium text-primary-900 shadow-md shadow-secondary-900/10 ring-1 ring-secondary-900/5 transition hover:-translate-y-0.5 hover:shadow-lg sm:w-auto"
       >
         <CircleIcon
-          icon="fa6-solid:syringe"
+          icon="fa6-solid:file-pen"
           bgColor="bg-secondary-100"
           iconColor="text-secondary-900"
-          :class="['h-9 w-9 overflow-hidden', iconMotion('fa6-solid:syringe')]"
+          :class="['h-9 w-9 overflow-hidden', iconMotion('fa6-solid:file-pen')]"
         />
         Fill in the consent form
       </NuxtLink>
