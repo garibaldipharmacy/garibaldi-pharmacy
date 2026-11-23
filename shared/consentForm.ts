@@ -20,6 +20,7 @@ import {
   type DoseChoice,
 } from "./consent";
 import { dateOfBirthSchema, digitsOnly, emailSchema, nationalPhoneDigits, phoneSchema } from "./forms";
+import { isoToPharmacyLocal } from "./pharmacyTime";
 
 // ---------------------------------------------------------------------------
 // The signature file
@@ -86,6 +87,32 @@ export function asksLastDose(dose: string): boolean {
 /** A male patient is never asked if they are pregnant; the payload says "na". */
 export function asksPregnancy(sex: string): boolean {
   return sex !== "male";
+}
+
+/** Today's date in Squamish, as YYYY-MM-DD. */
+export function pharmacyToday(now = new Date()): string {
+  return isoToPharmacyLocal(now.toISOString()).slice(0, 10);
+}
+
+/**
+ * Whether someone born on `dateOfBirth` is under 18 today, in Squamish. Null
+ * until the date of birth is a real date. Someone born on 29 February turns
+ * 18 on 1 March in a non-leap year.
+ */
+export function isUnder18(dateOfBirth: string, now = new Date()): boolean | null {
+  const dob = dateOfBirth.trim();
+  if (!realDate(dob)) return null;
+  const eighteenth = `${Number(dob.slice(0, 4)) + 18}${dob.slice(4)}`;
+  return pharmacyToday(now) < eighteenth;
+}
+
+/**
+ * Weight is asked only on a form for someone in care (the contract sends it
+ * only for a child), and is required there for anyone under 18. Until the date
+ * of birth says otherwise, it's treated as required.
+ */
+export function weightRequired(s: ConsentFormState, now = new Date()): boolean {
+  return s.forWhom === "child" && isUnder18(s.patient.dateOfBirth, now) !== false;
 }
 
 /** Digits only. Never shortened, so a pasted "9123 456 789" keeps every digit. */
@@ -259,7 +286,7 @@ const MESSAGES: Record<string, string> = {
   "patient.dateOfBirth": "Enter the date of birth as YYYY-MM-DD",
   "patient.phn": PHN_ERROR,
   "patient.sex": "Choose sex at birth",
-  "patient.weight": "Enter their weight, like 24 kg",
+  "patient.weight": "Enter their weight, like 24 kg. It's needed for anyone under 18.",
   "patient.phone": PHONE_ERROR,
   "patient.email": "Enter a valid email address, or leave it blank",
   "emergencyContact.name": "Emergency contact name is required",
@@ -305,8 +332,10 @@ export function consentFieldErrors(error: z.ZodError): Record<string, string> {
 // Checking the form before it is sent
 // ---------------------------------------------------------------------------
 
-const realDate = (v: string) => /^\d{4}-\d{2}-\d{2}$/.test(v) && !Number.isNaN(Date.parse(`${v}T00:00:00Z`)) &&
-  new Date(`${v}T00:00:00Z`).toISOString().startsWith(v);
+function realDate(v: string): boolean {
+  return /^\d{4}-\d{2}-\d{2}$/.test(v) && !Number.isNaN(Date.parse(`${v}T00:00:00Z`)) &&
+    new Date(`${v}T00:00:00Z`).toISOString().startsWith(v);
+}
 
 /**
  * Every problem with the form, in the order it appears on the page, keyed by
@@ -332,7 +361,9 @@ export function validateConsentForm(
   flag("patient.dateOfBirth", !realDate(p.dateOfBirth.trim()) || !dateOfBirthSchema.safeParse(p.dateOfBirth).success);
   flag("patient.phn", cleanPhn(p.phn).length !== 10);
   flag("patient.sex", p.sex !== "male" && p.sex !== "female");
-  if (s.forWhom === "child") flag("patient.weight", blank(p.weight) || tooLong(p.weight, 40));
+  if (s.forWhom === "child") {
+    flag("patient.weight", (weightRequired(s, now) && blank(p.weight)) || tooLong(p.weight, 40));
+  }
   flag("patient.phone", !phoneSchema.safeParse(p.phone).success);
   flag("patient.email", !blank(p.email) && (!emailSchema.safeParse(p.email).success || tooLong(p.email, 200)));
 
@@ -351,7 +382,7 @@ export function validateConsentForm(
   flag("screening.bleedingDetail", q.bleeding === "yes" && (blank(q.bleedingDetail) || q.bleedingDetail.length > MAX_DETAIL));
 
   flag("items", s.items.length === 0);
-  const today = now.toISOString().slice(0, 10);
+  const today = pharmacyToday(now);
   s.items.forEach((item, i) => {
     flag(`items.${i}.vaccine`, !vaccineFor(item.vaccine));
     if (item.vaccine === "other") flag(`items.${i}.otherText`, blank(item.otherText) || tooLong(item.otherText, 60));

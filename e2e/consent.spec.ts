@@ -207,6 +207,22 @@ test.describe("consent form details", () => {
     await expect(page.getByRole("radiogroup", { name: /how are you related/i })).toBeVisible();
   });
 
+  test("weight is required under 18 and optional from 18", async ({ page }) => {
+    await page.goto("/consent/");
+    await page.getByRole("radio", { name: "Someone in my care" }).click();
+    const label = page.locator('label[for="weight"]');
+    await expect(label).not.toContainText("(optional)");
+
+    await page.locator("#date_of_birth").pressSequentially("19900101");
+    await expect(label).toContainText("(optional)");
+
+    await page.locator("#date_of_birth").fill("");
+    await page.locator("#date_of_birth").pressSequentially("20180309");
+    await expect(label).not.toContainText("(optional)");
+    await send(page);
+    await expect(page.locator("#weight-error")).toContainText("needed for anyone under 18");
+  });
+
   test("the HealthLinkBC link is for reference only and opens in a new tab", async ({ page }) => {
     await page.goto("/consent/");
     await page.selectOption("#vaccine_0", "hepa");

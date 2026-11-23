@@ -11,7 +11,10 @@ import {
   cleanPhn,
   consentMessage,
   emptyConsentForm,
+  isUnder18,
+  pharmacyToday,
   validateConsentForm,
+  weightRequired,
   type ConsentFormState,
 } from "~~/shared/consentForm";
 import { validConsent } from "./consentFixtures";
@@ -236,10 +239,45 @@ describe("checking the form before it is sent", () => {
     expect(Object.keys(validateConsentForm(s, ok))).toEqual(["patient.dateOfBirth", "items.2.lastDoseDate"]);
   });
 
-  it("asks for weight and relationship for someone in care", () => {
+  it("asks how the signer is related to someone in care", () => {
     const s = filled();
     s.forWhom = "child";
-    expect(Object.keys(validateConsentForm(s, ok))).toEqual(["patient.weight", "acknowledgement.relationship"]);
+    expect(Object.keys(validateConsentForm(s, ok))).toContain("acknowledgement.relationship");
+  });
+
+  it("requires weight for someone in care who is under 18", () => {
+    const s = filled();
+    s.forWhom = "child";
+    s.relationship = "parent";
+    s.patient.dateOfBirth = "2018-03-09";
+    expect(validateConsentForm(s, ok)).toEqual({
+      "patient.weight": "Enter their weight, like 24 kg. It's needed for anyone under 18.",
+    });
+    s.patient.weight = "24 kg";
+    expect(validateConsentForm(s, ok)).toEqual({});
+  });
+
+  it("lets weight be left out for someone in care who is 18 or over", () => {
+    const s = filled();
+    s.forWhom = "child";
+    s.relationship = "rep";
+    expect(validateConsentForm(s, ok)).toEqual({});
+    expect(buildConsentPayload(s, signedAt).patient).not.toHaveProperty("weight");
+    expect(weightRequired(s, now)).toBe(false);
+  });
+
+  it("treats weight as required until the date of birth is known", () => {
+    const s = filled();
+    s.forWhom = "child";
+    s.patient.dateOfBirth = "";
+    expect(weightRequired(s, now)).toBe(true);
+  });
+
+  it("never asks weight on a form for me, whatever the age", () => {
+    const s = filled();
+    s.patient.dateOfBirth = "2012-01-01";
+    expect(weightRequired(s, now)).toBe(false);
+    expect(validateConsentForm(s, ok)).toEqual({});
   });
 
   it("asks which vaccine for something else", () => {
@@ -261,6 +299,40 @@ describe("checking the form before it is sent", () => {
     expect(consentMessage("items.3.dose")).toBe("Choose which dose this is");
     expect(consentMessage("patient.phn")).toBe(PHN_ERROR);
     expect(consentMessage("something.unexpected")).toBe("Check this answer");
+  });
+});
+
+describe("age", () => {
+  // 22 Nov 2026, 7:30 p.m. UTC: 11:30 a.m. in Squamish
+  it("is under 18 until the 18th birthday, in Squamish", () => {
+    expect(isUnder18("2008-11-23", now)).toBe(true);
+    expect(isUnder18("2008-11-22", now)).toBe(false);
+    expect(isUnder18("1958-04-12", now)).toBe(false);
+    expect(isUnder18("2018-03-09", now)).toBe(true);
+  });
+
+  it("uses the date in Squamish, not UTC", () => {
+    // 23 Nov 2026 at 3 a.m. UTC is still the evening of the 22nd in Squamish
+    const lateEvening = new Date("2026-11-23T03:00:00Z");
+    expect(pharmacyToday(lateEvening)).toBe("2026-11-22");
+    expect(isUnder18("2008-11-23", lateEvening)).toBe(true);
+  });
+
+  it("is not known until the date of birth is a real date", () => {
+    for (const dob of ["", "2008-11", "2008-02-30"]) expect(isUnder18(dob, now)).toBeNull();
+  });
+
+  it("turns 18 on 1 March for someone born on 29 February", () => {
+    expect(isUnder18("2008-02-29", new Date("2026-02-28T20:00:00Z"))).toBe(true);
+    expect(isUnder18("2008-02-29", new Date("2026-03-01T20:00:00Z"))).toBe(false);
+  });
+
+  it("checks a last dose isn't in the future by the date in Squamish", () => {
+    const s = filled();
+    s.items[2].lastDoseDate = "2026-11-23";
+    expect(Object.keys(validateConsentForm(s, { hasSignature: true, now: new Date("2026-11-23T03:00:00Z") }))).toEqual([
+      "items.2.lastDoseDate",
+    ]);
   });
 });
 
