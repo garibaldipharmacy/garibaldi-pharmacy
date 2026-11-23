@@ -46,9 +46,9 @@ describe("consent contract: valid payloads", () => {
     expect(issues(edit((p) => (p.patient.email = "")))).toEqual([]);
   });
 
-  it("knows the 11 vaccine types, with flu and B12 the only ones that never ask a dose", () => {
+  it("knows the 12 vaccine types, with flu and B12 the only ones that never ask a dose", () => {
     expect(CONSENT_VACCINES.map((v) => v.id)).toEqual([
-      "flu", "covid", "shingles", "pneumo", "rsv", "tdap", "hepa", "hepb", "hpv", "b12", "other",
+      "flu", "covid", "shingles", "pneumo", "rsv", "tdap", "hepa", "hepb", "hpv", "typhoid", "b12", "other",
     ]);
     expect(CONSENT_VACCINES.filter((v) => !v.asksDose).map((v) => v.id)).toEqual(["flu", "b12"]);
   });
@@ -136,6 +136,13 @@ describe("consent contract: emergency contact", () => {
     expect(issues(edit((p) => delete (p as Partial<ConsentPayload>).emergencyContact))).toEqual([
       "emergencyContact",
     ]);
+  });
+});
+
+describe("consent contract: typhoid", () => {
+  it("takes typhoid, which asks which dose like the others", () => {
+    expect(issues(edit((p) => (p.items = [{ vaccine: "typhoid", reason: "Typhoid prevention", dose: "booster", lastDoseDate: "2023-06-01" }])))).toEqual([]);
+    expect(issues(edit((p) => (p.items = [{ vaccine: "typhoid", reason: "Typhoid prevention" }])))).toEqual(["items.0.dose"]);
   });
 });
 

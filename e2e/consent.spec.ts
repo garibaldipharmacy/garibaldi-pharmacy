@@ -249,6 +249,18 @@ test.describe("consent form details", () => {
     await expect(link).toHaveCount(0);
   });
 
+  test("typhoid can be chosen, fills its reason, asks the dose and links to HealthLinkBC", async ({ page }) => {
+    await page.goto("/consent/");
+    await expect(page.locator("#vaccine_0 option", { hasText: "Typhoid vaccine" })).toHaveCount(1);
+    await page.selectOption("#vaccine_0", "typhoid");
+    await expect(page.locator("#reason_0")).toHaveValue("Typhoid prevention");
+    await expect(page.locator("#dose_0")).toBeVisible();
+    await expect(page.getByRole("link", { name: /about this vaccine on healthlinkbc/i })).toHaveAttribute(
+      "href",
+      "https://www.healthlinkbc.ca/healthlinkbc-files/typhoid-vaccine",
+    );
+  });
+
   test("something else asks which one, and up to 4 vaccines can be listed", async ({ page }) => {
     await page.goto("/consent/");
     await page.selectOption("#vaccine_0", "other");

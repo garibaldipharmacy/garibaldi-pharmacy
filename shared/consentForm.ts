@@ -59,6 +59,8 @@ export const HEALTHLINK_URLS: Partial<Record<ConsentVaccineId, string>> = {
   hepb: "https://www.healthlinkbc.ca/healthlinkbc-files/hepatitis-b-vaccine",
   // File 101b
   hpv: "https://www.healthlinkbc.ca/healthlinkbc-files/human-papillomavirus-hpv-vaccine",
+  // "Typhoid vaccine", checked 22 Nov 2026
+  typhoid: "https://www.healthlinkbc.ca/healthlinkbc-files/typhoid-vaccine",
 };
 
 export const DOSE_LABELS: Record<DoseChoice, string> = {

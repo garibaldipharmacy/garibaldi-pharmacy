@@ -35,6 +35,7 @@ export const CONSENT_VACCINES = [
   { id: 'hepa', label: 'Hepatitis A vaccine', reason: 'Hepatitis A prevention', asksDose: true },
   { id: 'hepb', label: 'Hepatitis B vaccine', reason: 'Hepatitis B prevention', asksDose: true },
   { id: 'hpv', label: 'HPV vaccine', reason: 'HPV prevention', asksDose: true },
+  { id: 'typhoid', label: 'Typhoid vaccine', reason: 'Typhoid prevention', asksDose: true },
   { id: 'b12', label: 'Vitamin B12 injection', reason: 'Vitamin B12 replacement', asksDose: false },
   { id: 'other', label: 'Something else (type it in)', reason: '', asksDose: true },
 ] as const;
