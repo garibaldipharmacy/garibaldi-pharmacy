@@ -9,6 +9,8 @@
     </p>
   </PageIntro>
 
+  <ConsentPrompt question="Getting vaccinated?" />
+
   <!-- Vaccines at a B.C. pharmacy. Province-wide facts only, each from the
        B.C. government. Recheck them each fall, when the respiratory season's
        details are announced:
@@ -61,11 +63,11 @@
          consultations -->
 
   <CallToAction
-    title="Have questions about immunizations?"
+    title="Ready to get your immunizations? Fill out your consent form."
     :primaryButton="{
-      text: 'Contact Us',
-      icon: 'fa6-solid:phone',
-      link: '/contact/',
+      text: 'Consent Form',
+      icon: 'fa6-solid:file-pen',
+      link: '/consent/',
     }"
     :secondaryButton="null"
     :showFooter="false"

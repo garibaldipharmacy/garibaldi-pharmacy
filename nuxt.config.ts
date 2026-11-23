@@ -101,6 +101,19 @@ export default defineNuxtConfig({
         // as well adds a render-blocking request before first paint.
         if (chunk.isEntry) {
           chunk.css = chunk.css?.filter((file) => !file.startsWith("entry"));
+
+          // Nuxt keeps pages out of the entry's prefetch list by their file
+          // names. When the bundler merges a page with code shared by a lazy
+          // component (as with the send form and its image editor), the chunk
+          // is named by its hash ("_abc123.js") instead, and Nuxt's filter
+          // misses it: every page on the site then prefetched the whole send
+          // form, its dependencies and zod, about 140 KB. The entry's only
+          // other dynamic imports are named files (the layout, the mobile
+          // menu), so a hash-named one is always such a page. Prefetching is
+          // only a hint, so the page still loads as normal when visited.
+          chunk.dynamicImports = chunk.dynamicImports?.filter(
+            (key) => !key.startsWith("_")
+          );
         }
       }
     },

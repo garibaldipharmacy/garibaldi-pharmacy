@@ -136,6 +136,14 @@ export const sitePageGroups: SitePageGroup[] = [
         words: ["immuni", "vaccin", "flu", "covid", "shot", "travel"],
       },
       {
+        title: "Vaccine Consent Form",
+        link: "/consent/",
+        icon: "fa6-solid:syringe",
+        description:
+          "Fill in your consent form before your vaccine or injection appointment.",
+        words: ["consent"],
+      },
+      {
         title: "Minor Ailments",
         link: "/services/minor-ailments/",
         icon: "fa6-solid:hand-holding-medical",

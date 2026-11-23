@@ -24,6 +24,7 @@ const footerLinks = [
       { title: "Transfer", href: "/prescriptions/transfer/" },
       { title: "Refill", href: "/prescriptions/refill/" },
       { title: "Send", href: "/prescriptions/send/" },
+      { title: "Vaccine consent form", href: "/consent/" },
     ],
   },
   // {

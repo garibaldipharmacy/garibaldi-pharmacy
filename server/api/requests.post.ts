@@ -1,9 +1,10 @@
 // Prescription request intake. Replaces Netlify Forms.
 //
-// One atomic multipart POST for all three forms. Either the whole submission
-// lands (record + files + queued notifications, in one transaction) or none of it
-// does. We never want a record without its prescription image, or files on disk
-// with no record pointing at them.
+// One atomic multipart POST for all four forms: refill, transfer, send, and the
+// vaccine consent, which is checked against its own contract (shared/consent.ts).
+// Either the whole submission lands (record + files + queued notifications, in
+// one transaction) or none of it does. We never want a record without its
+// prescription image, or files on disk with no record pointing at them.
 //
 // The patient is told "we got it" only after the transaction commits.
 
@@ -18,12 +19,14 @@ import {
   type RequestBody,
   type SubmitResponse,
 } from "~~/shared/forms";
+import type { ConsentPayload } from "~~/shared/consent";
+import { SIGNATURE_ERROR, SIGNATURE_PART } from "~~/shared/consentForm";
 
 /** The most a valid submission can be: every file plus room for the fields */
 const MAX_REQUEST_BYTES = LIMITS.maxTotalBytes + 1024 * 1024;
 
 interface PendingFile {
-  role: "prescription" | "insurance_front" | "insurance_back";
+  role: "prescription" | "insurance_front" | "insurance_back" | "signature";
   position: number;
   key: string;
   // Where the form shows this file's errors, matching the client's own
@@ -32,7 +35,11 @@ interface PendingFile {
 }
 
 /** Collects the file references a validated body expects, in a stable order. */
-function expectedFiles(body: RequestBody): PendingFile[] {
+function expectedFiles(body: RequestBody | ConsentPayload): PendingFile[] {
+  // A consent carries one file, the drawn signature, under a fixed part name
+  if (body.kind === "consent") {
+    return [{ role: "signature", position: 0, key: SIGNATURE_PART, field: "signature" }];
+  }
   if (body.kind !== "send") return [];
 
   const out: PendingFile[] = body.prescriptions.map((p, i) => ({
@@ -60,6 +67,16 @@ function expectedFiles(body: RequestBody): PendingFile[] {
   });
 
   return out;
+}
+
+/** Who gets the receipt: always the patient on a prescription form, and on the
+ *  consent form only if they gave an email. */
+function receiptRecipients(body: RequestBody | ConsentPayload) {
+  if (body.kind !== "consent") {
+    return [{ kind: "patient_confirmation", recipient: body.patient.email }];
+  }
+  const recipient = consentReceiptRecipient(body);
+  return recipient ? [{ kind: "patient_confirmation", recipient }] : [];
 }
 
 export default defineEventHandler(async (event): Promise<SubmitResponse> => {
@@ -152,13 +169,24 @@ export default defineEventHandler(async (event): Promise<SubmitResponse> => {
   // ---------------------------------------------------------------------
   // Validate the body
   // ---------------------------------------------------------------------
-  let body: RequestBody;
-  try {
-    body = requestBodySchema.parse(raw);
-  } catch (err) {
-    setResponseStatus(event, 400);
-    if (err instanceof ZodError) return { ok: false, errors: fieldErrors(err) };
-    return { ok: false, error: "We could not read that submission." };
+  // A consent is checked against its own contract, before and instead of the
+  // prescription forms' schema, which stays exactly as it was for them.
+  let body: RequestBody | ConsentPayload;
+  if ((raw as { kind?: unknown }).kind === "consent") {
+    const consent = validateConsentBody(raw);
+    if (!consent.ok) {
+      setResponseStatus(event, 400);
+      return { ok: false, errors: consent.errors };
+    }
+    body = consent.data;
+  } else {
+    try {
+      body = requestBodySchema.parse(raw);
+    } catch (err) {
+      setResponseStatus(event, 400);
+      if (err instanceof ZodError) return { ok: false, errors: fieldErrors(err) };
+      return { ok: false, error: "We could not read that submission." };
+    }
   }
 
   // ---------------------------------------------------------------------
@@ -179,11 +207,15 @@ export default defineEventHandler(async (event): Promise<SubmitResponse> => {
   for (const want of wanted) {
     const part = parts.find((p) => p.name === want.key && p.filename);
     if (!part) {
-      errors[want.field] = "That file did not upload. Please try again.";
+      errors[want.field] =
+        want.role === "signature"
+          ? SIGNATURE_ERROR
+          : "That file did not upload. Please try again.";
       continue;
     }
 
-    const check = checkUpload(part.data);
+    // A signature must be a small PNG; everything else, a photo or a PDF
+    const check = want.role === "signature" ? checkSignature(part.data) : checkUpload(part.data);
     if (!check.ok) {
       errors[want.field] = check.message;
       continue;
@@ -257,6 +289,7 @@ export default defineEventHandler(async (event): Promise<SubmitResponse> => {
   const freeText: string[] = [];
   if (body.kind === "refill") freeText.push(body.medications, body.specialInstructions);
   if (body.kind === "transfer") freeText.push(body.medications, body.notes);
+  if (body.kind === "consent") freeText.push(...consentFreeText(body));
 
   const flags = reviewFlags({
     renderedAt: envelope.renderedAt,
@@ -275,7 +308,8 @@ export default defineEventHandler(async (event): Promise<SubmitResponse> => {
       payload: body,
       files: stored,
       // Staff are not emailed: the request reaches them through the dashboard.
-      notifications: [{ kind: "patient_confirmation", recipient: body.patient.email }],
+      // Email is optional on the consent form, so its receipt is too.
+      notifications: receiptRecipients(body),
     });
 
     // A retry or a double-tapped submit button is a no-op, not a second record.

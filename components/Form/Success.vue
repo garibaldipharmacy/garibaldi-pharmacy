@@ -41,14 +41,16 @@
           class="mt-0.5 shrink-0 text-primary-400"
         />
         <span>
-          We'll contact you by e-mail or phone within one business day to
-          confirm your {{ confirming }}. If you haven't heard from us by then,
-          please call
-          <a
-            :href="`tel:${phone}`"
-            class="font-normal text-primary-700 underline underline-offset-4 hover:no-underline"
-            >{{ phone }}</a
-          >.
+          <slot name="note">
+            We'll contact you by e-mail or phone within one business day to
+            confirm your {{ confirming }}. If you haven't heard from us by then,
+            please call
+            <a
+              :href="`tel:${phone}`"
+              class="font-normal text-primary-700 underline underline-offset-4 hover:no-underline"
+              >{{ phone }}</a
+            >.
+          </slot>
         </span>
       </p>
 
@@ -59,6 +61,11 @@
         Back to home
         <Icon name="fa6-solid:arrow-right" aria-hidden="true" class="text-sm" />
       </NuxtLink>
+
+      <!-- Optional: a further action under "Back to home", e.g. "Fill another" -->
+      <div v-if="$slots.actions" class="mt-4">
+        <slot name="actions" />
+      </div>
     </div>
   </section>
 </template>

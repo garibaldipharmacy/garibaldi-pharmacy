@@ -13,7 +13,7 @@
 // so it reads the same in Outlook, Gmail and Apple Mail.
 
 import { businessInfo } from "~~/constants/business";
-import type { RequestBody } from "~~/shared/forms";
+import type { StoredPayload } from "~~/shared/submissions";
 import { PHARMACY_TIME_ZONE } from "~~/shared/pharmacyTime";
 import { LOGO_PNG_BASE64, SPROUT_PNG_BASE64 } from "./receiptImages";
 
@@ -27,7 +27,7 @@ export interface InlineImage {
 }
 
 export interface ReceiptInput {
-  /** The submission's kind: refill, transfer or send */
+  /** The submission's kind: refill, transfer, send or consent */
   kind: string;
   reference: string;
   receivedAt: Date;
@@ -35,7 +35,7 @@ export interface ReceiptInput {
    * The stored request, read only for choices and counts that we put into our
    * own words. Null when it cannot be read; the email still goes out.
    */
-  payload: RequestBody | null;
+  payload: StoredPayload | null;
 }
 
 export interface ReceiptEmail {
@@ -57,6 +57,10 @@ interface Wording {
   confirming: string;
   /** The "Request" line of the summary */
   request: string;
+  /** Replaces the "We'll contact you..." line, where that promise doesn't fit */
+  contact?: string;
+  /** Replaces the usual preview line. "{reference}" is filled in, as in message */
+  preheader?: string;
 }
 
 // The same words as pages/success/*.vue, so the email says what the screen said.
@@ -86,6 +90,24 @@ const WORDING: Record<string, Wording> = {
     request: "New prescription",
   },
 };
+
+// The vaccine consent: no reply is promised, as the pharmacist goes over the
+// form at the appointment. It says which form arrived and nothing from it: no
+// vaccine names, no answers.
+WORDING.consent = {
+  subject: "Vaccine consent form received",
+  heading: "Thank you, we have your consent form",
+  message: "We have your vaccine consent form. Your reference is {reference}.",
+  confirming: "consent form",
+  request: "Vaccine consent form",
+  contact: `Your pharmacist will go over it with you in person before any vaccine is given. Questions before your appointment? Please call ${businessInfo.contact.phone.main}.`,
+  preheader: "We have your vaccine consent form. Your reference is {reference}.",
+};
+
+/** Puts the reference into wording that names it, as "{reference}". */
+function withReference(text: string, reference: string): string {
+  return text.replace("{reference}", reference);
+}
 
 const GENERIC: Wording = {
   subject: "Request received",
@@ -189,13 +211,16 @@ export function buildReceiptEmail(input: ReceiptInput): ReceiptEmail {
   const wording = WORDING[input.kind] ?? GENERIC;
   const rows = receiptSummary(input);
   const subject = `${wording.subject} · ${input.reference}`;
-  const preheader = `Your reference number is ${input.reference}. We'll be in touch within one business day.`;
+  const preheader = wording.preheader
+    ? withReference(wording.preheader, input.reference)
+    : `Your reference number is ${input.reference}. We'll be in touch within one business day.`;
+  const message = withReference(wording.message, input.reference);
 
   return {
     subject,
     preheader,
-    text: textVersion(wording, input.reference, rows),
-    html: htmlVersion(wording, input.reference, rows, subject, preheader),
+    text: textVersion({ ...wording, message }, input.reference, rows),
+    html: htmlVersion({ ...wording, message }, input.reference, rows, subject, preheader),
     images: [
       {
         filename: "garibaldi-pharmacy.png",
@@ -214,6 +239,7 @@ export function buildReceiptEmail(input: ReceiptInput): ReceiptEmail {
 }
 
 function contactLine(wording: Wording): string {
+  if (wording.contact) return wording.contact;
   return `We'll contact you by e-mail or phone within one business day to confirm your ${wording.confirming}. If you haven't heard from us by then, please call ${PHONE}.`;
 }
 
