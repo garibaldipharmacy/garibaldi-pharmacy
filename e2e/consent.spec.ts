@@ -170,6 +170,12 @@ for (const { name, viewport } of WIDTHS) {
       const { payload } = await posted(page);
       expect(payload.screening.pregnant).toBe("na");
       expect(payload.items).toEqual([{ vaccine: "b12", reason: "Vitamin B12 replacement" }]);
+
+      // "Fill another" starts a fresh form
+      await page.getByRole("link", { name: "Fill another" }).click();
+      await expect(page).toHaveURL(/\/consent\/$/);
+      await expect(page.locator("#first_name")).toHaveValue("");
+      await expect(page.locator("#signer_name")).toHaveValue("");
     });
 
     test("a 9-digit PHN shows the error when leaving the field", async ({ page }) => {

@@ -61,6 +61,11 @@
         Back to home
         <Icon name="fa6-solid:arrow-right" aria-hidden="true" class="text-sm" />
       </NuxtLink>
+
+      <!-- Optional: a further action under "Back to home", e.g. "Fill another" -->
+      <div v-if="$slots.actions" class="mt-4">
+        <slot name="actions" />
+      </div>
     </div>
   </section>
 </template>

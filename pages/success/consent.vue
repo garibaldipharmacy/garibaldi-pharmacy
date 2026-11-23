@@ -14,6 +14,15 @@
         >{{ phone }}</a
       >.
     </template>
+    <template #actions>
+      <NuxtLink
+        to="/consent/"
+        class="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 font-medium text-primary-900 shadow-sm ring-1 ring-primary-900/20 transition-colors hover:bg-primary-100"
+      >
+        <Icon name="fa6-solid:file-pen" aria-hidden="true" class="text-sm" />
+        Fill another
+      </NuxtLink>
+    </template>
   </FormSuccess>
 </template>
 
