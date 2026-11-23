@@ -19,6 +19,8 @@
     </p>
   </PageIntro>
 
+  <ConsentPrompt question="Coming in for an injection?" />
+
   <PagePhoto class="pb-20 lg:pb-24">
     <img
       src="@/assets/images/squamish-drug-administration-1440.webp"

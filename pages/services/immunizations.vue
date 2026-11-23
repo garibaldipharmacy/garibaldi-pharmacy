@@ -9,6 +9,8 @@
     </p>
   </PageIntro>
 
+  <ConsentPrompt question="Getting vaccinated?" />
+
   <!-- Vaccines at a B.C. pharmacy. Province-wide facts only, each from the
        B.C. government. Recheck them each fall, when the respiratory season's
        details are announced:

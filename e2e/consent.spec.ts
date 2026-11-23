@@ -367,3 +367,36 @@ test.describe("consent in /admin", () => {
     expect(await signature.evaluate((img: HTMLImageElement) => img.naturalWidth)).toBe(1);
   });
 });
+
+test.describe("links to the consent form", () => {
+  for (const [path, words] of [
+    ["/services/immunizations/", /getting vaccinated\?/i],
+    ["/services/drug-administration/", /coming in for an injection\?/i],
+  ] as const) {
+    test(`${path} sends people to it`, async ({ page }) => {
+      await page.goto(path);
+      await expect(page.getByText(words)).toBeVisible();
+      await page.getByRole("link", { name: /fill in the consent form/i }).click();
+      await expect(page).toHaveURL(/\/consent\/$/);
+      await expect(page.getByRole("heading", { level: 1 })).toHaveText(/vaccine consent/i);
+    });
+  }
+
+  test("the footer links to it from every page", async ({ page }) => {
+    await page.goto("/");
+    await page.getByRole("contentinfo").getByRole("link", { name: "Vaccine consent form" }).click();
+    await expect(page).toHaveURL(/\/consent\/$/);
+  });
+
+  test("the HTML sitemap lists it", async ({ page }) => {
+    await page.goto("/sitemap/");
+    await page.getByRole("main").getByRole("link", { name: /vaccine consent form/i }).click();
+    await expect(page).toHaveURL(/\/consent\/$/);
+  });
+
+  test("the generated sitemap lists it, and not its thank-you page", async ({ request }) => {
+    const xml = await (await request.get("/sitemap.xml")).text();
+    expect(xml).toContain("/consent/</loc>");
+    expect(xml).not.toContain("/success/consent");
+  });
+});
