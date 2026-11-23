@@ -5,11 +5,18 @@
 // contract in one place means that work is parsing something already typed,
 // rather than rediscovering the schema from the database.
 
+import type { ConsentPayload } from "./consent";
 import type { RequestBody } from "./forms";
+
+/** Every kind of request the site takes: the three prescription forms and the vaccine consent. */
+export type SubmissionKind = RequestBody["kind"] | ConsentPayload["kind"];
+
+/** What a stored submission's payload holds, by kind. */
+export type StoredPayload = RequestBody | ConsentPayload;
 
 export type SubmissionStatus = "new" | "in_progress" | "contacted" | "completed";
 
-export type FileRole = "prescription" | "insurance_front" | "insurance_back";
+export type FileRole = "prescription" | "insurance_front" | "insurance_back" | "signature";
 
 export interface SubmissionFileDTO {
   id: string;
@@ -26,7 +33,7 @@ export interface SubmissionFileDTO {
 export interface SubmissionSummaryDTO {
   id: string;
   reference: string;
-  kind: RequestBody["kind"];
+  kind: SubmissionKind;
   receivedAt: string;
   status: SubmissionStatus;
   /** Review markers from the spam heuristics. Never a reason to hide anything. */
@@ -37,20 +44,22 @@ export interface SubmissionSummaryDTO {
 }
 
 export interface SubmissionDetailDTO extends SubmissionSummaryDTO {
-  payload: RequestBody;
+  payload: StoredPayload;
   files: SubmissionFileDTO[];
 }
 
-export const KIND_LABELS: Record<RequestBody["kind"], string> = {
+export const KIND_LABELS: Record<SubmissionKind, string> = {
   refill: "Refill",
   transfer: "Transfer",
   send: "New prescription",
+  consent: "Consent form",
 };
 
 export const FILE_ROLE_LABELS: Record<FileRole, string> = {
   prescription: "Prescription",
   insurance_front: "Insurance card (front)",
   insurance_back: "Insurance card (back)",
+  signature: "Patient signature",
 };
 
 export const FLAG_LABELS: Record<string, string> = {

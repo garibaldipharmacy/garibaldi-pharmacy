@@ -1,6 +1,14 @@
 <template>
   <div class="space-y-5 text-sm">
-    <section>
+    <!-- A vaccine consent has its own five sections and the signature -->
+    <AdminConsentDetail
+      v-if="isConsent"
+      :submission-id="detail.id"
+      :payload="detail.payload"
+      :files="detail.files"
+    />
+
+    <section v-if="!isConsent">
       <h3 class="font-medium mb-2">Patient</h3>
       <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1 font-light">
         <div v-for="row in patientRows" :key="row.label" class="flex gap-2">
@@ -10,7 +18,7 @@
       </dl>
     </section>
 
-    <section v-if="requestRows.length">
+    <section v-if="!isConsent && requestRows.length">
       <h3 class="font-medium mb-2">Request</h3>
       <dl class="space-y-2 font-light">
         <div v-for="row in requestRows" :key="row.label">
@@ -53,6 +61,8 @@ import { FILE_ROLE_LABELS, type SubmissionDetailDTO } from "~~/shared/submission
 import { formatPhone, NOTIFY_METHODS, RETRIEVAL_METHODS } from "~~/shared/forms";
 
 const props = defineProps<{ detail: SubmissionDetailDTO }>();
+
+const isConsent = computed(() => props.detail.kind === "consent");
 
 interface Row {
   label: string;

@@ -6,12 +6,13 @@
 // (session cookie, browse). Two thin route layers, one service module.
 
 import type {
+  StoredPayload,
   SubmissionDetailDTO,
   SubmissionFileDTO,
   SubmissionSummaryDTO,
   SubmissionStatus,
 } from "~~/shared/submissions";
-import type { RequestBody } from "~~/shared/forms";
+import type { SubmissionKind } from "~~/shared/submissions";
 import { getSubmission, getSubmissionFiles, listSubmissions } from "./db";
 import type { SubmissionFileRow, SubmissionRow } from "./db";
 import { readEncrypted } from "./files";
@@ -25,9 +26,9 @@ function parseFlags(raw: string): string[] {
   }
 }
 
-function parsePayload(raw: string): RequestBody | null {
+function parsePayload(raw: string): StoredPayload | null {
   try {
-    return JSON.parse(raw) as RequestBody;
+    return JSON.parse(raw) as StoredPayload;
   } catch {
     return null;
   }
@@ -38,7 +39,7 @@ function parsePayload(raw: string): RequestBody | null {
  * fully parse must still be visible, because an unreadable prescription request
  * is exactly the one a pharmacist needs to know about.
  */
-function patientName(payload: RequestBody | null): string {
+function patientName(payload: StoredPayload | null): string {
   if (!payload?.patient) return "(unreadable)";
   const { firstName, lastName } = payload.patient;
   return [firstName, lastName].filter(Boolean).join(" ") || "(no name given)";
@@ -49,7 +50,7 @@ function toSummary(row: SubmissionRow, fileCount: number): SubmissionSummaryDTO 
   return {
     id: row.id,
     reference: row.reference,
-    kind: row.kind as RequestBody["kind"],
+    kind: row.kind as SubmissionKind,
     receivedAt: row.received_at,
     status: row.status as SubmissionStatus,
     flags: parseFlags(row.flags),
@@ -137,7 +138,7 @@ export function getSubmissionDetail(id: string): SubmissionDetailDTO | null {
     ...toSummary(row, files.length),
     // An unparseable payload still returns the row, so the reference code and
     // timestamp are visible and staff can phone the patient.
-    payload: payload ?? ({ kind: row.kind } as RequestBody),
+    payload: payload ?? ({ kind: row.kind } as StoredPayload),
     files: files.map(toFileDTO),
   };
 }

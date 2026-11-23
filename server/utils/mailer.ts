@@ -14,7 +14,7 @@
 // The patient's email address is unverified. A typo means sending to a stranger,
 // so the receipt contains a reference code and nothing the patient typed.
 
-import type { RequestBody } from "~~/shared/forms";
+import type { StoredPayload } from "~~/shared/submissions";
 import { getDb } from "./db";
 import { buildReceiptEmail, type InlineImage } from "./receiptEmail";
 import { redact } from "./security";
@@ -100,7 +100,7 @@ export function patientConfirmation(args: {
   reference: string;
   email: string;
   receivedAt: Date;
-  payload: RequestBody | null;
+  payload: StoredPayload | null;
 }): Mail {
   const receipt = buildReceiptEmail(args);
   return {
@@ -131,9 +131,9 @@ interface OutboxRow {
   attempts: number;
 }
 
-function parsePayload(raw: string): RequestBody | null {
+function parsePayload(raw: string): StoredPayload | null {
   try {
-    return JSON.parse(raw) as RequestBody;
+    return JSON.parse(raw) as StoredPayload;
   } catch {
     return null;
   }
