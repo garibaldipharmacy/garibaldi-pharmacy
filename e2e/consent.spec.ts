@@ -405,6 +405,15 @@ test.describe("links to the consent form", () => {
     });
   }
 
+  test("the call to action at the foot of Immunizations sends people to it", async ({ page }) => {
+    await page.goto("/services/immunizations/");
+    await expect(
+      page.getByRole("heading", { name: "Ready to get your immunizations? Fill out your consent form." }),
+    ).toBeVisible();
+    await page.getByRole("link", { name: "Consent Form", exact: true }).click();
+    await expect(page).toHaveURL(/\/consent\/$/);
+  });
+
   test("the footer links to it from every page", async ({ page }) => {
     await page.goto("/");
     await page.getByRole("contentinfo").getByRole("link", { name: "Vaccine consent form" }).click();
